@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+	
+	<!-- title -->
+	
+	<title>
+	
+		JVM调优攻略 | 
+	 
+	王老邪
+	</title>
+	
+	<!-- keywords,description -->
+	 
+		<meta name="description" content="JVM 调优" />
+	
+
+	<!-- favicon -->
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+	
+  
+
+	
+<link rel="stylesheet" href="/css/main.css">
+
+	
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/darcula.min.css">
+
+
+	
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/highlight.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/npm/jquery-pjax@2.0.1/jquery.pjax.min.js"></script>
+
+	
+<script src="/js/main.js"></script>
+
+	
+		
+<script src="https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min.js"></script>
+
+		
+<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
+
+	
+	
+		<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+	
+	<script>
+		var _hmt = _hmt || [];
+		(function() {
+			var hm = document.createElement("script");
+			hm.src = "https://hm.baidu.com/hm.js?1b1318d1b07a2360e12cec2ed56cd0d6";
+			var s = document.getElementsByTagName("script")[0]; 
+			s.parentNode.insertBefore(hm, s);
+		})();
+	</script>
+		
+<meta name="generator" content="Hexo 5.0.0"></head>
+
+<body>
+	<header id="header">
+    <a id="title" href="/" class="logo">王老邪</a>
+
+	<ul id="menu">
+		<li class="menu-item">
+			<a href="about.html" class="menu-item-link">ABOUT</a>
+		</li>
+		
+		<li class="menu-item">
+			<a href="https://github.com/king-angmar/weathertop" class="menu-item-link" target="_blank">
+				weathertop
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="https://github.com/rothschil" class="menu-item-link" target="_blank">
+				<i class="fa fa-github fa-2x"></i>
+			</a>
+		</li>
+	</ul>
+</header>
+
+	
+<div id="sidebar">
+	<button id="sidebar-toggle" class="toggle" ><i class="fa fa-arrow-right " aria-hidden="true"></i></button>
+	
+	<div id="site-toc">
+		<input id="search-input" class="search-input" type="text" placeholder="search...">
+		<div id="tree">
+			
+
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 操作系统
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 Linux
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/01/01/01%20%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/01%20Linux/Linux%E5%9F%BA%E7%A1%80/">
+										Linux基础
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										06 Java
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 JVM
+									</a>
+									
+							<ul>
+								<li class="file active">
+									<a href="/2020/05/21/06%20Java/01%20JVM/JVM%E8%B0%83%E4%BC%98%E6%94%BB%E7%95%A5/">
+										JVM调优攻略
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										02 多线程
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/CountDownLatch%E3%80%81Semaphone%E3%80%81CyclicBarrier%E5%85%A5%E9%97%A8/">
+										CountDownLatch、Semaphone、CyclicBarrier入门
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95Java%E9%98%9F%E5%88%97/">
+										死磕Java队列
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/05/14/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95ThreadPoolExecutor%E7%BA%BF%E7%A8%8B%E6%B1%A0/">
+										死磕ThreadPoolExecutor线程池
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/05/20/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95Volatile/">
+										死磕Volatile
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/05/14/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95synchronized/">
+										死磕synchronized
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										03 网络编程
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/06%20Java/03%20%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/TCP/">
+										TCP
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										04 设计模式
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/03/29/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%901%E3%80%91%E2%80%94%E2%80%94%E8%A7%82%E5%AF%9F%E8%80%85/">
+										浅析Java设计模式【1】——观察者
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/03/29/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%902%E3%80%91%E2%80%94%E2%80%94%E9%80%82%E9%85%8D%E5%99%A8/">
+										浅析Java设计模式【2】——适配器
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/03/30/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%903%E3%80%91%E2%80%94%E2%80%94%E4%BB%A3%E7%90%86/">
+										浅析Java设计模式【3】——代理
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/06/19/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%904%E3%80%91%E2%80%94%E2%80%94%E7%AD%96%E7%95%A5/">
+										浅析Java设计模式【4】——策略
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										07 框架
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										03 Springboot
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/06/19/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/SpringBoot%E9%9B%86%E6%88%90Elasticsearch7.4-%E5%AE%9E%E6%88%98(1)/">
+										SpringBoot集成Elasticsearch7.4-实战(1)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/06/20/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/SpringBoot%E9%9B%86%E6%88%90Elasticsearch7.4-%E5%AE%9E%E6%88%98(2)/">
+										SpringBoot集成Elasticsearch7.4-实战(2)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/06/21/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/SpringBoot%E9%9B%86%E6%88%90Elasticsearch7.4-%E5%AE%9E%E6%88%98(3)/">
+										SpringBoot集成Elasticsearch7.4-实战(3)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/02/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/%E6%B5%85%E8%B0%88SpringBoot%E5%90%AF%E5%8A%A8%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/">
+										浅谈SpringBoot启动那些事儿
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										08 微服务
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 Nacos
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/01/10/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/00%20Nacos/CentOS%E7%8E%AF%E5%A2%83%E4%B8%8B%E5%AE%89%E8%A3%85Nacos/">
+										CentOS环境下安装Nacos
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/12/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/00%20Nacos/SpringCloud%E9%9B%86%E6%88%90Nacos%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0/">
+										SpringCloud集成Nacos实现服务发现
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/11/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/00%20Nacos/SpringCloud%E9%9B%86%E6%88%90Nacos%E5%AE%9E%E7%8E%B0%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/">
+										SpringCloud集成Nacos实现配置管理
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										10 架构分析
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/04/09/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/10%20%E6%9E%B6%E6%9E%84%E5%88%86%E6%9E%90/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%88%86%E6%9E%90/">
+										微服务架构设计分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										09 区块链
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/12/24/09%20%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E7%9F%A5%E8%AF%86%E5%85%A5%E9%97%A8/">
+										区块链知识入门
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										10 容器
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 Docker
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/07/18/10%20%E5%AE%B9%E5%99%A8/00%20Docker/Docker%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7Portainer/">
+										Docker管理工具Portainer
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										11 分布式
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 分布式事务
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/08/02/11%20%E5%88%86%E5%B8%83%E5%BC%8F/00%20%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E8%AF%A6%E8%A7%A3%E2%80%94%E2%80%94SpringBoot+Atomikos%E7%AF%87/">
+										分布式事务详解——SpringBoot+Atomikos篇
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 分布式锁
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/08/01/11%20%E5%88%86%E5%B8%83%E5%BC%8F/01%20%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/%E6%B5%85%E6%9E%90%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%AE%9E%E7%8E%B0%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F/">
+										浅析分布式锁实现三种方式
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										14 中间件
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/14%20%E4%B8%AD%E9%97%B4%E4%BB%B6/Redis/">
+										Redis
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/07/31/14%20%E4%B8%AD%E9%97%B4%E4%BB%B6/RocketMQ%E9%9B%86%E7%BE%A4%E4%B8%8ESpringBoot%E9%9B%86%E6%88%90%EF%BC%88%E4%B8%80%EF%BC%89/">
+										RocketMQ集群与SpringBoot集成（一）
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										28 杂谈
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/09/20/28%20%E6%9D%82%E8%B0%88/%E4%BA%BA%E5%8D%83%E7%9B%B8%EF%BC%8C%E4%BD%9B%E6%97%A0%E7%9B%B8/">
+										人千相，佛无相
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/03/19/28%20%E6%9D%82%E8%B0%88/%E5%8E%86%E5%8F%B2%E4%B8%8A%E7%9A%84%E5%AE%89%E5%BE%BD%E4%BA%BA%E7%89%A9/">
+										历史上的安徽人物
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/28%20%E6%9D%82%E8%B0%88/%E8%B5%A2%E5%9C%A8%E6%A0%BC%E5%B1%80%E3%80%81%E8%BE%93%E5%9C%A8%E8%AE%A1%E8%BE%83/">
+										赢在格局、输在计较
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										54 产品设计
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/01/15/54%20%E4%BA%A7%E5%93%81%E8%AE%BE%E8%AE%A1/%E6%B5%85%E8%B0%88%E7%94%A8%E6%88%B7%E7%94%BB%E5%83%8F/">
+										浅谈用户画像
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/20/54%20%E4%BA%A7%E5%93%81%E8%AE%BE%E8%AE%A1/%E7%BB%9F%E4%B8%80%E5%AE%A1%E8%AE%A1/">
+										统一审计
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										98 管理类
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 项目交接
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/04/01/98%20%E7%AE%A1%E7%90%86%E7%B1%BB/00%20%E9%A1%B9%E7%9B%AE%E4%BA%A4%E6%8E%A5/%E5%AF%B9%E9%A1%B9%E7%9B%AE%E4%BA%A4%E6%8E%A5%E8%BF%87%E7%A8%8B%E8%A6%81%E6%B1%82/">
+										对项目交接过程要求
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										99 工具等
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/12/18/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/Win10%E9%BB%91%E7%A7%91%E6%8A%80%EF%BC%8C%E4%BD%A0%E5%88%B0%E5%BA%95%E7%9F%A5%E9%81%93%E5%A4%9A%E5%B0%91/">
+										Win10黑科技，你到底知道多少
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/Wlx2Explore%E5%85%A5%E9%97%A8/">
+										Wlx2Explore入门
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/31/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/lantern%E9%82%80%E8%AF%B7%E7%A0%81/">
+										lantern邀请码
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/%E5%8F%AF%E7%94%A8%E5%85%8D%E6%BF%80%E6%B4%BBAdobe%20Acrobat%20DC%202020/">
+										可用免激活Adobe Acrobat DC 2020
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2018/04/18/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/%E8%AF%A6%E8%A7%A3CMD%E5%91%BD%E4%BB%A4%E6%BB%A1%E9%80%9F%E4%B8%8B%E8%BD%BD%E7%99%BE%E5%BA%A6%E4%BA%91/">
+										详解CMD命令满速下载百度云
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+		</div>
+	</div>
+</div>
+
+	<!-- 引入正文 -->
+	<div id="content">
+		<h1 id="article-title">
+
+	JVM调优攻略
+</h1>
+<div class="article-meta">
+	
+	<span>Rothschil</span>
+	<span>2020-05-21 15:00:00</span>
+    
+		<div id="article-categories">
+            
+                
+                    <span>
+                        <i class="fa fa-folder" aria-hidden="true"></i>
+                        <a href="/categories/Java/">Java</a>
+						
+                    </span>
+                
+            
+		</div>
+    
+</div>
+
+<div id="article-content">
+	<h1 id="1-写在前面"><a href="#1-写在前面" class="headerlink" title="1. 写在前面"></a>1. 写在前面</h1><p>本章节涉及JVM调优演示所使用的环境为<code>JDk1.8</code>、<code>IDEA2020</code>、<code>Maven3.5</code>。因为在讲解JVM调优过程中，还会涉及到一些内存方面的知识，这里只简要概括下，如果在看的过程中觉得有吃力的地方，需要再去补充！</p>
+<h1 id="2-内存"><a href="#2-内存" class="headerlink" title="2. 内存"></a>2. 内存</h1><h2 id="2-1-堆与栈"><a href="#2-1-堆与栈" class="headerlink" title="2.1. 堆与栈"></a>2.1. 堆与栈</h2><p>栈与堆 是应用程序运行的关键。</p>
+<p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/sctel20200524112330.png" alt="堆与栈"></p>
+<p>栈是运行时单位，解决程序的运行问题，即程序如何执行，或者说如何处理数据；而堆是存储的单位，即数据怎么放、放在哪儿。</p>
+<h2 id="2-2-内存模型"><a href="#2-2-内存模型" class="headerlink" title="2.2. 内存模型"></a>2.2. 内存模型</h2><p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/java20200520145155.png" alt="JDK1.8内存模型"></p>
+<h3 id="2-2-1-程序计数器"><a href="#2-2-1-程序计数器" class="headerlink" title="2.2.1. 程序计数器"></a>2.2.1. 程序计数器</h3><p>线程私有的，互不影响、独立存储，是当前线程执行的字节码的行号指示器。让字节码解释器工作时可以通过改变这个计数器的值来选取下一执行的字节码的指令，分支、循环、跳转、异常、恢复都需要这个计数器来完成。</p>
+<p>程序计数器是唯一一个不会出现 <code>OutOfMemoryError</code> 的内存区域。</p>
+<h3 id="2-2-2-虚拟机栈"><a href="#2-2-2-虚拟机栈" class="headerlink" title="2.2.2. 虚拟机栈"></a>2.2.2. 虚拟机栈</h3><p>线程私有的，JAVA方法执行的动态内存模型，每个方法执行都会创建一个栈帧，伴随着方法创建到执行完成，用于存储局部变量表、操作数栈、动态链接、方法出口信息等组成。</p>
+<ul>
+<li><p>局部变量表：局部变量表存放编译器可知的基础类型（包括int、boolean、byte、char、short、lang、double、float）以及对象引用（地址引用或者句柄引用）。大小在编译过程中以及分配，在方法执行中改变不了大小</p>
+</li>
+<li><p>虚拟机栈常见的两种异常有：</p>
+<ul>
+<li>StackOverFlowError：Java虚拟机栈的内存大小不允许动态扩展，当线程请求栈的深度超过当前Java虚拟机定义的空间，则抛出 <code>StackOverFlowError</code></li>
+<li>OutOfMemoryError：Java虚拟机栈的内存大小许动态扩展，当线程请求栈的内存用完啦，则抛出<code>OutOfMemoryError</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="2-2-3-本地方法栈"><a href="#2-2-3-本地方法栈" class="headerlink" title="2.2.3. 本地方法栈"></a>2.2.3. 本地方法栈</h3><p>与 <code> 虚拟机栈</code> 类似，只不过它是虚拟机用到的 <code>Native</code>方法服务的，也有栈帧，同样的也会抛出与 <code> 虚拟机栈</code>一样的异常。</p>
+<h3 id="2-2-4-堆"><a href="#2-2-4-堆" class="headerlink" title="2.2.4. 堆"></a>2.2.4. 堆</h3><p>这是虚拟机所管理的内存中最大的一块，所有对象实例均存储在这块区域，因此也被人称作<strong>GC堆</strong>，也是垃圾回收器重点工作的区域。分为：年轻代、老年代。</p>
+<h4 id="2-2-4-1-年轻代"><a href="#2-2-4-1-年轻代" class="headerlink" title="2.2.4.1. 年轻代"></a>2.2.4.1. 年轻代</h4><p>新生代也称年轻代（Young Gen）这里二者没有区别，所以在篇幅中我都会混着用。年轻代主要存放新创建的对象，内存大小相对较小，垃圾回收比较频繁，将年轻代 再细分，它有 <code>Eden</code>和两个<code>Suvivor</code>（也可以叫做<code>from</code>和<code>to</code>），二者之间默认比例为<code>8:1</code>，至于为啥默认会是这样，后面会聊到。</p>
+<h4 id="2-2-4-2-年老代"><a href="#2-2-4-2-年老代" class="headerlink" title="2.2.4.2. 年老代"></a>2.2.4.2. 年老代</h4><p>年老代主要存放<code>JVM</code>认为<code>生命周期比较长</code>的对象（经过几次的<code>Young Gen</code>的垃圾回收后仍然存在），内存大小相对会比较大，垃圾回收也相对没有那么频繁（譬如可能几个小时一次）。年老代主要采用压缩的方式来避免内存碎片（将存活对象移动到内存片的一边，也就是内存整理）。当然，有些垃圾回收器（譬如CMS垃圾回收器）出于效率的原因，可能会不进行压缩。</p>
+<h4 id="2-2-4-3-内存申请流程"><a href="#2-2-4-3-内存申请流程" class="headerlink" title="2.2.4.3. 内存申请流程"></a>2.2.4.3. 内存申请流程</h4><p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/sctel20200524122732.png" alt="内存申请流程"></p>
+<ul>
+<li>一个对象在创建过程中，会优先考虑在 <code>栈</code>上分配，这个原则<code>栈上分配</code>，因为在栈中，用不着垃圾回收器，随着<code>栈帧</code> 消亡，就结束啦，省事。当然在栈上分配还有很多原则，这个在文中也有讲解！</li>
+<li>当对象无法在栈上分配的时候，就需要在堆中给它开辟空间，这时候还需要看这个对象的大小，对象过大，<code>JVM</code> 将它直接丢尽 <code>年老代</code>；</li>
+<li>否则经过<code>TLAB</code> 机制的选择，加速对象分配（）；</li>
+<li>该对象写入<code>Eden</code> ；当该对象经过第一次 <code>Minor GC</code> 还 <code>Live</code>，将对象迁移到 <code>Suvivor</code>，对象在 <code>Suvivor</code> 每经历一次<code>Minor GC</code>，年龄（<code>AGE</code>）都会加 <code>1</code>，当年龄<code>AGE</code> 超过一定数量，该对象直接被移到<strong>年老代</strong>。</li>
+</ul>
+<p>以上内容的重点是<code>年轻代中的GC</code>,JVM总要保证 <code>Suvivor</code>(<code>from</code>和<code>to</code>)中 <code>to</code> 是空的。在 <code>Minor GC</code> 后，将<code>Eden</code>存活的对象复制到 <code>to</code>，而在 <code>from</code>中的对象，根据年龄来决定，已到阈值的对象，直接移动到老年代；没有到达阈值的则被复制到  <code>to</code>，这时候清空 <code>Eden</code> 和 <code>from</code>，<code>from</code>与<code>to</code> 的角色将调换，重复上述动作。</p>
+<p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/sctel20200524123844.png" alt="年轻代中的GC"></p>
+<h2 id="2-3-对象的内存布局"><a href="#2-3-对象的内存布局" class="headerlink" title="2.3. 对象的内存布局"></a>2.3. 对象的内存布局</h2><p>对象在JVM中布局，主要分为两种：普通对象、一种是数组对象。</p>
+<h3 id="2-3-1-普通对象"><a href="#2-3-1-普通对象" class="headerlink" title="2.3.1. 普通对象"></a>2.3.1. 普通对象</h3><p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/sctel20200523102859.png" alt="普通对象在内存布局结构"></p>
+<ul>
+<li>MARK Word：固定大小，8 bytes，存储信息有：锁、Identified HashCode</li>
+<li>类型指针：8 bytes（kclass Pointer），JDK1.8之后，默认开启指针压缩，大小 4bytes</li>
+<li>实例数据：0</li>
+<li>对齐填充： 0 bytes</li>
+</ul>
+<p>分为两种情况，开启指针压缩的情况下，类型指针（4 bytes）加上 对齐填充（4 bytes），所以一共 16 bytes；未开启指针压缩的情况下，类型指针（8 bytes）加上 对齐填充（40 bytes），所以一共 16 bytes。</p>
+<p>虽然最终大小一致，但是还是有区别。</p>
+<h3 id="2-3-2-数组对象"><a href="#2-3-2-数组对象" class="headerlink" title="2.3.2. 数组对象"></a>2.3.2. 数组对象</h3><p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/sctel20200522212016.png" alt="数组对象在内存布局结构"></p>
+<ul>
+<li>MARK Word：固定大小，8 bytes，存储信息有：锁、Identified HashCode</li>
+<li>类型指针：8 bytes（kclass Pointer），JDK1.8之后，默认开启指针压缩，大小 4bytes</li>
+<li>数组长度：0 bytes，只有数据类型对象特有</li>
+<li>实例数据：0</li>
+<li>对齐填充：</li>
+</ul>
+<p>同理，这里也分 <code>指针压缩</code> 是否开启两种情况，原理同上！</p>
+<h2 id="2-4-计算空对象大小"><a href="#2-4-计算空对象大小" class="headerlink" title="2.4. 计算空对象大小"></a>2.4. 计算空对象大小</h2><p>new 一个空对象，查看它占用的空间大小。这里会用一个依赖包<code>jol</code>，加入依赖pom</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.openjdk.jol&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;jol-core&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;0.10&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<p>利用<code>ClassLayout.parseInstance($OBJECT$).toPrintable()</code> 查看对象信息。</p>
+<h3 id="2-4-1-计算空对象大小"><a href="#2-4-1-计算空对象大小" class="headerlink" title="2.4.1. 计算空对象大小"></a>2.4.1. 计算空对象大小</h3><h4 id="2-4-1-1-关闭指针压缩情况下"><a href="#2-4-1-1-关闭指针压缩情况下" class="headerlink" title="2.4.1.1. 关闭指针压缩情况下"></a>2.4.1.1. 关闭指针压缩情况下</h4><p>未开启指针压缩的情况下，一个空对象占用空间大小是 16 bytes。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">xyz.wongs.jvm.JvmObjSize object internals:</span><br><span class="line"> OFFSET  SIZE   TYPE DESCRIPTION                               VALUE</span><br><span class="line">      0     4        (object header)                           05 00 00 00 (00000101 00000000 00000000 00000000) (5)</span><br><span class="line">      4     4        (object header)                           00 00 00 00 (00000000 00000000 00000000 00000000) (0)</span><br><span class="line">      8     4        (object header)                           40 70 06 00 (01000000 01110000 00000110 00000000) (421952)</span><br><span class="line">     12     4        (loss due to the next object alignment)</span><br><span class="line">Instance size: 16 bytes</span><br><span class="line">Space losses: 0 bytes internal + 4 bytes external &#x3D; 4 bytes total</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-4-1-2-开启指针压缩情况下"><a href="#2-4-1-2-开启指针压缩情况下" class="headerlink" title="2.4.1.2. 开启指针压缩情况下"></a>2.4.1.2. 开启指针压缩情况下</h4><p>MARK Word：8 bytes<br>类型指针：4 bytes（kclass Pointer）<br>数组长度：0 bytes<br>实例数据：0<br>对齐填充：4 bytes</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">xyz.wongs.jvm.JvmObjSize object internals:</span><br><span class="line"> OFFSET  SIZE   TYPE DESCRIPTION                               VALUE</span><br><span class="line">      0     4        (object header)                           05 00 00 00 (00000101 00000000 00000000 00000000) (5)</span><br><span class="line">      4     4        (object header)                           00 00 00 00 (00000000 00000000 00000000 00000000) (0)</span><br><span class="line">      8     4        (object header)                           40 70 06 00 (01000000 01110000 00000110 00000000) (421952)</span><br><span class="line">     12     4        (loss due to the next object alignment)</span><br><span class="line">Instance size: 16 bytes</span><br><span class="line">Space losses: 0 bytes internal + 4 bytes external &#x3D; 4 bytes total</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-4-2-数组对象"><a href="#2-4-2-数组对象" class="headerlink" title="2.4.2. 数组对象"></a>2.4.2. 数组对象</h3><p>只有数据对象，才有对齐填充</p>
+<h3 id="2-4-3-普通对象"><a href="#2-4-3-普通对象" class="headerlink" title="2.4.3. 普通对象"></a>2.4.3. 普通对象</h3><h4 id="2-4-3-1-开启指针压缩"><a href="#2-4-3-1-开启指针压缩" class="headerlink" title="2.4.3.1. 开启指针压缩"></a>2.4.3.1. 开启指针压缩</h4><p>MARK Word：8 bytes<br>类型指针：4 bytes（kclass Pointer）<br>数组长度：0 bytes<br>实例数据：4 bytes<br>对齐填充：0 bytes</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">xyz.wongs.jvm.JvmObjSize02 object internals:</span><br><span class="line"> OFFSET  SIZE   TYPE DESCRIPTION                               VALUE</span><br><span class="line">      0     4        (object header)                           05 00 00 00 (00000101 00000000 00000000 00000000) (5)</span><br><span class="line">      4     4        (object header)                           00 00 00 00 (00000000 00000000 00000000 00000000) (0)</span><br><span class="line">      8     4        (object header)                           40 70 06 00 (01000000 01110000 00000110 00000000) (421952)</span><br><span class="line">     12     4    int JvmObjSize02.anInt                        2</span><br><span class="line">Instance size: 16 bytes</span><br><span class="line">Space losses: 0 bytes internal + 0 bytes external &#x3D; 0 bytes total</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-4-3-2-关闭指针压缩"><a href="#2-4-3-2-关闭指针压缩" class="headerlink" title="2.4.3.2. 关闭指针压缩"></a>2.4.3.2. 关闭指针压缩</h4><p>MARK Word：8 bytes<br>类型指针：4 bytes（kclass Pointer）<br>数组长度：0 bytes<br>对齐填充：4 bytes</p>
+<p>实例数据：4 bytes<br>对齐填充：4 bytes</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">xyz.wongs.jvm.JvmObjSize02 object internals:</span><br><span class="line"> OFFSET  SIZE   TYPE DESCRIPTION                               VALUE</span><br><span class="line">      0     4        (object header)                           05 00 00 00 (00000101 00000000 00000000 00000000) (5)</span><br><span class="line">      4     4        (object header)                           00 00 00 00 (00000000 00000000 00000000 00000000) (0)</span><br><span class="line">      8     4        (object header)                           d8 53 4d 7a (11011000 01010011 01001101 01111010) (2051888088)</span><br><span class="line">     12     4        (object header)                           93 02 00 00 (10010011 00000010 00000000 00000000) (659)</span><br><span class="line">     16     4    int JvmObjSize02.anInt                        2</span><br><span class="line">     20     4        (loss due to the next object alignment)</span><br><span class="line">Instance size: 24 bytes</span><br><span class="line">Space losses: 0 bytes internal + 4 bytes external &#x3D; 4 bytes total</span><br><span class="line"></span><br><span class="line">Process finished with exit code 0</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-5-指针压缩"><a href="#2-5-指针压缩" class="headerlink" title="2.5. 指针压缩"></a>2.5. 指针压缩</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\WONGS&gt;java -XX:+PrintCommandLineFlags -version</span><br><span class="line">-XX:G1ConcRefinementThreads&#x3D;4 -XX:GCDrainStackTargetSize&#x3D;64 -XX:InitialHeapSize&#x3D;399880768 -XX:MaxHeapSize&#x3D;6398092288 -XX:+PrintCommandLineFlags -XX:ReservedCodeCacheSize&#x3D;251658240 -XX:+SegmentedCodeCache -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseG1GC -XX:-UseLargePagesIndividualAllocation</span><br><span class="line">java version &quot;11.0.2&quot; 2019-01-15 LTS</span><br><span class="line">Java(TM) SE Runtime Environment 18.9 (build 11.0.2+9-LTS)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM 18.9 (build 11.0.2+9-LTS, mixed mode)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-5-1-实现原理"><a href="#2-5-1-实现原理" class="headerlink" title="2.5.1. 实现原理"></a>2.5.1. 实现原理</h3><h3 id="2-5-2-真实地址如何计算出来"><a href="#2-5-2-真实地址如何计算出来" class="headerlink" title="2.5.2. 真实地址如何计算出来"></a>2.5.2. 真实地址如何计算出来</h3><h3 id="2-5-3-调优参数"><a href="#2-5-3-调优参数" class="headerlink" title="2.5.3. 调优参数"></a>2.5.3. 调优参数</h3><ul>
+<li><p>-XX:+/-UseCompressedClassPointers 是否开启压缩指针类型，堆内存 超过32G，此项压缩就失效</p>
+</li>
+<li><p>-XX:+/-UseCompressedOops 是否开启压缩普通指针</p>
+</li>
+</ul>
+<h3 id="2-5-4-oop，最大值是？"><a href="#2-5-4-oop，最大值是？" class="headerlink" title="2.5.4. oop，最大值是？"></a>2.5.4. oop，最大值是？</h3><h3 id="2-5-5-压缩哪些东西，不压缩哪些？"><a href="#2-5-5-压缩哪些东西，不压缩哪些？" class="headerlink" title="2.5.5. 压缩哪些东西，不压缩哪些？"></a>2.5.5. 压缩哪些东西，不压缩哪些？</h3><h2 id="2-6-虚拟机栈溢出与调优"><a href="#2-6-虚拟机栈溢出与调优" class="headerlink" title="2.6. 虚拟机栈溢出与调优"></a>2.6. 虚拟机栈溢出与调优</h2><p>问题分析的方法</p>
+<h2 id="2-7-JAVA启动参数"><a href="#2-7-JAVA启动参数" class="headerlink" title="2.7. JAVA启动参数"></a>2.7. JAVA启动参数</h2><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>描述</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Xmx</td>
+<td>设置最大堆内存</td>
+<td>-Xmx3550m</td>
+</tr>
+<tr>
+<td>Xms</td>
+<td>设置初始堆内存，很多时候Xms与Xmx设置相同，以避免每次垃圾回收完成后JVM重新分配内存，提高性能。</td>
+<td>-Xms3550m</td>
+</tr>
+<tr>
+<td>Xss</td>
+<td>设置每个线程的栈大小，JDK5以后每个线程栈大小为1M，之前每个线程栈大小为256K。在相同物理内存下，减小这个值能生成更多的线程。但是操作系统对一个进程内的线程数还是有限制的，不能无限生成，经验值在3000~5000左右。需要注意的是：当这个值被设置的较大（例如&gt;2MB）时将会在很大程度上降低系统的性能。</td>
+<td>-Xss128k</td>
+</tr>
+<tr>
+<td>Xmn</td>
+<td>设置年轻代大小，在整个堆内存大小确定的情况下，增大年轻代将会减小年老代，反之亦然。此值关系到JVM垃圾回收，对系统性能影响较大，官方推荐配置为整个堆大小的3/8。</td>
+<td>-Xmn2g</td>
+</tr>
+<tr>
+<td>XX:NewSize</td>
+<td>设置年轻代初始值为1024M</td>
+<td>-XX:NewSize=1024m</td>
+</tr>
+<tr>
+<td>XX:MaxNewSize</td>
+<td>设置年轻代最大值为1024M。</td>
+<td>-XX:MaxNewSize=1024m</td>
+</tr>
+<tr>
+<td>XX:PermSize</td>
+<td>设置持久代初始值为256M。</td>
+<td>-XX:PermSize=256m</td>
+</tr>
+<tr>
+<td>XX:MaxPermSize</td>
+<td>设置持久代最大值为256M。</td>
+<td>-XX:MaxPermSize</td>
+</tr>
+<tr>
+<td>XX:NewRatio</td>
+<td>设置年轻代（包括1个Eden和2个Survivor区）与年老代的比值。表示年轻代比年老代为1:4。</td>
+<td>-XX:NewRatio=4</td>
+</tr>
+<tr>
+<td>XX:SurvivorRatio</td>
+<td>设置年轻代中Eden区与Survivor区的比值。表示2个Survivor区（JVM堆内存年轻代中默认有2个大小相等的Survivor区）与1个Eden区的比值为2:4，即1个Survivor区占整个年轻代大小的1/6。</td>
+<td>-XX:SurvivorRatio=4</td>
+</tr>
+<tr>
+<td>XX:MaxTenuringThreshold</td>
+<td>表示一个对象如果在Survivor区（救助空间）移动了7次还没有被垃圾回收就进入年老代。如果设置为0的话，则年轻代对象不经过Survivor区，直接进入年老代，对于需要大量常驻内存的应用，这样做可以提高效率。如果将此值设置为一个较大值，则年轻代对象会在Survivor区进行多次复制，这样可以增加对象在年轻代存活时间，增加对象在年轻代被垃圾回收的概率，减少Full GC的频率，这样做可以在某种程度上提高服务稳定性。</td>
+<td>-XX:MaxTenuringThreshold=7</td>
+</tr>
+<tr>
+<td>XX:PretenureSizeThreshold</td>
+<td>设置持大对象的大小，超过该大小将进入老年代。</td>
+<td>-XX:PretenureSizeThreshold=9M</td>
+</tr>
+<tr>
+<td>XX:HandlePromotionFailure</td>
+<td>空间担保</td>
+<td>-XX:+/-HandlePromotionFailure</td>
+</tr>
+</tbody></table>
+<p><code>-Xmn，-XX:NewSize/-XX:MaxNewSize，-XX:NewRatio</code> 3 组参数都可以影响年轻代的大小，混合使用的情况下，优先级是什么？<br>如下：</p>
+<ul>
+<li>高优先级：<code>-XX:NewSize/-XX:MaxNewSize</code> </li>
+<li>中优先级：<code>-Xmn（默认等效 -Xmn=-XX:NewSize=-XX:MaxNewSize=?） </code></li>
+<li>低优先级：<code>-XX:NewRatio </code></li>
+</ul>
+<p>推荐使用 <code>-Xmn</code> 参数，原因是这个参数简洁，相当于一次设定 <code>NewSize/MaxNewSIze</code>，而且两者相等，适用于生产环境。<code>-Xmn</code> 配合 <code>-Xms/-Xmx</code>，即可将堆内存布局完成</p>
+<h3 id="2-7-1-垃圾回收参数"><a href="#2-7-1-垃圾回收参数" class="headerlink" title="2.7.1. 垃圾回收参数"></a>2.7.1. 垃圾回收参数</h3><ul>
+<li>-XX:+ScavengeBeforeFullGC：年轻代GC优于Full GC执行。</li>
+<li>-XX:-DisableExplicitGC：不响应 System.gc() 代码。</li>
+<li>-XX:+UseThreadPriorities：启用本地线程优先级API。即使 java.lang.Thread.setPriority() 生效，不启用则无效。</li>
+<li>-XX:SoftRefLRUPolicyMSPerMB=0：软引用对象在最后一次被访问后能存活0毫秒（JVM默认为1000毫秒）。</li>
+<li>-XX:TargetSurvivorRatio=90：允许90%的Survivor区被占用（JVM默认为50%）。提高对于Survivor区的使用率。</li>
+</ul>
+<h3 id="2-7-2-辅助信息参数设置"><a href="#2-7-2-辅助信息参数设置" class="headerlink" title="2.7.2. 辅助信息参数设置"></a>2.7.2. 辅助信息参数设置</h3><ul>
+<li>-XX:-CITime：打印消耗在JIT编译的时间。</li>
+<li>-XX:ErrorFile=./hs_err_pid.log：保存错误日志或数据到指定文件中。</li>
+<li>-XX:HeapDumpPath=./java_pid.hprof：指定Dump堆内存时的路径。</li>
+<li>-XX:HeapDumpOnOutOfMemoryError：当首次遭遇内存溢出时Dump出此时的堆内存。</li>
+<li>-XX:OnError=”;”：出现致命ERROR后运行自定义命令。</li>
+<li>-XX:OnOutOfMemoryError=”;”：当首次遭遇内存溢出时执行自定义命令。</li>
+<li>-XX:-PrintClassHistogram：按下 Ctrl+Break 后打印堆内存中类实例的柱状信息，同JDK的 jmap -histo 命令。</li>
+<li>-XX:-PrintConcurrentLocks：按下 Ctrl+Break 后打印线程栈中并发锁的相关信息，同JDK的 jstack -l 命令。</li>
+<li>-XX:-PrintCompilation：当一个方法被编译时打印相关信息。</li>
+<li>-XX:-PrintGC：每次GC时打印相关信息。</li>
+<li>-XX:-PrintGCDetails：每次GC时打印详细信息。JAVA11中不提供使用，</li>
+<li>-XX:-PrintGCTimeStamps：打印每次GC的时间戳。</li>
+<li>-XX:-TraceClassLoading：跟踪类的加载信息。</li>
+<li>-XX:-TraceClassLoadingPreorder：跟踪被引用到的所有类的加载信息。</li>
+<li>-XX:-TraceClassResolution：跟踪常量池。</li>
+<li>-XX:-TraceClassUnloading：跟踪类的卸载信息。</li>
+</ul>
+<h1 id="3-垃圾回收"><a href="#3-垃圾回收" class="headerlink" title="3. 垃圾回收"></a>3. 垃圾回收</h1><h2 id="3-1-垃圾回收算法"><a href="#3-1-垃圾回收算法" class="headerlink" title="3.1. 垃圾回收算法"></a>3.1. 垃圾回收算法</h2><h3 id="3-1-1-按基本回收策略"><a href="#3-1-1-按基本回收策略" class="headerlink" title="3.1.1. 按基本回收策略"></a>3.1.1. 按基本回收策略</h3><h4 id="3-1-1-1-引用计数（Reference-Counting）"><a href="#3-1-1-1-引用计数（Reference-Counting）" class="headerlink" title="3.1.1.1. 引用计数（Reference Counting）"></a>3.1.1.1. 引用计数（Reference Counting）</h4><p>原理就是维持对象的一个引用，即增加一个计数，删除一个引用则减少一个计数。垃圾回收时，只用收集计数为0的对象。此算法最致命的是无法处理循环引用的问题。</p>
+<h4 id="3-1-1-2-标记-清除（Mark-Sweep）"><a href="#3-1-1-2-标记-清除（Mark-Sweep）" class="headerlink" title="3.1.1.2. 标记-清除（Mark-Sweep）"></a>3.1.1.2. 标记-清除（Mark-Sweep）</h4><p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/sctel20200524104534.png" alt="标记-清除图列"></p>
+<p>此算法执行分两阶段：</p>
+<ul>
+<li>阶段I：从引用根节点开始标记所有被引用的对象；</li>
+<li>阶段II：遍历整个堆，把未标记的对象清除。此算法需要暂停整个应用，同时，会产生内存碎片。</li>
+</ul>
+<h4 id="3-1-1-3-标记-整理（Mark-Compact）"><a href="#3-1-1-3-标记-整理（Mark-Compact）" class="headerlink" title="3.1.1.3. 标记-整理（Mark-Compact）"></a>3.1.1.3. 标记-整理（Mark-Compact）</h4><p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/sctel20200524104623.png" alt="标记-整理图例"></p>
+<p><code>标记-整理</code> 集合 <code>标记-清除</code>和 <code>复制</code> 两个算法的优点,也是分两阶段:</p>
+<ul>
+<li>阶段I：从根节点开始标记所有被引用对象；</li>
+<li>阶段II：遍历整个堆，把清除未标记对象并且把存活对象“压缩”到堆的其中一块，按顺序排放。此算法避免了“标记-清除”的碎片问题，同时也避免了“复制”算法的空间问题。</li>
+</ul>
+<h3 id="3-1-2-按分区对待的方式"><a href="#3-1-2-按分区对待的方式" class="headerlink" title="3.1.2. 按分区对待的方式"></a>3.1.2. 按分区对待的方式</h3><h4 id="3-1-2-1-增量收集（Incremental-Collecting）"><a href="#3-1-2-1-增量收集（Incremental-Collecting）" class="headerlink" title="3.1.2.1. 增量收集（Incremental Collecting）"></a>3.1.2.1. 增量收集（Incremental Collecting）</h4><p>实时垃圾回收算法，即：在应用进行的同时进行垃圾回收。不知道什么原因JDK5.0中的收集器没有使用这种算法的。</p>
+<h4 id="3-1-2-2-分代收集（Generational-Collecting）"><a href="#3-1-2-2-分代收集（Generational-Collecting）" class="headerlink" title="3.1.2.2. 分代收集（Generational Collecting）"></a>3.1.2.2. 分代收集（Generational Collecting）</h4><p>基于对对象生命周期分析后得出的垃圾回收算法。把对象分为年青代、年老代、持久代，对不同生命周期的对象使用不同的算法（上述方式中的一个）进行回收。现在的垃圾回收器（从J2SE1.2开始）都是使用此算法的。</p>
+<h3 id="3-1-3-按系统线程分"><a href="#3-1-3-按系统线程分" class="headerlink" title="3.1.3. 按系统线程分"></a>3.1.3. 按系统线程分</h3><h4 id="3-1-3-1-串行收集"><a href="#3-1-3-1-串行收集" class="headerlink" title="3.1.3.1. 串行收集"></a>3.1.3.1. 串行收集</h4><p>串行收集使用单线程处理所有垃圾回收工作，因为无需多线程交互，实现容易，而且效率比较高。但是，其局限性也比较明显，即无法使用多处理器的优势，所以此收集适合单处理器机器。当然，此收集器也可以用在小数据量（100M左右）情况下的多处理器机器上。</p>
+<h4 id="3-1-3-2-并行收集"><a href="#3-1-3-2-并行收集" class="headerlink" title="3.1.3.2. 并行收集"></a>3.1.3.2. 并行收集</h4><p>并行收集使用多线程处理垃圾回收工作，因而速度快，效率高。而且理论上CPU数目越多，越能体现出并行收集器的优势。</p>
+<h4 id="3-1-3-3-并发收集"><a href="#3-1-3-3-并发收集" class="headerlink" title="3.1.3.3. 并发收集"></a>3.1.3.3. 并发收集</h4><p>相对于串行收集和并行收集而言，前面两个在进行垃圾回收工作时，需要暂停整个运行环境，而只有垃圾回收程序在运行，因此，系统在垃圾回收时会有明显的暂停，而且暂停时间会因为堆越大而越长。</p>
+<h2 id="3-2-垃圾回收器"><a href="#3-2-垃圾回收器" class="headerlink" title="3.2. 垃圾回收器"></a>3.2. 垃圾回收器</h2><p>行收集器、并行收集器、并发收集器。串行收集器只适用于小数据量的情况，所以生产环境的选择主要是并行收集器和并发收集器。在JDK5.0以前都是使用串行收集器，如果想使用其他收集器需要在启动时加入相应参数。JDK5.0以后，JVM会根据当前系统配置进行智能判断。</p>
+<h3 id="3-2-1-串行收集器（Serial-Garbage-Collector）"><a href="#3-2-1-串行收集器（Serial-Garbage-Collector）" class="headerlink" title="3.2.1. 串行收集器（Serial Garbage Collector）"></a>3.2.1. 串行收集器（Serial Garbage Collector）</h3><h4 id="3-2-1-1-Serial"><a href="#3-2-1-1-Serial" class="headerlink" title="3.2.1.1. Serial"></a>3.2.1.1. Serial</h4><p><code>Serial</code> 历史悠久，它是为单线程环境而设计的垃圾收集器，适合桌面应用，内存较小的场景，它在工作中会产生停顿，</p>
+<ul>
+<li>适用场景：数据量比较小（100M左右）；单处理器下并且对响应时间无要求的应用。</li>
+<li>缺点：只能用于小型应用</li>
+</ul>
+<p>设置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-XX:+UseSerialGC</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-2-1-2-ParNew"><a href="#3-2-1-2-ParNew" class="headerlink" title="3.2.1.2. ParNew"></a>3.2.1.2. ParNew</h4><p><code>ParNew</code> 其实是也是<code>Serial</code>，唯一的区别就是将<code>Serial</code>单线程改为多线程执行。</p>
+<ul>
+<li>新生代并行，老年代串行；</li>
+<li>新生代复制算法、老年代标记-压缩</li>
+</ul>
+<p>设置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-XX:+UseParNewGC</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-2-并发收集器（响应时间优先）"><a href="#3-2-2-并发收集器（响应时间优先）" class="headerlink" title="3.2.2. 并发收集器（响应时间优先）"></a>3.2.2. 并发收集器（响应时间优先）</h3><p>并发收集器 适合 “对响应时间有高要求”，多CPU、对应用响应时间有较高要求的中、大型应用。举例：Web服务器/应用服务器、电信交换、集成开发环境。</p>
+<ul>
+<li>-XX:+UseConcMarkSweepGC：即CMS收集，设置年老代为并发收集。CMS收集是JDK1.4后期版本开始引入的新GC算法。它的主要适合场景是对响应时间的重要性需求大于对吞吐量的需求，能够承受垃圾回收线程和- 应用线程共享CPU资源，并且应用中存在比较多的长生命周期对象。CMS收集的目标是尽量减少应用的暂停时间，减少Full GC发生的几率，利用和应用程序线程并发的垃圾回收线程来标记清除年老代内存。</li>
+<li>XX:+UseParNewGC：设置年轻代为并发收集。可与CMS收集同时使用。JDK5.0以上，JVM会根据系统配置自行设置，所以无需再设置此参数。</li>
+<li>-XX:CMSFullGCsBeforeCompaction=0：由于并发收集器不对内存空间进行压缩和整理，所以运行一段时间并行收集以后会产生内存碎片，内存使用效率降低。此参数设置运行0次Full GC后对内存空间进行压缩和- 整理，即每次Full GC后立刻开始压缩和整理内存。</li>
+<li>-XX:+UseCMSCompactAtFullCollection：打开内存空间的压缩和整理，在Full GC后执行。可能会影响性能，但可以消除内存碎片。</li>
+<li>-XX:+CMSIncrementalMode：设置为增量收集模式。一般适用于单CPU情况。</li>
+<li>-XX:CMSInitiatingOccupancyFraction=70：表示年老代内存空间使用到70%时就开始执行CMS收集，以确保年老代有足够的空间接纳来自年轻代的对象，避免Full GC的发生。</li>
+</ul>
+<h4 id="3-2-2-1-CMS收集器-Concurrent-Mark-Sweep"><a href="#3-2-2-1-CMS收集器-Concurrent-Mark-Sweep" class="headerlink" title="3.2.2.1. CMS收集器 Concurrent Mark Sweep"></a>3.2.2.1. CMS收集器 Concurrent Mark Sweep</h4><ul>
+<li><p>工作过程</p>
+<ul>
+<li>初始标记</li>
+<li>并发标记</li>
+<li>重新标记</li>
+<li>并发清理</li>
+</ul>
+</li>
+<li><p>优点</p>
+<ul>
+<li>并发收集</li>
+<li>低停顿</li>
+</ul>
+</li>
+<li><p>缺点</p>
+<ul>
+<li>占用大量CPU资源</li>
+<li>无法处理浮动垃圾</li>
+<li>空间碎片</li>
+<li>出现 <code>Concurrent Mode Failure</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="3-2-3-并行收集器（吞吐量优先）"><a href="#3-2-3-并行收集器（吞吐量优先）" class="headerlink" title="3.2.3. 并行收集器（吞吐量优先）"></a>3.2.3. 并行收集器（吞吐量优先）</h3><p>“对吞吐量有高要求”，多CPU、对应用响应时间无要求的中、大型应用。举例：后台处理、科学计算。缺点就是垃圾收集过程中应用响应时间可能加长</p>
+<ul>
+<li>-XX:+UseParallelGC：设置为并行收集器。此配置仅对年轻代有效。即年轻代使用并行收集，而年老代仍使用串行收集。</li>
+<li>-XX:ParallelGCThreads=20：配置并行收集器的线程数，即：同时有多少个线程一起进行垃圾回收。此值建议配置与CPU数目相等。</li>
+<li>-XX:+UseParallelOldGC：配置年老代垃圾收集方式为并行收集。JDK6.0开始支持对年老代并行收集。</li>
+<li>-XX:MaxGCPauseMillis=100：设置每次年轻代垃圾回收的最长时间（单位毫秒）。如果无法满足此时间，JVM会自动调整年轻代大小，以满足此时间。</li>
+<li>-XX:+UseAdaptiveSizePolicy：设置此选项后，并行收集器会自动调整年轻代Eden区大小和Survivor区大小的比例，以达成目标系统规定的最低响应时间或者收集频率等指标。此参数建议在使用并行收集器时，一直打开。</li>
+</ul>
+<p><strong>Parallel Sacvenge</strong></p>
+<ul>
+<li>复制算法</li>
+<li>多线程收集器</li>
+<li>达到可控制的吞吐量<ul>
+<li>-XX:MaxGCPauseMills 垃圾回收器停顿时间：</li>
+<li>-XX:CGTimeRatio：</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-2-3-1-G1收集器"><a href="#3-2-3-1-G1收集器" class="headerlink" title="3.2.3.1. G1收集器"></a>3.2.3.1. G1收集器</h4><p><code>Garbage First</code> 简称G1，完全是为了大型应用而准备的，详细可以<a target="_blank" rel="noopener" href="http://www.blogjava.net/BlueDavy/archive/2009/03/11/259230.html">参考G1</a>，这篇文章写的不错，值得推荐！</p>
+<ul>
+<li><p>工作过程</p>
+<ul>
+<li>初始标记</li>
+<li>并发标记</li>
+<li>最终标记</li>
+<li>筛选回收</li>
+</ul>
+</li>
+<li><p>优势</p>
+<ul>
+<li>支持很大的堆</li>
+<li>并行与并发</li>
+<li>分代收集</li>
+<li>空间整合</li>
+<li>可预测的停顿</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-2-4-其它垃圾回收参数"><a href="#3-2-4-其它垃圾回收参数" class="headerlink" title="3.2.4. 其它垃圾回收参数"></a>3.2.4. 其它垃圾回收参数</h3><ul>
+<li>-XX:+ScavengeBeforeFullGC：年轻代GC优于Full GC执行。</li>
+<li>-XX:-DisableExplicitGC：不响应 System.gc() 代码。</li>
+<li>-XX:+UseThreadPriorities：启用本地线程优先级API。即使 java.lang.Thread.setPriority() 生效，不启用则无效。</li>
+<li>-XX:SoftRefLRUPolicyMSPerMB=0：软引用对象在最后一次被访问后能存活0毫秒（JVM默认为1000毫秒）。</li>
+<li>-XX:TargetSurvivorRatio=90：允许90%的Survivor区被占用（JVM默认为50%）。提高对于Survivor区的使用率。</li>
+</ul>
+<h2 id="3-3-空间分配担保"><a href="#3-3-空间分配担保" class="headerlink" title="3.3. 空间分配担保"></a>3.3. 空间分配担保</h2><p>在新生代已经无法实现分配内存的时候，这时候<code>JVM</code>采用将新生代的对象转移到老年代，腾出来的空间让新加入的对象存储在新生代。</p>
+<p>乍一看可能不太好理解，我在网上看一例子，觉得挺好，我们就用它来模拟，增强我们的理解。</p>
+<p>尝试分配3个2MB的对象和一个4MB的对象，然后我们通过JVM参数 -Xms20M、-Xmx20M、-Xmn10M 把Java堆大小设置为20MB，不可扩展，详细JVM参数如下：</p>
+<h3 id="3-3-1-JVM启动参数"><a href="#3-3-1-JVM启动参数" class="headerlink" title="3.3.1. JVM启动参数"></a>3.3.1. JVM启动参数</h3><p>注意 这里 JDK版本为1.8，垃圾收集器是 <code>Serial+Serial Old </code>模式，不同JDk版本以及垃圾回收器，实际效果可能会有差异！！！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-verbose:gc</span><br><span class="line">-Xlog:gc*</span><br><span class="line">-Xmx20m</span><br><span class="line">-Xms20m</span><br><span class="line">-Xmn10m</span><br><span class="line">-XX:+UseSerialGC</span><br><span class="line">-XX:SurvivorRatio&#x3D;8</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-2-JAVA代码"><a href="#3-3-2-JAVA代码" class="headerlink" title="3.3.2. JAVA代码"></a>3.3.2. JAVA代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">     byte[] bytes1 &#x3D; new byte[2 * 1024 *1024];</span><br><span class="line">     byte[] bytes2 &#x3D; new byte[2 * 1024 *1024];</span><br><span class="line">     byte[] bytes3 &#x3D; new byte[2 * 1024 *1024];</span><br><span class="line">     byte[] bytes4 &#x3D; new byte[4 * 1024 *1024];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-3-GC日志"><a href="#3-3-3-GC日志" class="headerlink" title="3.3.3. GC日志"></a>3.3.3. GC日志</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[GC (Allocation Failure) [DefNew: 6266K-&gt;660K(9216K), 0.0047403 secs] 6266K-&gt;4756K(19456K), 0.0076457 secs] [Times: user&#x3D;0.00 sys&#x3D;0.00, real&#x3D;0.01 secs] </span><br><span class="line">Heap</span><br><span class="line"> def new generation   total 9216K, used 7042K [0x00000000fec00000, 0x00000000ff600000, 0x00000000ff600000)</span><br><span class="line">  eden space 8192K,  77% used [0x00000000fec00000, 0x00000000ff23b5a0, 0x00000000ff400000)</span><br><span class="line">  from space 1024K,  64% used [0x00000000ff500000, 0x00000000ff5a5290, 0x00000000ff600000)</span><br><span class="line">  to   space 1024K,   0% used [0x00000000ff400000, 0x00000000ff400000, 0x00000000ff500000)</span><br><span class="line"> tenured generation   total 10240K, used 4096K [0x00000000ff600000, 0x0000000100000000, 0x0000000100000000)</span><br><span class="line">   the space 10240K,  40% used [0x00000000ff600000, 0x00000000ffa00020, 0x00000000ffa00200, 0x0000000100000000)</span><br><span class="line"> Metaspace       used 3464K, capacity 4496K, committed 4864K, reserved 1056768K</span><br><span class="line">  class space    used 379K, capacity 388K, committed 512K, reserved 1048576K</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-4-分析"><a href="#3-3-4-分析" class="headerlink" title="3.3.4. 分析"></a>3.3.4. 分析</h3><p><code>[GC (Allocation Failure) [DefNew: 6266K-&gt;660K(9216K), 0.0047403 secs] 6266K-&gt;4756K(19456K), 0.0076457 secs]</code><br>其中 <code>[DefNew: 6266K-&gt;660K(9216K), 0.0047403 secs]</code> 表示GC前该内存区域已使用容量-&gt;GC后该内存区域已使用容量，后面圆括号里面的<code>9216K</code>为该内存区域的总容量；<code>6266K-&gt;4756K(19456K), 0.0076457 secs</code> 表示GC前Java堆已使用容量-&gt;GC后Java堆已使用容量，后面圆括号里面的<code>19456K</code>为Java堆总容量。</p>
+<ul>
+<li>由于在启动参数中指定新生代<code>-Xmn10M</code>，堆总大小20M情况下不变情况下，老年代空间大小也是 10M；</li>
+<li><code>-XX:SurvivorRatio=8</code> 参数，所以 <code>Eden</code> 空间大小 <code>8M</code>，剩下<code>2M</code> 由 <code>Survivor0</code> 和 <code>Survivor1</code> 各一半；</li>
+<li>在<code>bytes1</code> =&gt; <code>bytes3</code> 内存分配过程，已经占用 <code>6M</code>，且都在<code>Eden</code> 中；当 <code>bytes4</code> 再来的时候申请的时候 <code>JVM</code> 会发现新生代 自身空间也不够装得下它（简单计算如，<code>DefNew</code> 总大小 <code>9216K</code> 已用 <code>6M</code>），这样子 <code>bytes4</code> 无法放入 <code>Eden</code>，于是乎，就用了<code>GC</code>的介入</li>
+<li><code>GC</code> 过程中发现 <code>bytes1</code> =&gt; <code>bytes3</code> 都无法放入 <code>Survivor</code> 空间，此时 <code>JVM</code> 就启动<code>内存分配担保机制</code>，将 <code>bytes4</code> 转移到 <code>tenured</code> 的老年代，4096/10240=0.5，也就是40%：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tenured generation   total 10240K, used 4096K [0x00000000ff600000, 0x0000000100000000, 0x0000000100000000)</span><br><span class="line">   the space 10240K,  40% used [0x00000000ff600000, 0x00000000ffa00020, 0x00000000ffa00200, 0x0000000100000000)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-5-进阶篇"><a href="#3-3-5-进阶篇" class="headerlink" title="3.3.5. 进阶篇"></a>3.3.5. 进阶篇</h3><p>下面来玩个另类的， 以上操作演示我们都是建立 <code>Serial+Serial Old</code> 垃圾回收器，这时候我们换<code>Parallel Scavenge+Serial Old</code> 演示下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">-verbose:gc</span><br><span class="line">-Xlog:gc*</span><br><span class="line">-Xmx20m</span><br><span class="line">-Xms20m</span><br><span class="line">-Xmn10m</span><br><span class="line">-XX:+UseParallelGC</span><br><span class="line">-XX:SurvivorRatio&#x3D;8</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在<code>bytes4</code> 对象依然是 <code>4M</code> 情况下：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[GC (Allocation Failure) [PSYoungGen: 6266K-&gt;792K(9216K)] 6266K-&gt;4896K(19456K), 0.0141220 secs] [Times: user&#x3D;0.00 sys&#x3D;0.02, real&#x3D;0.02 secs] </span><br><span class="line">Heap</span><br><span class="line"> PSYoungGen      total 9216K, used 7173K [0x00000000ff600000, 0x0000000100000000, 0x0000000100000000)</span><br><span class="line">  eden space 8192K, 77% used [0x00000000ff600000,0x00000000ffc3b5a0,0x00000000ffe00000)</span><br><span class="line">  from space 1024K, 77% used [0x00000000ffe00000,0x00000000ffec6030,0x00000000fff00000)</span><br><span class="line">  to   space 1024K, 0% used [0x00000000fff00000,0x00000000fff00000,0x0000000100000000)</span><br><span class="line"> ParOldGen       total 10240K, used 4104K [0x00000000fec00000, 0x00000000ff600000, 0x00000000ff600000)</span><br><span class="line">  object space 10240K, 40% used [0x00000000fec00000,0x00000000ff002020,0x00000000ff600000)</span><br><span class="line"> Metaspace       used 3462K, capacity 4496K, committed 4864K, reserved 1056768K</span><br><span class="line">  class space    used 379K, capacity 388K, committed 512K, reserved 1048576K</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在<code>bytes4</code> 对象依然是 <code>3M</code> 情况下：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[GC (Allocation Failure) [PSYoungGen: 6266K-&gt;760K(9216K)] 6266K-&gt;4864K(19456K), 0.0035288 secs] [Times: user&#x3D;0.00 sys&#x3D;0.00, real&#x3D;0.00 secs] </span><br><span class="line">Heap</span><br><span class="line"> PSYoungGen      total 9216K, used 6117K [0x00000000ff600000, 0x0000000100000000, 0x0000000100000000)</span><br><span class="line">  eden space 8192K, 65% used [0x00000000ff600000,0x00000000ffb3b5a0,0x00000000ffe00000)</span><br><span class="line">  from space 1024K, 74% used [0x00000000ffe00000,0x00000000ffebe030,0x00000000fff00000)</span><br><span class="line">  to   space 1024K, 0% used [0x00000000fff00000,0x00000000fff00000,0x0000000100000000)</span><br><span class="line"> ParOldGen       total 10240K, used 4104K [0x00000000fec00000, 0x00000000ff600000, 0x00000000ff600000)</span><br><span class="line">  object space 10240K, 40% used [0x00000000fec00000,0x00000000ff002020,0x00000000ff600000)</span><br><span class="line"> Metaspace       used 3464K, capacity 4496K, committed 4864K, reserved 1056768K</span><br><span class="line">  class space    used 379K, capacity 388K, committed 512K, reserved 1048576K</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-4-逃逸分析与栈上分配"><a href="#3-4-逃逸分析与栈上分配" class="headerlink" title="3.4. 逃逸分析与栈上分配"></a>3.4. 逃逸分析与栈上分配</h2><p>分析对象的作用域，只有对象的作用的是成员变量，才会发生逃逸。作用域在方法体内，不会发生逃逸。<br>逃逸的三种情况：</p>
+<ul>
+<li>通过方法为成员变量赋值，也会发生逃逸</li>
+<li>引用成员变量的值，发生逃逸</li>
+<li>为成员变量赋值，发生逃逸</li>
+</ul>
+<p>对象的作用域仅在当前方法体内，不会发生逃逸，对象的内存分配在栈内存，这样效率高！</p>
+<h1 id="4-主要参考"><a href="#4-主要参考" class="headerlink" title="4. 主要参考"></a>4. 主要参考</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://www.iteye.com/blog/pengjiaheng-518623">JVM调优总结</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/BlueStarWei/p/9358757.html">返回主页blue星空-JVM之对象分配：栈上分配 &amp; TLAB分配</a></li>
+</ul>
+
+</div>
+
+
+    <div class="post-guide">
+        <div class="item left">
+            
+              <a href="/2020/07/31/14%20%E4%B8%AD%E9%97%B4%E4%BB%B6/RocketMQ%E9%9B%86%E7%BE%A4%E4%B8%8ESpringBoot%E9%9B%86%E6%88%90%EF%BC%88%E4%B8%80%EF%BC%89/">
+                  <i class="fa fa-angle-left" aria-hidden="true"></i>
+                  
+              </a>
+            
+        </div>
+        <div class="item right">
+            
+              <a href="/2020/05/20/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95Volatile/">
+                死磕Volatile
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+              </a>
+            
+        </div>
+    </div>
+
+
+
+	<div id="vcomments"></div>
+
+
+<script>
+	
+		// 评论
+		new Valine({
+			av: AV,
+			el: '#vcomments',
+			notify: false,
+			verify: false,
+			path: window.location.pathname,
+			appId: '',
+			appKey: '',
+			placeholder: '请输入评论',
+			avatar: 'retro',
+			recordIP: false
+		})
+	
+	
+</script>
+	</div>
+	<div id="footer">
+	<p>
+	©2019-<span id="footerYear"></span> 
+	<a href="/">Rothschil</a> 
+	
+	
+		|
+		<span id="busuanzi_container_site_pv">
+			pv
+			<span id="busuanzi_value_site_pv"></span>
+		</span>
+		|
+		<span id="busuanzi_container_site_uv"> 
+			uv
+			<span id="busuanzi_value_site_uv"></span>
+		</span>
+	
+	<br>
+	Powered by <a href="//hexo.io" target="_blank">Hexo</a>
+	</p>
+</div>
+
+<script type="text/javascript"> 
+	document.getElementById('footerYear').innerHTML = new Date().getFullYear() + '';
+</script>
+	<button id="totop-toggle" class="toggle"><i class="fa fa-angle-double-up" aria-hidden="true"></i></button>
+</body>
+</html>

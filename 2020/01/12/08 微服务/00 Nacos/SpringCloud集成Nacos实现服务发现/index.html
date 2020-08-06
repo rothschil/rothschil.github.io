@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+	
+	<!-- title -->
+	
+	<title>
+	
+		SpringCloud集成Nacos实现服务发现 | 
+	 
+	王老邪
+	</title>
+	
+	<!-- keywords,description -->
+	 
+		<meta name="description" content="SpringCloud集成Nacos实现服务发现" />
+	
+
+	<!-- favicon -->
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+	
+  
+
+	
+<link rel="stylesheet" href="/css/main.css">
+
+	
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/darcula.min.css">
+
+
+	
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/highlight.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/npm/jquery-pjax@2.0.1/jquery.pjax.min.js"></script>
+
+	
+<script src="/js/main.js"></script>
+
+	
+		
+<script src="https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min.js"></script>
+
+		
+<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
+
+	
+	
+		<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+	
+	<script>
+		var _hmt = _hmt || [];
+		(function() {
+			var hm = document.createElement("script");
+			hm.src = "https://hm.baidu.com/hm.js?1b1318d1b07a2360e12cec2ed56cd0d6";
+			var s = document.getElementsByTagName("script")[0]; 
+			s.parentNode.insertBefore(hm, s);
+		})();
+	</script>
+		
+<meta name="generator" content="Hexo 5.0.0"></head>
+
+<body>
+	<header id="header">
+    <a id="title" href="/" class="logo">王老邪</a>
+
+	<ul id="menu">
+		<li class="menu-item">
+			<a href="about.html" class="menu-item-link">ABOUT</a>
+		</li>
+		
+		<li class="menu-item">
+			<a href="https://github.com/king-angmar/weathertop" class="menu-item-link" target="_blank">
+				weathertop
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="https://github.com/rothschil" class="menu-item-link" target="_blank">
+				<i class="fa fa-github fa-2x"></i>
+			</a>
+		</li>
+	</ul>
+</header>
+
+	
+<div id="sidebar">
+	<button id="sidebar-toggle" class="toggle" ><i class="fa fa-arrow-right " aria-hidden="true"></i></button>
+	
+	<div id="site-toc">
+		<input id="search-input" class="search-input" type="text" placeholder="search...">
+		<div id="tree">
+			
+
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 操作系统
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 Linux
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/01/01/01%20%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/01%20Linux/Linux%E5%9F%BA%E7%A1%80/">
+										Linux基础
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										06 Java
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 JVM
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/05/21/06%20Java/01%20JVM/JVM%E8%B0%83%E4%BC%98%E6%94%BB%E7%95%A5/">
+										JVM调优攻略
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										02 多线程
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/CountDownLatch%E3%80%81Semaphone%E3%80%81CyclicBarrier%E5%85%A5%E9%97%A8/">
+										CountDownLatch、Semaphone、CyclicBarrier入门
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95Java%E9%98%9F%E5%88%97/">
+										死磕Java队列
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/05/14/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95ThreadPoolExecutor%E7%BA%BF%E7%A8%8B%E6%B1%A0/">
+										死磕ThreadPoolExecutor线程池
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/05/20/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95Volatile/">
+										死磕Volatile
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/05/14/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95synchronized/">
+										死磕synchronized
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										03 网络编程
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/06%20Java/03%20%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/TCP/">
+										TCP
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										04 设计模式
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/03/29/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%901%E3%80%91%E2%80%94%E2%80%94%E8%A7%82%E5%AF%9F%E8%80%85/">
+										浅析Java设计模式【1】——观察者
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/03/29/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%902%E3%80%91%E2%80%94%E2%80%94%E9%80%82%E9%85%8D%E5%99%A8/">
+										浅析Java设计模式【2】——适配器
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/03/30/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%903%E3%80%91%E2%80%94%E2%80%94%E4%BB%A3%E7%90%86/">
+										浅析Java设计模式【3】——代理
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/06/19/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%904%E3%80%91%E2%80%94%E2%80%94%E7%AD%96%E7%95%A5/">
+										浅析Java设计模式【4】——策略
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										07 框架
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										03 Springboot
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/06/19/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/SpringBoot%E9%9B%86%E6%88%90Elasticsearch7.4-%E5%AE%9E%E6%88%98(1)/">
+										SpringBoot集成Elasticsearch7.4-实战(1)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/06/20/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/SpringBoot%E9%9B%86%E6%88%90Elasticsearch7.4-%E5%AE%9E%E6%88%98(2)/">
+										SpringBoot集成Elasticsearch7.4-实战(2)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/06/21/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/SpringBoot%E9%9B%86%E6%88%90Elasticsearch7.4-%E5%AE%9E%E6%88%98(3)/">
+										SpringBoot集成Elasticsearch7.4-实战(3)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/02/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/%E6%B5%85%E8%B0%88SpringBoot%E5%90%AF%E5%8A%A8%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/">
+										浅谈SpringBoot启动那些事儿
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										08 微服务
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 Nacos
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/01/10/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/00%20Nacos/CentOS%E7%8E%AF%E5%A2%83%E4%B8%8B%E5%AE%89%E8%A3%85Nacos/">
+										CentOS环境下安装Nacos
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file active">
+									<a href="/2020/01/12/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/00%20Nacos/SpringCloud%E9%9B%86%E6%88%90Nacos%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0/">
+										SpringCloud集成Nacos实现服务发现
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/11/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/00%20Nacos/SpringCloud%E9%9B%86%E6%88%90Nacos%E5%AE%9E%E7%8E%B0%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/">
+										SpringCloud集成Nacos实现配置管理
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										10 架构分析
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/04/09/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/10%20%E6%9E%B6%E6%9E%84%E5%88%86%E6%9E%90/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%88%86%E6%9E%90/">
+										微服务架构设计分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										09 区块链
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/12/24/09%20%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E7%9F%A5%E8%AF%86%E5%85%A5%E9%97%A8/">
+										区块链知识入门
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										10 容器
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 Docker
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/07/18/10%20%E5%AE%B9%E5%99%A8/00%20Docker/Docker%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7Portainer/">
+										Docker管理工具Portainer
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										11 分布式
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 分布式事务
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/08/02/11%20%E5%88%86%E5%B8%83%E5%BC%8F/00%20%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E8%AF%A6%E8%A7%A3%E2%80%94%E2%80%94SpringBoot+Atomikos%E7%AF%87/">
+										分布式事务详解——SpringBoot+Atomikos篇
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 分布式锁
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/08/01/11%20%E5%88%86%E5%B8%83%E5%BC%8F/01%20%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/%E6%B5%85%E6%9E%90%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%AE%9E%E7%8E%B0%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F/">
+										浅析分布式锁实现三种方式
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										14 中间件
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/14%20%E4%B8%AD%E9%97%B4%E4%BB%B6/Redis/">
+										Redis
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/07/31/14%20%E4%B8%AD%E9%97%B4%E4%BB%B6/RocketMQ%E9%9B%86%E7%BE%A4%E4%B8%8ESpringBoot%E9%9B%86%E6%88%90%EF%BC%88%E4%B8%80%EF%BC%89/">
+										RocketMQ集群与SpringBoot集成（一）
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										28 杂谈
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/09/20/28%20%E6%9D%82%E8%B0%88/%E4%BA%BA%E5%8D%83%E7%9B%B8%EF%BC%8C%E4%BD%9B%E6%97%A0%E7%9B%B8/">
+										人千相，佛无相
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/03/19/28%20%E6%9D%82%E8%B0%88/%E5%8E%86%E5%8F%B2%E4%B8%8A%E7%9A%84%E5%AE%89%E5%BE%BD%E4%BA%BA%E7%89%A9/">
+										历史上的安徽人物
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/28%20%E6%9D%82%E8%B0%88/%E8%B5%A2%E5%9C%A8%E6%A0%BC%E5%B1%80%E3%80%81%E8%BE%93%E5%9C%A8%E8%AE%A1%E8%BE%83/">
+										赢在格局、输在计较
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										54 产品设计
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/01/15/54%20%E4%BA%A7%E5%93%81%E8%AE%BE%E8%AE%A1/%E6%B5%85%E8%B0%88%E7%94%A8%E6%88%B7%E7%94%BB%E5%83%8F/">
+										浅谈用户画像
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/20/54%20%E4%BA%A7%E5%93%81%E8%AE%BE%E8%AE%A1/%E7%BB%9F%E4%B8%80%E5%AE%A1%E8%AE%A1/">
+										统一审计
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										98 管理类
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 项目交接
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/04/01/98%20%E7%AE%A1%E7%90%86%E7%B1%BB/00%20%E9%A1%B9%E7%9B%AE%E4%BA%A4%E6%8E%A5/%E5%AF%B9%E9%A1%B9%E7%9B%AE%E4%BA%A4%E6%8E%A5%E8%BF%87%E7%A8%8B%E8%A6%81%E6%B1%82/">
+										对项目交接过程要求
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										99 工具等
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/12/18/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/Win10%E9%BB%91%E7%A7%91%E6%8A%80%EF%BC%8C%E4%BD%A0%E5%88%B0%E5%BA%95%E7%9F%A5%E9%81%93%E5%A4%9A%E5%B0%91/">
+										Win10黑科技，你到底知道多少
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/Wlx2Explore%E5%85%A5%E9%97%A8/">
+										Wlx2Explore入门
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/31/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/lantern%E9%82%80%E8%AF%B7%E7%A0%81/">
+										lantern邀请码
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/%E5%8F%AF%E7%94%A8%E5%85%8D%E6%BF%80%E6%B4%BBAdobe%20Acrobat%20DC%202020/">
+										可用免激活Adobe Acrobat DC 2020
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2018/04/18/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/%E8%AF%A6%E8%A7%A3CMD%E5%91%BD%E4%BB%A4%E6%BB%A1%E9%80%9F%E4%B8%8B%E8%BD%BD%E7%99%BE%E5%BA%A6%E4%BA%91/">
+										详解CMD命令满速下载百度云
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+		</div>
+	</div>
+</div>
+
+	<!-- 引入正文 -->
+	<div id="content">
+		<h1 id="article-title">
+
+	SpringCloud集成Nacos实现服务发现
+</h1>
+<div class="article-meta">
+	
+	<span>Rothschil</span>
+	<span>2020-01-12 09:05:42</span>
+    
+		<div id="article-categories">
+            
+                
+                    <span>
+                        <i class="fa fa-folder" aria-hidden="true"></i>
+                        <a href="/categories/Nacos/">Nacos</a>
+						
+                    </span>
+                
+            
+		</div>
+    
+</div>
+
+<div id="article-content">
+	<h1 id="1-服务发现"><a href="#1-服务发现" class="headerlink" title="1. 服务发现"></a>1. 服务发现</h1><p>本章节我通过在SpringCloud中写服务者（Provider，端口：9001）、消费者(Consumer，端口：9002)，来演示服务发现。</p>
+<p>服务中消费者、服务提供者都需要添加这个依赖：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.cloud&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-discovery&lt;&#x2F;artifactId&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-1-服务提供者-Provider"><a href="#1-1-服务提供者-Provider" class="headerlink" title="1.1. 服务提供者-Provider"></a>1.1. 服务提供者-Provider</h2><p>编写这个，我们基于<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/f8cf6bb36107">SpringCloud集成Nacos实现配置管理</a> 中的案例来改造</p>
+<h3 id="1-1-1-添加POM依赖包"><a href="#1-1-1-添加POM依赖包" class="headerlink" title="1.1.1. 添加POM依赖包"></a>1.1.1. 添加POM依赖包</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">    &lt;!--通用包依赖，一些Entity、Dao等--&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;xyz.wongs.weathertop&lt;&#x2F;groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;persistence-domain&lt;&#x2F;artifactId&gt;</span><br><span class="line">        &lt;version&gt;1.0.0-SNAPSHOT&lt;&#x2F;version&gt;</span><br><span class="line">    &lt;&#x2F;dependency&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;spring-boot-starter-test&lt;&#x2F;artifactId&gt;</span><br><span class="line">        &lt;scope&gt;test&lt;&#x2F;scope&gt;</span><br><span class="line">    &lt;&#x2F;dependency&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--Nacos配置中心--&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.springframework.cloud&lt;&#x2F;groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-config&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;&#x2F;dependency&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;spring-boot-starter-actuator&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;&#x2F;dependency&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--步骤1、这是新增：Nacos服务发现--&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.springframework.cloud&lt;&#x2F;groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-discovery&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;&#x2F;dependency&gt;</span><br><span class="line">&lt;&#x2F;dependencies&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-1-2-resources文件夹"><a href="#1-1-2-resources文件夹" class="headerlink" title="1.1.2. resources文件夹"></a>1.1.2. resources文件夹</h3><h4 id="1-1-2-1-bootstrap-properties文件"><a href="#1-1-2-1-bootstrap-properties文件" class="headerlink" title="1.1.2.1. bootstrap.properties文件"></a>1.1.2.1. bootstrap.properties文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;步骤2、服务名改一下</span><br><span class="line">spring.application.name&#x3D;discovery-nacos-provider</span><br><span class="line"></span><br><span class="line">spring.profiles.active&#x3D;dev</span><br><span class="line">spring.cloud.nacos.config.group&#x3D;CLOUD_GROUP</span><br><span class="line">spring.cloud.nacos.config.server-addr&#x3D;192.168.147.132:8848</span><br><span class="line">spring.cloud.nacos.config.prefix&#x3D;$&#123;spring.application.name&#125;</span><br><span class="line">spring.cloud.nacos.config.file-extension&#x3D;yml</span><br><span class="line">management.endpoints.web.exposure.include&#x3D;*</span><br><span class="line">&#x2F;&#x2F;步骤3、新增配置</span><br><span class="line">spring.cloud.nacos.discovery.server-addr&#x3D;192.168.147.132:8848</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="1-1-2-2-application-yml文件"><a href="#1-1-2-2-application-yml文件" class="headerlink" title="1.1.2.2. application.yml文件"></a>1.1.2.2. application.yml文件</h4><p>这里设定端口9001</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">server:</span><br><span class="line">  port: 9001</span><br><span class="line"></span><br><span class="line">mybatis:</span><br><span class="line">  mapperLocations: classpath:mapper&#x2F;**&#x2F;*.xml</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-1-3-新增配置项"><a href="#1-1-3-新增配置项" class="headerlink" title="1.1.3. 新增配置项"></a>1.1.3. 新增配置项</h3><p>将Data Id中cofig-nacos-dev.yml配置复制一份，重命名为discovery-nacos-provider-dev.yml。</p>
+<p><img src="https://raw.githubusercontent.com/rothschil/picgo/master/images/20200401100325.png" alt="discovery-nacos-provider-dev.yml"></p>
+<h3 id="1-1-4-应用入口"><a href="#1-1-4-应用入口" class="headerlink" title="1.1.4. 应用入口"></a>1.1.4. 应用入口</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@RefreshScope</span><br><span class="line">@MapperScan(basePackages &#x3D; &#123;&quot;xyz.wongs.weathertop.**.mapper&quot;&#125;)</span><br><span class="line">@EnableDiscoveryClient</span><br><span class="line">@SpringBootApplication</span><br><span class="line">public class DiscoveryProviderApp &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        SpringApplication.run(DiscoveryProviderApp.class,args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-1-5-启动项目"><a href="#1-1-5-启动项目" class="headerlink" title="1.1.5. 启动项目"></a>1.1.5. 启动项目</h3><p>在浏览器打开地址：<a target="_blank" rel="noopener" href="http://localhost:9001/locations/0">http://localhost:9001/locations/0</a> </p>
+<p><img src="https://raw.githubusercontent.com/rothschil/picgo/master/images/20200401100343.png" alt="验证服务"></p>
+<p>生产者启动成功</p>
+<p>再打开Nacos控制台“服务管理-&gt;服务列表”，有<strong>discovery-nacos-provider</strong>这个服务名，说明服务已经注册到Nacos。</p>
+<p><img src="https://raw.githubusercontent.com/rothschil/picgo/master/images/20200401100356.png" alt="服务提供者"></p>
+<h2 id="1-2-源码"><a href="#1-2-源码" class="headerlink" title="1.2. 源码"></a>1.2. 源码</h2><p><a target="_blank" rel="noopener" href="https://github.com/king-angmar/weathertop/tree/master/akkad-cloud/cloud-discovery/discovery-nacos-provider">消费者Github演示源码</a> ，记得给Star</p>
+<h1 id="2-服务消费者"><a href="#2-服务消费者" class="headerlink" title="2. 服务消费者"></a>2. 服务消费者</h1><h2 id="2-1-resources文件夹"><a href="#2-1-resources文件夹" class="headerlink" title="2.1. resources文件夹"></a>2.1. resources文件夹</h2><h3 id="2-1-1-bootstrap-properties"><a href="#2-1-1-bootstrap-properties" class="headerlink" title="2.1.1. bootstrap.properties"></a>2.1.1. bootstrap.properties</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">spring.application.name&#x3D;discovery-nacos-consumer</span><br><span class="line">spring.profiles.active&#x3D;dev</span><br><span class="line">spring.cloud.nacos.discovery.server-addr&#x3D;192.168.147.132:8848</span><br><span class="line">management.endpoints.web.exposure.include&#x3D;*</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-1-2-application-yml"><a href="#2-1-2-application-yml" class="headerlink" title="2.1.2. application.yml"></a>2.1.2. application.yml</h3><p>我们设定端口9002</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">server:</span><br><span class="line">  port: 9002</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-Bean注册"><a href="#2-2-Bean注册" class="headerlink" title="2.2. Bean注册"></a>2.2. Bean注册</h2><p>我们利用SpringBoot管理Bean的便捷性，来对RestTemplate实例进行管理，利用它的<strong>LoadBalanced</strong>注解来实现负载均衡。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@EnableDiscoveryClient</span><br><span class="line">@SpringBootApplication</span><br><span class="line">public class DiscoveryConsumerrApp &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        SpringApplication.run(DiscoveryConsumerrApp.class,args);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @LoadBalanced</span><br><span class="line">    @Bean</span><br><span class="line">    public RestTemplate restTemplate() &#123;</span><br><span class="line">        return new RestTemplate();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-调用生产者"><a href="#2-3-调用生产者" class="headerlink" title="2.3. 调用生产者"></a>2.3. 调用生产者</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@RestController</span><br><span class="line">@RequestMapping(value &#x3D; &quot;&#x2F;locations&quot;)</span><br><span class="line">public class LocationController extends BaseController &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private RestTemplate restTemplate;</span><br><span class="line"></span><br><span class="line">    @GetMapping(value &#x3D; &quot;&#x2F;consumer&#x2F;&#123;lv&#125;&quot;)</span><br><span class="line">    public ResponseResult echo(@PathVariable(value &#x3D; &quot;lv&quot;) Integer lv) &#123;</span><br><span class="line">        return restTemplate.getForObject(&quot;http:&#x2F;&#x2F;discovery-nacos-provider&#x2F;locations&#x2F;&quot; + lv, ResponseResult.class);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>restTemplate.getForObject(String url, Class<T> responseType, Object… uriVariables)</p>
+<ul>
+<li>url：地址名，这里一定要填写Nacos服务列表中的服务名</li>
+<li>responseType： 返回数据类型，由于我使用了统一类型来返回数据，这里大家根据实际内容自行更改</li>
+</ul>
+<h2 id="2-4-验证服务"><a href="#2-4-验证服务" class="headerlink" title="2.4. 验证服务"></a>2.4. 验证服务</h2><p>打开浏览器，输入我们的地址：<a target="_blank" rel="noopener" href="http://localhost:9002/locations/consumer/0">http://localhost:9002/locations/consumer/0</a> ，<br>控制台中日志有刷新：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">2019-12-15 18:19:53.140  INFO 22048 --- [tp2060799061-34] c.n.l.DynamicServerListLoadBalancer      : DynamicServerListLoadBalancer for client discovery-nacos-provider initialized: DynamicServerListLoadBalancer:&#123;NFLoadBalancer:name&#x3D;discovery-nacos-provider,current list of Servers&#x3D;[192.168.68.235:9001],Load balancer stats&#x3D;Zone stats: &#123;unknown&#x3D;[Zone:unknown;    Instance count:1;    Active connections count: 0;    Circuit breaker tripped count: 0;    Active connections per server: 0.0;]</span><br><span class="line">&#125;,Server stats: [[Server:192.168.68.235:9001;    Zone:UNKNOWN;    Total Requests:0;    Successive connection failure:0;    Total blackout seconds:0;    Last connection made:Thu Jan 01 08:00:00 CST 1970;    First connection made: Thu Jan 01 08:00:00 CST 1970;    Active Connections:0;    total failure count in last (1000) msecs:0;    average resp time:0.0;    90 percentile resp time:0.0;    95 percentile resp time:0.0;    min resp time:0.0;    max resp time:0.0;    stddev resp time:0.0]</span><br><span class="line">]&#125;ServerList:org.springframework.cloud.alibaba.nacos.ribbon.NacosServerList@66588ff</span><br><span class="line">2019-12-15 18:19:54.121  INFO 22048 --- [erListUpdater-0] c.netflix.config.ChainedDynamicProperty  : Flipping property: discovery-nacos-provider.ribbon.ActiveConnectionsLimit to use NEXT property: niws.loadbalancer.availabilityFilteringRule.activeConnectionsLimit &#x3D; 2147483647</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/rothschil/picgo/master/images/20200401100422.png" alt="查看数据!"></p>
+<h2 id="2-5-源码"><a href="#2-5-源码" class="headerlink" title="2.5. 源码"></a>2.5. 源码</h2><p><a target="_blank" rel="noopener" href="https://github.com/king-angmar/weathertop/tree/master/akkad-cloud/cloud-discovery/discovery-nacos-consumer">消费者Github演示源码</a> ，记得给Star</p>
+
+</div>
+
+
+    <div class="post-guide">
+        <div class="item left">
+            
+              <a href="/2020/01/15/54%20%E4%BA%A7%E5%93%81%E8%AE%BE%E8%AE%A1/%E6%B5%85%E8%B0%88%E7%94%A8%E6%88%B7%E7%94%BB%E5%83%8F/">
+                  <i class="fa fa-angle-left" aria-hidden="true"></i>
+                  
+              </a>
+            
+        </div>
+        <div class="item right">
+            
+              <a href="/2020/01/11/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/00%20Nacos/SpringCloud%E9%9B%86%E6%88%90Nacos%E5%AE%9E%E7%8E%B0%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/">
+                SpringCloud集成Nacos实现配置管理
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+              </a>
+            
+        </div>
+    </div>
+
+
+
+	<div id="vcomments"></div>
+
+
+<script>
+	
+		// 评论
+		new Valine({
+			av: AV,
+			el: '#vcomments',
+			notify: false,
+			verify: false,
+			path: window.location.pathname,
+			appId: '',
+			appKey: '',
+			placeholder: '请输入评论',
+			avatar: 'retro',
+			recordIP: false
+		})
+	
+	
+</script>
+	</div>
+	<div id="footer">
+	<p>
+	©2019-<span id="footerYear"></span> 
+	<a href="/">Rothschil</a> 
+	
+	
+		|
+		<span id="busuanzi_container_site_pv">
+			pv
+			<span id="busuanzi_value_site_pv"></span>
+		</span>
+		|
+		<span id="busuanzi_container_site_uv"> 
+			uv
+			<span id="busuanzi_value_site_uv"></span>
+		</span>
+	
+	<br>
+	Powered by <a href="//hexo.io" target="_blank">Hexo</a>
+	</p>
+</div>
+
+<script type="text/javascript"> 
+	document.getElementById('footerYear').innerHTML = new Date().getFullYear() + '';
+</script>
+	<button id="totop-toggle" class="toggle"><i class="fa fa-angle-double-up" aria-hidden="true"></i></button>
+</body>
+</html>

@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+	
+	<!-- title -->
+	
+	<title>
+	
+		死磕ThreadPoolExecutor线程池 | 
+	 
+	王老邪
+	</title>
+	
+	<!-- keywords,description -->
+	 
+		<meta name="description" content="Java多线程" />
+	
+
+	<!-- favicon -->
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+	
+  
+
+	
+<link rel="stylesheet" href="/css/main.css">
+
+	
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/darcula.min.css">
+
+
+	
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/highlight.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/npm/jquery-pjax@2.0.1/jquery.pjax.min.js"></script>
+
+	
+<script src="/js/main.js"></script>
+
+	
+		
+<script src="https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min.js"></script>
+
+		
+<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
+
+	
+	
+		<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+	
+	<script>
+		var _hmt = _hmt || [];
+		(function() {
+			var hm = document.createElement("script");
+			hm.src = "https://hm.baidu.com/hm.js?1b1318d1b07a2360e12cec2ed56cd0d6";
+			var s = document.getElementsByTagName("script")[0]; 
+			s.parentNode.insertBefore(hm, s);
+		})();
+	</script>
+		
+<meta name="generator" content="Hexo 5.0.0"></head>
+
+<body>
+	<header id="header">
+    <a id="title" href="/" class="logo">王老邪</a>
+
+	<ul id="menu">
+		<li class="menu-item">
+			<a href="about.html" class="menu-item-link">ABOUT</a>
+		</li>
+		
+		<li class="menu-item">
+			<a href="https://github.com/king-angmar/weathertop" class="menu-item-link" target="_blank">
+				weathertop
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="https://github.com/rothschil" class="menu-item-link" target="_blank">
+				<i class="fa fa-github fa-2x"></i>
+			</a>
+		</li>
+	</ul>
+</header>
+
+	
+<div id="sidebar">
+	<button id="sidebar-toggle" class="toggle" ><i class="fa fa-arrow-right " aria-hidden="true"></i></button>
+	
+	<div id="site-toc">
+		<input id="search-input" class="search-input" type="text" placeholder="search...">
+		<div id="tree">
+			
+
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 操作系统
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 Linux
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/01/01/01%20%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/01%20Linux/Linux%E5%9F%BA%E7%A1%80/">
+										Linux基础
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										06 Java
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 JVM
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/05/21/06%20Java/01%20JVM/JVM%E8%B0%83%E4%BC%98%E6%94%BB%E7%95%A5/">
+										JVM调优攻略
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										02 多线程
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/CountDownLatch%E3%80%81Semaphone%E3%80%81CyclicBarrier%E5%85%A5%E9%97%A8/">
+										CountDownLatch、Semaphone、CyclicBarrier入门
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95Java%E9%98%9F%E5%88%97/">
+										死磕Java队列
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file active">
+									<a href="/2020/05/14/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95ThreadPoolExecutor%E7%BA%BF%E7%A8%8B%E6%B1%A0/">
+										死磕ThreadPoolExecutor线程池
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/05/20/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95Volatile/">
+										死磕Volatile
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/05/14/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95synchronized/">
+										死磕synchronized
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										03 网络编程
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/06%20Java/03%20%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/TCP/">
+										TCP
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										04 设计模式
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/03/29/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%901%E3%80%91%E2%80%94%E2%80%94%E8%A7%82%E5%AF%9F%E8%80%85/">
+										浅析Java设计模式【1】——观察者
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/03/29/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%902%E3%80%91%E2%80%94%E2%80%94%E9%80%82%E9%85%8D%E5%99%A8/">
+										浅析Java设计模式【2】——适配器
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/03/30/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%903%E3%80%91%E2%80%94%E2%80%94%E4%BB%A3%E7%90%86/">
+										浅析Java设计模式【3】——代理
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/06/19/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%904%E3%80%91%E2%80%94%E2%80%94%E7%AD%96%E7%95%A5/">
+										浅析Java设计模式【4】——策略
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										07 框架
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										03 Springboot
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/06/19/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/SpringBoot%E9%9B%86%E6%88%90Elasticsearch7.4-%E5%AE%9E%E6%88%98(1)/">
+										SpringBoot集成Elasticsearch7.4-实战(1)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/06/20/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/SpringBoot%E9%9B%86%E6%88%90Elasticsearch7.4-%E5%AE%9E%E6%88%98(2)/">
+										SpringBoot集成Elasticsearch7.4-实战(2)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/06/21/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/SpringBoot%E9%9B%86%E6%88%90Elasticsearch7.4-%E5%AE%9E%E6%88%98(3)/">
+										SpringBoot集成Elasticsearch7.4-实战(3)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/02/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/%E6%B5%85%E8%B0%88SpringBoot%E5%90%AF%E5%8A%A8%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/">
+										浅谈SpringBoot启动那些事儿
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										08 微服务
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 Nacos
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/01/10/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/00%20Nacos/CentOS%E7%8E%AF%E5%A2%83%E4%B8%8B%E5%AE%89%E8%A3%85Nacos/">
+										CentOS环境下安装Nacos
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/12/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/00%20Nacos/SpringCloud%E9%9B%86%E6%88%90Nacos%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0/">
+										SpringCloud集成Nacos实现服务发现
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/11/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/00%20Nacos/SpringCloud%E9%9B%86%E6%88%90Nacos%E5%AE%9E%E7%8E%B0%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/">
+										SpringCloud集成Nacos实现配置管理
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										10 架构分析
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/04/09/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/10%20%E6%9E%B6%E6%9E%84%E5%88%86%E6%9E%90/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%88%86%E6%9E%90/">
+										微服务架构设计分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										09 区块链
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/12/24/09%20%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E7%9F%A5%E8%AF%86%E5%85%A5%E9%97%A8/">
+										区块链知识入门
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										10 容器
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 Docker
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/07/18/10%20%E5%AE%B9%E5%99%A8/00%20Docker/Docker%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7Portainer/">
+										Docker管理工具Portainer
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										11 分布式
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 分布式事务
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/08/02/11%20%E5%88%86%E5%B8%83%E5%BC%8F/00%20%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E8%AF%A6%E8%A7%A3%E2%80%94%E2%80%94SpringBoot+Atomikos%E7%AF%87/">
+										分布式事务详解——SpringBoot+Atomikos篇
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 分布式锁
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/08/01/11%20%E5%88%86%E5%B8%83%E5%BC%8F/01%20%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/%E6%B5%85%E6%9E%90%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%AE%9E%E7%8E%B0%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F/">
+										浅析分布式锁实现三种方式
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										14 中间件
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/14%20%E4%B8%AD%E9%97%B4%E4%BB%B6/Redis/">
+										Redis
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/07/31/14%20%E4%B8%AD%E9%97%B4%E4%BB%B6/RocketMQ%E9%9B%86%E7%BE%A4%E4%B8%8ESpringBoot%E9%9B%86%E6%88%90%EF%BC%88%E4%B8%80%EF%BC%89/">
+										RocketMQ集群与SpringBoot集成（一）
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										28 杂谈
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/09/20/28%20%E6%9D%82%E8%B0%88/%E4%BA%BA%E5%8D%83%E7%9B%B8%EF%BC%8C%E4%BD%9B%E6%97%A0%E7%9B%B8/">
+										人千相，佛无相
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/03/19/28%20%E6%9D%82%E8%B0%88/%E5%8E%86%E5%8F%B2%E4%B8%8A%E7%9A%84%E5%AE%89%E5%BE%BD%E4%BA%BA%E7%89%A9/">
+										历史上的安徽人物
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/28%20%E6%9D%82%E8%B0%88/%E8%B5%A2%E5%9C%A8%E6%A0%BC%E5%B1%80%E3%80%81%E8%BE%93%E5%9C%A8%E8%AE%A1%E8%BE%83/">
+										赢在格局、输在计较
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										54 产品设计
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/01/15/54%20%E4%BA%A7%E5%93%81%E8%AE%BE%E8%AE%A1/%E6%B5%85%E8%B0%88%E7%94%A8%E6%88%B7%E7%94%BB%E5%83%8F/">
+										浅谈用户画像
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/20/54%20%E4%BA%A7%E5%93%81%E8%AE%BE%E8%AE%A1/%E7%BB%9F%E4%B8%80%E5%AE%A1%E8%AE%A1/">
+										统一审计
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										98 管理类
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 项目交接
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/04/01/98%20%E7%AE%A1%E7%90%86%E7%B1%BB/00%20%E9%A1%B9%E7%9B%AE%E4%BA%A4%E6%8E%A5/%E5%AF%B9%E9%A1%B9%E7%9B%AE%E4%BA%A4%E6%8E%A5%E8%BF%87%E7%A8%8B%E8%A6%81%E6%B1%82/">
+										对项目交接过程要求
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										99 工具等
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/12/18/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/Win10%E9%BB%91%E7%A7%91%E6%8A%80%EF%BC%8C%E4%BD%A0%E5%88%B0%E5%BA%95%E7%9F%A5%E9%81%93%E5%A4%9A%E5%B0%91/">
+										Win10黑科技，你到底知道多少
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/Wlx2Explore%E5%85%A5%E9%97%A8/">
+										Wlx2Explore入门
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/31/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/lantern%E9%82%80%E8%AF%B7%E7%A0%81/">
+										lantern邀请码
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/%E5%8F%AF%E7%94%A8%E5%85%8D%E6%BF%80%E6%B4%BBAdobe%20Acrobat%20DC%202020/">
+										可用免激活Adobe Acrobat DC 2020
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2018/04/18/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/%E8%AF%A6%E8%A7%A3CMD%E5%91%BD%E4%BB%A4%E6%BB%A1%E9%80%9F%E4%B8%8B%E8%BD%BD%E7%99%BE%E5%BA%A6%E4%BA%91/">
+										详解CMD命令满速下载百度云
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+		</div>
+	</div>
+</div>
+
+	<!-- 引入正文 -->
+	<div id="content">
+		<h1 id="article-title">
+
+	死磕ThreadPoolExecutor线程池
+</h1>
+<div class="article-meta">
+	
+	<span>Rothschil</span>
+	<span>2020-05-14 15:53:00</span>
+    
+		<div id="article-categories">
+            
+                
+                    <span>
+                        <i class="fa fa-folder" aria-hidden="true"></i>
+                        <a href="/categories/Java-ThreadPoolExecutor/">Java,ThreadPoolExecutor</a>
+						
+                    </span>
+                
+            
+		</div>
+    
+</div>
+
+<div id="article-content">
+	<h1 id="1-线程池的优势"><a href="#1-线程池的优势" class="headerlink" title="1. 线程池的优势"></a>1. 线程池的优势</h1><ul>
+<li>节省资源开销：重复利用线程池中的线程，不需要每次都创建</li>
+<li>提升对线程的管理能力：统一对线程分配和监控，避免无限创建，造成资源内存溢出和CPU耗尽</li>
+<li>提高响应，降低系统开销：减少了创建线程的时间消耗，提高应对任务的响应</li>
+</ul>
+<h1 id="线程空间大小"><a href="#线程空间大小" class="headerlink" title="线程空间大小"></a>线程空间大小</h1><p>线程空间大小和具体JDK版本有很大关系，JDK8将近1.9M、JDK11差不多1.5M多。具体大小的查看可以执行命令<code>java -XX:+UnlockDiagnosticVMOptions -XX:NativeMemoryTracking=summary -XX:+PrintNMTStatistics -version</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\WONGS&gt; java -XX:+UnlockDiagnosticVMOptions -XX:NativeMemoryTracking&#x3D;summary -XX:+PrintNMTStatistics -version</span><br><span class="line">java version &quot;11.0.2&quot; 2019-01-15 LTS</span><br><span class="line">Java(TM) SE Runtime Environment 18.9 (build 11.0.2+9-LTS)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM 18.9 (build 11.0.2+9-LTS, mixed mode)</span><br><span class="line"></span><br><span class="line">Native Memory Tracking:</span><br><span class="line"></span><br><span class="line">Total: reserved&#x3D;7849030KB, committed&#x3D;465994KB</span><br><span class="line">-                 Java Heap (reserved&#x3D;6248448KB, committed&#x3D;391168KB)</span><br><span class="line">                            (mmap: reserved&#x3D;6248448KB, committed&#x3D;391168KB)</span><br><span class="line"></span><br><span class="line">-                     Class (reserved&#x3D;1056866KB, committed&#x3D;4578KB)</span><br><span class="line">                            (classes #472)</span><br><span class="line">                            (  instance classes #407, array classes #65)</span><br><span class="line">                            (malloc&#x3D;98KB #502)</span><br><span class="line">                            (mmap: reserved&#x3D;1056768KB, committed&#x3D;4480KB)</span><br><span class="line">                            (  Metadata:   )</span><br><span class="line">                            (    reserved&#x3D;8192KB, committed&#x3D;4096KB)</span><br><span class="line">                            (    used&#x3D;3120KB)</span><br><span class="line">                            (    free&#x3D;976KB)</span><br><span class="line">                            (    waste&#x3D;0KB &#x3D;0.00%)</span><br><span class="line">                            (  Class space:)</span><br><span class="line">                            (    reserved&#x3D;1048576KB, committed&#x3D;384KB)</span><br><span class="line">                            (    used&#x3D;297KB)</span><br><span class="line">                            (    free&#x3D;87KB)</span><br><span class="line">                            (    waste&#x3D;0KB &#x3D;0.00%)</span><br><span class="line"></span><br><span class="line">-                    Thread (reserved&#x3D;16455KB, committed&#x3D;591KB)</span><br><span class="line">                            (thread #16)</span><br><span class="line">                            (stack: reserved&#x3D;16384KB, committed&#x3D;520KB)</span><br><span class="line">                            (malloc&#x3D;52KB #89)</span><br><span class="line">                            (arena&#x3D;19KB #30)</span><br><span class="line">......</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="2-几种常见线程池"><a href="#2-几种常见线程池" class="headerlink" title="2. 几种常见线程池"></a>2. 几种常见线程池</h1><ul>
+<li><code>newCachedThreadPool</code>：数量无上限，该线程池会根据需要创建，但是优先使用之前构造的线程。这些池通常将提高执行许多短期异步任务的程序的性能，如果没有可用的现有线程，则将创建一个新线程并将其添加到池中。当60S内未使用的线程将被终止并从缓存中删除。 因此，保持空闲时间足够长的池不会消耗任何资源。</li>
+</ul>
+<p><code>构造函数</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public static ExecutorService newCachedThreadPool() &#123;</span><br><span class="line">    return new ThreadPoolExecutor(0, Integer.MAX_VALUE,</span><br><span class="line">                                    60L, TimeUnit.SECONDS,</span><br><span class="line">                                    new SynchronousQueue&lt;Runnable&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>newFixedThreadPool</code>：数量固定大小，该线程池重用在共享的无边界队列上运行的固定数量的线程。在任何时候，最多nThreads（构造函数的参数，<code>核心线程数与最大线程数相等</code>）个线程都是活动的处理任务。 如果在所有线程都处于活动状态时提交了其他任务，则它们将在队列中等待，直到某个线程可用为止。 如果在关闭之前执行过程中由于执行失败导致任何线程终止，则在执行后续任务时将使用新线程代替。 池中的线程将一直存在，直到明确将其关闭。</li>
+</ul>
+<p><code>构造函数</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public static ExecutorService newFixedThreadPool(int nThreads) &#123;</span><br><span class="line">    return new ThreadPoolExecutor(nThreads, nThreads,</span><br><span class="line">                                    0L, TimeUnit.MILLISECONDS,</span><br><span class="line">                                    new LinkedBlockingQueue&lt;Runnable&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>newSingleThreadExecutor</code>：单线程，保证提交线程执行任务的FIFO， （但是请注意，如果该单个线程由于在关闭前执行期间由于执行失败而终止，则在需要执行新任务时将使用新线程代替。），在任何给定时间活动的任务不超过一个。与newFixedThreadPool不同，保证返回的执行程序不可重新配置为使用其他线程。</li>
+</ul>
+<p><code>构造函数</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public static ExecutorService newSingleThreadExecutor() &#123;</span><br><span class="line">    return new FinalizableDelegatedExecutorService</span><br><span class="line">        (new ThreadPoolExecutor(1, 1,</span><br><span class="line">                                0L, TimeUnit.MILLISECONDS,</span><br><span class="line">                                new LinkedBlockingQueue&lt;Runnable&gt;()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>newScheduledThreadPool</code>：该线程池可以安排命令在给定的延迟后运行或定期执行。</li>
+</ul>
+<p><code>构造函数</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize) &#123;</span><br><span class="line">    return new ScheduledThreadPoolExecutor(corePoolSize);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/java20200514144805.png" alt="ScheduledThreadPoolExecutor类结构图"></p>
+<p>通过类图，我们分析，其实 <code>ScheduledThreadPoolExecutor</code> 是 <code>ThreadPoolExecutor</code> 子类。</p>
+<ul>
+<li><code>newWorkStealingPool</code>：使用所有可用处理器作为目标并行度级别，创建工作窃取线程池,在实际中很少使用，不细讲。</li>
+</ul>
+<p>综上所述，我们可以看到这些线程池底层实现都依靠 <code>ThreadPoolExecutor</code> 类的构造器，它是构造线程池的核心实现。但是现实在开发过程中避免利用 <code>Executors</code> 去创建线程池，这容易让人疑惑，JDK命名自带实现，为什么避免用，看完下一章节后，我们再谈这个话题。</p>
+<h1 id="3-解析ThreadPoolExecutor"><a href="#3-解析ThreadPoolExecutor" class="headerlink" title="3. 解析ThreadPoolExecutor"></a>3. 解析ThreadPoolExecutor</h1><ul>
+<li>corePoolSize：初始化大小，即使没有空闲，保留在池中的线程数，除非设置了allowCoreThreadTimeOut</li>
+<li>maximumPoolSize：允许线程池同时并行的线程数量</li>
+<li>keepAliveTime：当线程数大于内核数时，这是多余的空闲线程将在终止之前等待新任务的最长时间</li>
+<li>unit：TimeUnit类型，这没什么好说</li>
+<li>workQueue：在执行任务之前用于保留任务的队列，此队列将仅保存execute方法提交的Runnable任务。</li>
+<li>threadFactory：执行程序创建新线程时要使用的工厂</li>
+<li>handler：当线等待队列中的数量超过既定容量，所需要处理策略</li>
+</ul>
+<p><code>构造函数</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public ThreadPoolExecutor(int corePoolSize,</span><br><span class="line">                          int maximumPoolSize,</span><br><span class="line">                          long keepAliveTime,</span><br><span class="line">                          @NotNull TimeUnit unit,</span><br><span class="line">                          @NotNull BlockingQueue&lt;Runnable&gt; workQueue,</span><br><span class="line">                          @NotNull ThreadFactory threadFactory,</span><br><span class="line">                          @NotNull RejectedExecutionHandler handler)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/springboot20200514105205.png" alt="ThreadPoolExecutor结构类图"></p>
+<h2 id="3-1-corePoolSize、maximumPoolSize"><a href="#3-1-corePoolSize、maximumPoolSize" class="headerlink" title="3.1. corePoolSize、maximumPoolSize"></a>3.1. corePoolSize、maximumPoolSize</h2><p><strong>corePoolSize、maximumPoolSize</strong> 线程池中初始化的线程数量，初始化太多或者太少，都有可能造成资源的浪费，具体实际情况根据所需要处理的任务特征决定。</p>
+<h2 id="3-2-workQueue"><a href="#3-2-workQueue" class="headerlink" title="3.2. workQueue"></a>3.2. workQueue</h2><p>将待处理的任务放入一个队列，这是一个阻塞队列，该队列可以是有界也可以是无界。</p>
+<h2 id="3-3-handler"><a href="#3-3-handler" class="headerlink" title="3.3. handler"></a>3.3. handler</h2><ul>
+<li>AbortPolicy：拒绝执行处理程序，这是默认策略。</li>
+<li>CallerRunsPolicy：线程池未关闭，被拒绝任务，它直接在调用线程中运行被丢弃的任务</li>
+<li>DiscardOldestPolicy：丢弃最老，然后重试执行当前任务</li>
+<li>DiscardPolicy：比较粗暴，直接丢弃。</li>
+</ul>
+<p>其实上述四种策略都不够友好，在实际应用场景中，肯定要记录日志或者通过RPC框架触发通知补偿措施，否则会造成数据丢失或者处理过程不够严谨。一般情况下，我们需要自己实现 <code>RejectedExecutionHandler</code> 接口，在接口中记录日志或者持久化不能处理的任务信息。再通过定时任务，进行补偿重试。</p>
+<h2 id="3-4-线程池执行顺序"><a href="#3-4-线程池执行顺序" class="headerlink" title="3.4. 线程池执行顺序"></a>3.4. 线程池执行顺序</h2><p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/java20200518110447.png" alt="线程池执行逻辑"></p>
+<ul>
+<li>判断核心线程数（corePoolSize）是否已满，未满则创建核心线程，用来执行任务</li>
+<li>判断 workQueue 队列类型是否是<code>有界队列</code>，如果 否，则<code>maximumPoolSize</code> 参数的配置无效；当是<code>有界队列</code>，则判断<code>有界队列</code>是否已满</li>
+<li>判断<code>有界队列</code>是否已满，当队列还有空间，还要进一步判定<code>线程池是否已满</code>即线程池中线程数量是否已达到<code>maximumPoolSize</code>，未超过则直接创建<code>非核心线程</code>；超过则根据<code>拒绝策略执行相关操作</code></li>
+</ul>
+<p>下面将举几个例子。</p>
+<h3 id="3-4-1-无界队列样例"><a href="#3-4-1-无界队列样例" class="headerlink" title="3.4.1. 无界队列样例"></a>3.4.1. 无界队列样例</h3><p>定义核心线程数，<code>corePoolSize</code> 为 1；无界队列<code>LinkedBlockingQueue</code>同时为展示更好的效果，我让每个线程执行后都<code>sleep</code> 秒钟。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">public class ThreadPoolExecutorDemo2 &#123;</span><br><span class="line"></span><br><span class="line">    public static ExecutorService getExecutorService(int coreSize,int maxSize,BlockingQueue queue)&#123;</span><br><span class="line">        RejectedExecutionHandler policy &#x3D; new ThreadPoolExecutor.AbortPolicy();</span><br><span class="line">        return new ThreadPoolExecutor(coreSize, maxSize,0, TimeUnit.SECONDS, queue, policy);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">&#x2F;&#x2F;        ArrayBlockingQueue queue &#x3D; new ArrayBlockingQueue(3);</span><br><span class="line">        LinkedBlockingQueue queue &#x3D; new LinkedBlockingQueue();</span><br><span class="line">        ExecutorService es &#x3D; getExecutorService(1,5,queue);</span><br><span class="line"></span><br><span class="line">        ThreadTaskDemo t1 &#x3D; new ThreadTaskDemo(&quot;t1&quot;);</span><br><span class="line">        ThreadTaskDemo t2 &#x3D; new ThreadTaskDemo(&quot;t2&quot;);</span><br><span class="line">        ThreadTaskDemo t3 &#x3D; new ThreadTaskDemo(&quot;t3&quot;);</span><br><span class="line">        ThreadTaskDemo t4 &#x3D; new ThreadTaskDemo(&quot;t4&quot;);</span><br><span class="line">        ThreadTaskDemo t5 &#x3D; new ThreadTaskDemo(&quot;t4&quot;);</span><br><span class="line"></span><br><span class="line">        es.execute(t1);</span><br><span class="line">        es.execute(t2);</span><br><span class="line">        es.execute(t3);</span><br><span class="line">        es.execute(t4);</span><br><span class="line">        es.execute(t5);</span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;执行完毕！&quot;);</span><br><span class="line">        es.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class ThreadTaskDemo implements Runnable&#123;</span><br><span class="line"></span><br><span class="line">    @Getter</span><br><span class="line">    @Setter</span><br><span class="line">    private String value;</span><br><span class="line"></span><br><span class="line">    public ThreadTaskDemo()&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public ThreadTaskDemo(String value)&#123;</span><br><span class="line">        this.value&#x3D;value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void run() &#123;</span><br><span class="line">        System.out.println(&quot;当前时间 &quot;+LocalDateTime.now().getSecond()+&quot; 当前线程名: &quot;+Thread.currentThread().getName()+&quot; BEGIN &quot;+value );</span><br><span class="line">        try &#123;</span><br><span class="line">            TimeUnit.SECONDS.sleep(2);</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>通过控制台输出，我们可以看到，任务只在一个线程中有序执行，说明 <code>maximumPoolSize</code> 参数配置无意义，并未有创建线程的操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">当前时间 35 当前线程名: pool-1-thread-1 BEGIN t1</span><br><span class="line">当前时间 37 当前线程名: pool-1-thread-1 BEGIN t2</span><br><span class="line">当前时间 39 当前线程名: pool-1-thread-1 BEGIN t3</span><br><span class="line">当前时间 41 当前线程名: pool-1-thread-1 BEGIN t4</span><br><span class="line">当前时间 43 当前线程名: pool-1-thread-1 BEGIN t5</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/java20200518160147.png" alt="演示效果"></p>
+<h3 id="3-4-2-有界队列样例"><a href="#3-4-2-有界队列样例" class="headerlink" title="3.4.2. 有界队列样例"></a>3.4.2. 有界队列样例</h3><p>定义核心线程数，<code>corePoolSize</code> 为 1；有界队列<code>ArrayBlockingQueue</code> 设置 3、同时为展示更好的效果，我也让每个线程执行后都<code>sleep</code> 秒钟。</p>
+<ul>
+<li><code>任务数</code> 为 5，和 <code>maximumPoolSize</code> 设置 6 的情况下：我们看到 控制台打印显示有两个线程 <code>pool-1-thread-1</code> 和 <code>pool-1-thread-2</code>。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">当前时间 30:14 当前线程名: pool-1-thread-2 BEGIN t5</span><br><span class="line">当前时间 30:14 当前线程名: pool-1-thread-1 BEGIN t1</span><br><span class="line">当前时间 30:16 当前线程名: pool-1-thread-1 BEGIN t2</span><br><span class="line">当前时间 30:16 当前线程名: pool-1-thread-2 BEGIN t3</span><br><span class="line">当前时间 30:18 当前线程名: pool-1-thread-2 BEGIN t4</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>任务数</code> 为 7，和 <code>最大线程池容量</code> 设置 1 的情况下：控制台打印有异常，这是因为我们<code>任务数</code>超出 <code>队列容量</code>、<code>最大线程池容量</code>的之和，所以应用执行 <code>RejectedExecutionHandler</code> 策略。并且这时候应用状态时挂起，非常不友好，在下一节，写个案例自定义<code>handler</code>。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Exception in thread &quot;main&quot; java.util.concurrent.RejectedExecutionException: Task xyz.wongs.interview.thread.pool.ThreadTaskDemo@4dfa3a9d rejected from java.util.concurrent.ThreadPoolExecutor@6eebc39e[Running, pool size &#x3D; 1, active threads &#x3D; 1, queued tasks &#x3D; 3, completed tasks &#x3D; 0]</span><br><span class="line">    at java.base&#x2F;java.util.concurrent.ThreadPoolExecutor$AbortPolicy.rejectedExecution(ThreadPoolExecutor.java:2055)</span><br><span class="line">    at java.base&#x2F;java.util.concurrent.ThreadPoolExecutor.reject(ThreadPoolExecutor.java:825)</span><br><span class="line">    at java.base&#x2F;java.util.concurrent.ThreadPoolExecutor.execute(ThreadPoolExecutor.java:1355)</span><br><span class="line">    at xyz.wongs.interview.thread.pool.ThreadPoolExecutorDemo2.main(ThreadPoolExecutorDemo2.java:29)</span><br><span class="line">当前时间 18:16 当前线程名: pool-1-thread-1 BEGIN t1</span><br><span class="line">当前时间 18:18 当前线程名: pool-1-thread-1 BEGIN t2</span><br><span class="line">当前时间 18:20 当前线程名: pool-1-thread-1 BEGIN t3</span><br><span class="line">当前时间 18:22 当前线程名: pool-1-thread-1 BEGIN t4</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/java20200518171626.png" alt="有界队列执行顺序"></p>
+<p>综上所述，在 <code>有界队列</code>实现中我们要注意，<code>任务数</code> 、 <code>最大线程池容量</code>、<code>队列容量</code>三者之间的关系。</p>
+<h3 id="3-4-3-自定义handler"><a href="#3-4-3-自定义handler" class="headerlink" title="3.4.3. 自定义handler"></a>3.4.3. 自定义<code>handler</code></h3><p>编写一个 <code>Java</code>类，实现接口 <code>RejectedExecutionHandler</code>，重写 <code>rejectedExecution(Runnable r, ThreadPoolExecutor executor)</code> 方法，具体如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public class CoustomRejectedExecutionHandler implements RejectedExecutionHandler &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) &#123;</span><br><span class="line">        if (r instanceof ThreadTaskDemo) &#123;</span><br><span class="line">            ThreadTaskDemo thTk &#x3D; (ThreadTaskDemo) r;</span><br><span class="line">            &#x2F;&#x2F;为了演示用，所以直接打印，勿模仿。正式场景下应该持久化或者写入日志！！！</span><br><span class="line">            System.out.println(&quot;当前任务 &quot;+ thTk.getValue()+&quot; 执行失败！&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们再运行下例子，我们可以发现并没抛出异常，而且控制应用也关闭。</p>
+<p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/java20200518173557.png" alt="自定义拒绝策略后验证效果"></p>
+<h2 id="3-5-禁用Executors创建线程池"><a href="#3-5-禁用Executors创建线程池" class="headerlink" title="3.5. 禁用Executors创建线程池"></a>3.5. 禁用<code>Executors</code>创建线程池</h2><p>通过上面我们简单了解线程池的构造函数参数的意义，我们线程池再线程创建时，其构造函数中指定的队列 <code>LinkedBlockingQueue</code>，这是一种无界的队列，最大值 <code>Integer.MAX_VALUE</code> 即214748364，这队列堆积数量过大，在实际生产中可能直接OOM，不信的话。好奇同学也会说不是还有 <code>newCachedThreadPool</code>，但是它的最大线程数量是 <code>Integer.MAX_VALUE</code>，道理一样，容易造成OOM。</p>
+<p>所以很多大型公司在编码规范上都禁止利用 <code>Executors</code>创建线程池。</p>
+<h2 id="3-6-第三方常见创建线程池的方式"><a href="#3-6-第三方常见创建线程池的方式" class="headerlink" title="3.6. 第三方常见创建线程池的方式"></a>3.6. 第三方常见创建线程池的方式</h2><h3 id="3-6-1-引入-commons-lang3-包方式【不推荐】"><a href="#3-6-1-引入-commons-lang3-包方式【不推荐】" class="headerlink" title="3.6.1. 引入 commons-lang3 包方式【不推荐】"></a>3.6.1. 引入 commons-lang3 包方式【不推荐】</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ThreadFactory threadFactory &#x3D; new BasicThreadFactory.Builder().namingPattern(&quot;schedule-pool-%d&quot;).daemon(true).build();</span><br><span class="line">ScheduledExecutorService executorService &#x3D; new ScheduledThreadPoolExecutor(1,threadFactory);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>依然给最大线程池赋值无上限。</li>
+<li>DelayedWorkQueue 延迟阻塞队列，不推荐</li>
+</ul>
+<h3 id="3-6-2-引入-com-google-guava-包方式【一般推荐】"><a href="#3-6-2-引入-com-google-guava-包方式【一般推荐】" class="headerlink" title="3.6.2. 引入 com.google.guava 包方式【一般推荐】"></a>3.6.2. 引入 com.google.guava 包方式【一般推荐】</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ThreadFactory threadFactory &#x3D; new BasicThreadFactory.Builder().namingPattern(&quot;schedule-pool-%d&quot;).daemon(true).build();</span><br><span class="line"></span><br><span class="line">ExecutorService pool &#x3D; new ThreadPoolExecutor(5, 200,</span><br><span class="line">        0L, TimeUnit.MILLISECONDS,new LinkedBlockingQueue&lt;Runnable&gt;(1024), threadFactory, new ThreadPoolExecutor.AbortPolicy());</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-常见问题"><a href="#4-常见问题" class="headerlink" title="4. 常见问题"></a>4. 常见问题</h1><h2 id="4-1-newFixedThreadPool-1-与-newSingleThreadExecutor-区别"><a href="#4-1-newFixedThreadPool-1-与-newSingleThreadExecutor-区别" class="headerlink" title="4.1. newFixedThreadPool(1) 与 newSingleThreadExecutor 区别"></a>4.1. newFixedThreadPool(1) 与 newSingleThreadExecutor 区别</h2><ul>
+<li><p><code>newSingleThreadExecutor</code>采用FIFO，保证线程执行顺序，先提交的任务先执行，而<code>newFixedThreadPool(1)</code>不保证。</p>
+</li>
+<li><p>在<code>newSingleThreadExecutor</code>方法中，当线程执行出现异常时，它会重新创建一个线程替换之前的线程继续执行，而<code>newFixedThreadPool(1)</code>不行。</p>
+</li>
+</ul>
+
+</div>
+
+
+    <div class="post-guide">
+        <div class="item left">
+            
+              <a href="/2020/05/20/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95Volatile/">
+                  <i class="fa fa-angle-left" aria-hidden="true"></i>
+                  死磕Volatile
+              </a>
+            
+        </div>
+        <div class="item right">
+            
+              <a href="/2020/05/14/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95synchronized/">
+                死磕synchronized
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+              </a>
+            
+        </div>
+    </div>
+
+
+
+	<div id="vcomments"></div>
+
+
+<script>
+	
+		// 评论
+		new Valine({
+			av: AV,
+			el: '#vcomments',
+			notify: false,
+			verify: false,
+			path: window.location.pathname,
+			appId: '',
+			appKey: '',
+			placeholder: '请输入评论',
+			avatar: 'retro',
+			recordIP: false
+		})
+	
+	
+</script>
+	</div>
+	<div id="footer">
+	<p>
+	©2019-<span id="footerYear"></span> 
+	<a href="/">Rothschil</a> 
+	
+	
+		|
+		<span id="busuanzi_container_site_pv">
+			pv
+			<span id="busuanzi_value_site_pv"></span>
+		</span>
+		|
+		<span id="busuanzi_container_site_uv"> 
+			uv
+			<span id="busuanzi_value_site_uv"></span>
+		</span>
+	
+	<br>
+	Powered by <a href="//hexo.io" target="_blank">Hexo</a>
+	</p>
+</div>
+
+<script type="text/javascript"> 
+	document.getElementById('footerYear').innerHTML = new Date().getFullYear() + '';
+</script>
+	<button id="totop-toggle" class="toggle"><i class="fa fa-angle-double-up" aria-hidden="true"></i></button>
+</body>
+</html>

@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+	
+	<!-- title -->
+	
+	<title>
+	
+		浅谈SpringBoot启动那些事儿 | 
+	 
+	王老邪
+	</title>
+	
+	<!-- keywords,description -->
+	 
+		<meta name="description" content="浅谈SpringBoot启动那些事儿" />
+	
+
+	<!-- favicon -->
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+	
+  
+
+	
+<link rel="stylesheet" href="/css/main.css">
+
+	
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/darcula.min.css">
+
+
+	
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/highlight.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/npm/jquery-pjax@2.0.1/jquery.pjax.min.js"></script>
+
+	
+<script src="/js/main.js"></script>
+
+	
+		
+<script src="https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min.js"></script>
+
+		
+<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
+
+	
+	
+		<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+	
+	<script>
+		var _hmt = _hmt || [];
+		(function() {
+			var hm = document.createElement("script");
+			hm.src = "https://hm.baidu.com/hm.js?1b1318d1b07a2360e12cec2ed56cd0d6";
+			var s = document.getElementsByTagName("script")[0]; 
+			s.parentNode.insertBefore(hm, s);
+		})();
+	</script>
+		
+<meta name="generator" content="Hexo 5.0.0"></head>
+
+<body>
+	<header id="header">
+    <a id="title" href="/" class="logo">王老邪</a>
+
+	<ul id="menu">
+		<li class="menu-item">
+			<a href="about.html" class="menu-item-link">ABOUT</a>
+		</li>
+		
+		<li class="menu-item">
+			<a href="https://github.com/king-angmar/weathertop" class="menu-item-link" target="_blank">
+				weathertop
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="https://github.com/rothschil" class="menu-item-link" target="_blank">
+				<i class="fa fa-github fa-2x"></i>
+			</a>
+		</li>
+	</ul>
+</header>
+
+	
+<div id="sidebar">
+	<button id="sidebar-toggle" class="toggle" ><i class="fa fa-arrow-right " aria-hidden="true"></i></button>
+	
+	<div id="site-toc">
+		<input id="search-input" class="search-input" type="text" placeholder="search...">
+		<div id="tree">
+			
+
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 操作系统
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 Linux
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/01/01/01%20%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/01%20Linux/Linux%E5%9F%BA%E7%A1%80/">
+										Linux基础
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										06 Java
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 JVM
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/05/21/06%20Java/01%20JVM/JVM%E8%B0%83%E4%BC%98%E6%94%BB%E7%95%A5/">
+										JVM调优攻略
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										02 多线程
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/CountDownLatch%E3%80%81Semaphone%E3%80%81CyclicBarrier%E5%85%A5%E9%97%A8/">
+										CountDownLatch、Semaphone、CyclicBarrier入门
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95Java%E9%98%9F%E5%88%97/">
+										死磕Java队列
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/05/14/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95ThreadPoolExecutor%E7%BA%BF%E7%A8%8B%E6%B1%A0/">
+										死磕ThreadPoolExecutor线程池
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/05/20/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95Volatile/">
+										死磕Volatile
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/05/14/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95synchronized/">
+										死磕synchronized
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										03 网络编程
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/06%20Java/03%20%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/TCP/">
+										TCP
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										04 设计模式
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/03/29/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%901%E3%80%91%E2%80%94%E2%80%94%E8%A7%82%E5%AF%9F%E8%80%85/">
+										浅析Java设计模式【1】——观察者
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/03/29/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%902%E3%80%91%E2%80%94%E2%80%94%E9%80%82%E9%85%8D%E5%99%A8/">
+										浅析Java设计模式【2】——适配器
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/03/30/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%903%E3%80%91%E2%80%94%E2%80%94%E4%BB%A3%E7%90%86/">
+										浅析Java设计模式【3】——代理
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/06/19/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%904%E3%80%91%E2%80%94%E2%80%94%E7%AD%96%E7%95%A5/">
+										浅析Java设计模式【4】——策略
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										07 框架
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										03 Springboot
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/06/19/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/SpringBoot%E9%9B%86%E6%88%90Elasticsearch7.4-%E5%AE%9E%E6%88%98(1)/">
+										SpringBoot集成Elasticsearch7.4-实战(1)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/06/20/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/SpringBoot%E9%9B%86%E6%88%90Elasticsearch7.4-%E5%AE%9E%E6%88%98(2)/">
+										SpringBoot集成Elasticsearch7.4-实战(2)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/06/21/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/SpringBoot%E9%9B%86%E6%88%90Elasticsearch7.4-%E5%AE%9E%E6%88%98(3)/">
+										SpringBoot集成Elasticsearch7.4-实战(3)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file active">
+									<a href="/2020/01/02/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/%E6%B5%85%E8%B0%88SpringBoot%E5%90%AF%E5%8A%A8%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/">
+										浅谈SpringBoot启动那些事儿
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										08 微服务
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 Nacos
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/01/10/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/00%20Nacos/CentOS%E7%8E%AF%E5%A2%83%E4%B8%8B%E5%AE%89%E8%A3%85Nacos/">
+										CentOS环境下安装Nacos
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/12/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/00%20Nacos/SpringCloud%E9%9B%86%E6%88%90Nacos%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0/">
+										SpringCloud集成Nacos实现服务发现
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/11/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/00%20Nacos/SpringCloud%E9%9B%86%E6%88%90Nacos%E5%AE%9E%E7%8E%B0%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/">
+										SpringCloud集成Nacos实现配置管理
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										10 架构分析
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/04/09/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/10%20%E6%9E%B6%E6%9E%84%E5%88%86%E6%9E%90/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%88%86%E6%9E%90/">
+										微服务架构设计分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										09 区块链
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/12/24/09%20%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E7%9F%A5%E8%AF%86%E5%85%A5%E9%97%A8/">
+										区块链知识入门
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										10 容器
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 Docker
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/07/18/10%20%E5%AE%B9%E5%99%A8/00%20Docker/Docker%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7Portainer/">
+										Docker管理工具Portainer
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										11 分布式
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 分布式事务
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/08/02/11%20%E5%88%86%E5%B8%83%E5%BC%8F/00%20%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E8%AF%A6%E8%A7%A3%E2%80%94%E2%80%94SpringBoot+Atomikos%E7%AF%87/">
+										分布式事务详解——SpringBoot+Atomikos篇
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 分布式锁
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/08/01/11%20%E5%88%86%E5%B8%83%E5%BC%8F/01%20%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/%E6%B5%85%E6%9E%90%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%AE%9E%E7%8E%B0%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F/">
+										浅析分布式锁实现三种方式
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										14 中间件
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/14%20%E4%B8%AD%E9%97%B4%E4%BB%B6/Redis/">
+										Redis
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/07/31/14%20%E4%B8%AD%E9%97%B4%E4%BB%B6/RocketMQ%E9%9B%86%E7%BE%A4%E4%B8%8ESpringBoot%E9%9B%86%E6%88%90%EF%BC%88%E4%B8%80%EF%BC%89/">
+										RocketMQ集群与SpringBoot集成（一）
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										28 杂谈
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/09/20/28%20%E6%9D%82%E8%B0%88/%E4%BA%BA%E5%8D%83%E7%9B%B8%EF%BC%8C%E4%BD%9B%E6%97%A0%E7%9B%B8/">
+										人千相，佛无相
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/03/19/28%20%E6%9D%82%E8%B0%88/%E5%8E%86%E5%8F%B2%E4%B8%8A%E7%9A%84%E5%AE%89%E5%BE%BD%E4%BA%BA%E7%89%A9/">
+										历史上的安徽人物
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/28%20%E6%9D%82%E8%B0%88/%E8%B5%A2%E5%9C%A8%E6%A0%BC%E5%B1%80%E3%80%81%E8%BE%93%E5%9C%A8%E8%AE%A1%E8%BE%83/">
+										赢在格局、输在计较
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										54 产品设计
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/01/15/54%20%E4%BA%A7%E5%93%81%E8%AE%BE%E8%AE%A1/%E6%B5%85%E8%B0%88%E7%94%A8%E6%88%B7%E7%94%BB%E5%83%8F/">
+										浅谈用户画像
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/20/54%20%E4%BA%A7%E5%93%81%E8%AE%BE%E8%AE%A1/%E7%BB%9F%E4%B8%80%E5%AE%A1%E8%AE%A1/">
+										统一审计
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										98 管理类
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 项目交接
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/04/01/98%20%E7%AE%A1%E7%90%86%E7%B1%BB/00%20%E9%A1%B9%E7%9B%AE%E4%BA%A4%E6%8E%A5/%E5%AF%B9%E9%A1%B9%E7%9B%AE%E4%BA%A4%E6%8E%A5%E8%BF%87%E7%A8%8B%E8%A6%81%E6%B1%82/">
+										对项目交接过程要求
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										99 工具等
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/12/18/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/Win10%E9%BB%91%E7%A7%91%E6%8A%80%EF%BC%8C%E4%BD%A0%E5%88%B0%E5%BA%95%E7%9F%A5%E9%81%93%E5%A4%9A%E5%B0%91/">
+										Win10黑科技，你到底知道多少
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/Wlx2Explore%E5%85%A5%E9%97%A8/">
+										Wlx2Explore入门
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/31/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/lantern%E9%82%80%E8%AF%B7%E7%A0%81/">
+										lantern邀请码
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/%E5%8F%AF%E7%94%A8%E5%85%8D%E6%BF%80%E6%B4%BBAdobe%20Acrobat%20DC%202020/">
+										可用免激活Adobe Acrobat DC 2020
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2018/04/18/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/%E8%AF%A6%E8%A7%A3CMD%E5%91%BD%E4%BB%A4%E6%BB%A1%E9%80%9F%E4%B8%8B%E8%BD%BD%E7%99%BE%E5%BA%A6%E4%BA%91/">
+										详解CMD命令满速下载百度云
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+		</div>
+	</div>
+</div>
+
+	<!-- 引入正文 -->
+	<div id="content">
+		<h1 id="article-title">
+
+	浅谈SpringBoot启动那些事儿
+</h1>
+<div class="article-meta">
+	
+	<span>Rothschil</span>
+	<span>2020-01-02 19:06:00</span>
+    
+		<div id="article-categories">
+            
+                
+                    <span>
+                        <i class="fa fa-folder" aria-hidden="true"></i>
+                        <a href="/categories/springboot/">springboot</a>
+						
+                    </span>
+                
+            
+		</div>
+    
+</div>
+
+<div id="article-content">
+	<p>本文以SpringBoot2.2.2.RELEASE版本为基础做的分析。其他版本请自行参考官方文档。</p>
+<h1 id="1-构建SpringBoot源码环境"><a href="#1-构建SpringBoot源码环境" class="headerlink" title="1. 构建SpringBoot源码环境"></a>1. 构建SpringBoot源码环境</h1><p>本章节主要讲述通过下载Springboot源码构建springboot开发环境，并利用此开发环境完成单用例的开发。</p>
+<h2 id="1-1-下载源码"><a href="#1-1-下载源码" class="headerlink" title="1.1. 下载源码"></a>1.1. 下载源码</h2><p>从Gihub仓库中Clone或者下载压缩包文件，Github地址为<a target="_blank" rel="noopener" href="https://github.com/spring-projects/spring-boot">https://github.com/spring-projects/spring-boot</a>，因为当前最新的版本为2.2.2.RELEASE，所以我在<strong>release</strong>中挑选压缩文件下载，下载后的文件名为<strong>spring-boot-2.2.2.RELEASE.zip</strong></p>
+<p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/springboot20200331212819.png" alt="Springboot源码仓库截图"></p>
+<p>按照tag，找<a target="_blank" rel="noopener" href="https://github.com/spring-projects/spring-boot/releases/tag/v2.2.2.RELEASE">https://github.com/spring-projects/spring-boot/releases/tag/v2.2.2.RELEASE</a>。</p>
+<p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/springboot20200331212841.png" alt="下载的位置"></p>
+<p>下载后，解压文件到自定义目录，再执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean install -DskipTests -Pfast</span><br></pre></td></tr></table></figure>
+
+<p>耐心等待所有依赖包下载完成，再将项目导入IDEA，即可完成源码环境构建。</p>
+<p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/springboot20200331212901.png" alt="导入IDEA目录结构"></p>
+<h2 id="1-2-核心父类模块"><a href="#1-2-核心父类模块" class="headerlink" title="1.2. 核心父类模块"></a>1.2. 核心父类模块</h2><h3 id="1-2-1-spring-boot-starters"><a href="#1-2-1-spring-boot-starters" class="headerlink" title="1.2.1. spring-boot-starters"></a>1.2.1. spring-boot-starters</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;parent&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-dependencies&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;$&#123;revision&#125;&lt;&#x2F;version&gt;</span><br><span class="line">    &lt;relativePath&gt;..&#x2F;spring-boot-dependencies&lt;&#x2F;relativePath&gt;</span><br><span class="line">&lt;&#x2F;parent&gt;</span><br><span class="line">&lt;artifactId&gt;spring-boot-parent&lt;&#x2F;artifactId&gt;</span><br><span class="line">&lt;packaging&gt;pom&lt;&#x2F;packaging&gt;</span><br><span class="line">&lt;name&gt;Spring Boot Parent&lt;&#x2F;name&gt;</span><br><span class="line">&lt;description&gt;Spring Boot Parent&lt;&#x2F;description&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这个模块打包POM，它也有上级<strong>spring-boot-dependencies</strong>，我看2.2.2这个版本并没有定义starter<br>而是用另一个模块<strong>spring-boot-starters</strong>来定义。详细见下图：</p>
+<p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/springboot20200331212922.png" alt="starter定义"></p>
+<h3 id="1-2-2-spring-boot-dependencies"><a href="#1-2-2-spring-boot-dependencies" class="headerlink" title="1.2.2. spring-boot-dependencies"></a>1.2.2. spring-boot-dependencies</h3><p>同样做了很多依赖包的定义，解决了我们开发过程中自己选择依赖包版本容易冲突的问题。</p>
+<h2 id="1-3-新建样例"><a href="#1-3-新建样例" class="headerlink" title="1.3. 新建样例"></a>1.3. 新建样例</h2><p>在spring-boot-project模块下新建Module，命名为<strong>spring-boot-example</strong>，为了方便，一切从简，直接构建一个Application、Controller和yml文件。</p>
+<ul>
+<li>pom文件</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;project xmlns&#x3D;&quot;http:&#x2F;&#x2F;maven.apache.org&#x2F;POM&#x2F;4.0.0&quot;</span><br><span class="line">         xmlns:xsi&#x3D;&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2001&#x2F;XMLSchema-instance&quot;</span><br><span class="line">         xsi:schemaLocation&#x3D;&quot;http:&#x2F;&#x2F;maven.apache.org&#x2F;POM&#x2F;4.0.0 http:&#x2F;&#x2F;maven.apache.org&#x2F;xsd&#x2F;maven-4.0.0.xsd&quot;&gt;</span><br><span class="line">    &lt;parent&gt;</span><br><span class="line">        &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;spring-boot-parent&lt;&#x2F;artifactId&gt;</span><br><span class="line">        &lt;version&gt;$&#123;revision&#125;&lt;&#x2F;version&gt;</span><br><span class="line">        &lt;relativePath&gt;..&#x2F;spring-boot-parent&lt;&#x2F;relativePath&gt;</span><br><span class="line">    &lt;&#x2F;parent&gt;</span><br><span class="line">    &lt;modelVersion&gt;4.0.0&lt;&#x2F;modelVersion&gt;</span><br><span class="line"></span><br><span class="line">    &lt;artifactId&gt;spring-boot-example&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;name&gt;spring boot example&lt;&#x2F;name&gt;</span><br><span class="line">    &lt;packaging&gt;jar&lt;&#x2F;packaging&gt;</span><br><span class="line"></span><br><span class="line">    &lt;properties&gt;</span><br><span class="line">        &lt;project.build.sourceEncoding&gt;UTF-8&lt;&#x2F;project.build.sourceEncoding&gt;</span><br><span class="line">        &lt;maven.compiler.source&gt;1.8&lt;&#x2F;maven.compiler.source&gt;</span><br><span class="line">        &lt;maven.compiler.target&gt;1.8&lt;&#x2F;maven.compiler.target&gt;</span><br><span class="line">    &lt;&#x2F;properties&gt;</span><br><span class="line"></span><br><span class="line">    &lt;dependencies&gt;</span><br><span class="line">        &lt;!-- Compile --&gt;</span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;spring-boot-starter-web&lt;&#x2F;artifactId&gt;</span><br><span class="line">        &lt;&#x2F;dependency&gt;</span><br><span class="line">    &lt;&#x2F;dependencies&gt;</span><br><span class="line"></span><br><span class="line">    &lt;build&gt;</span><br><span class="line">        &lt;finalName&gt;spring-boot-example&lt;&#x2F;finalName&gt;</span><br><span class="line">        &lt;plugins&gt;</span><br><span class="line">            &lt;plugin&gt;</span><br><span class="line">                &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">                &lt;artifactId&gt;spring-boot-maven-plugin&lt;&#x2F;artifactId&gt;</span><br><span class="line">                &lt;configuration&gt;</span><br><span class="line">                    &lt;executable&gt;true&lt;&#x2F;executable&gt; &lt;!-- Add --&gt;</span><br><span class="line">                &lt;&#x2F;configuration&gt;</span><br><span class="line">                &lt;executions&gt;</span><br><span class="line">                    &lt;execution&gt;</span><br><span class="line">                        &lt;goals&gt;</span><br><span class="line">                            &lt;goal&gt;repackage&lt;&#x2F;goal&gt;</span><br><span class="line">                        &lt;&#x2F;goals&gt;</span><br><span class="line">                    &lt;&#x2F;execution&gt;</span><br><span class="line">                &lt;&#x2F;executions&gt;</span><br><span class="line">            &lt;&#x2F;plugin&gt;</span><br><span class="line">            &lt;plugin&gt;</span><br><span class="line">                &lt;groupId&gt;org.apache.maven.plugins&lt;&#x2F;groupId&gt;</span><br><span class="line">                &lt;artifactId&gt;maven-surefire-plugin&lt;&#x2F;artifactId&gt;</span><br><span class="line">                &lt;configuration&gt;</span><br><span class="line">                    &lt;useSystemClassLoader&gt;false&lt;&#x2F;useSystemClassLoader&gt;</span><br><span class="line">                &lt;&#x2F;configuration&gt;</span><br><span class="line">            &lt;&#x2F;plugin&gt;</span><br><span class="line">        &lt;&#x2F;plugins&gt;</span><br><span class="line">    &lt;&#x2F;build&gt;</span><br><span class="line">&lt;&#x2F;project&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>代码</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">package xyz.wongs.weathertop;</span><br><span class="line"></span><br><span class="line">import org.springframework.boot.SpringApplication;</span><br><span class="line">import org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"></span><br><span class="line">@SpringBootApplication</span><br><span class="line">public class ExamApplication &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        SpringApplication.run(ExamApplication.class,args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">package xyz.wongs.weathertop;</span><br><span class="line"></span><br><span class="line">import org.springframework.http.MediaType;</span><br><span class="line">import org.springframework.web.bind.annotation.GetMapping;</span><br><span class="line">import org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line">import org.springframework.web.bind.annotation.RestController;</span><br><span class="line"></span><br><span class="line">import java.util.ArrayList;</span><br><span class="line">import java.util.List;</span><br><span class="line"></span><br><span class="line">@RestController</span><br><span class="line">@RequestMapping(value &#x3D; &quot;&#x2F;index&quot;, produces &#x3D; MediaType.APPLICATION_JSON_UTF8_VALUE)</span><br><span class="line">public class IndexController &#123;</span><br><span class="line"></span><br><span class="line">    @GetMapping(value &#x3D; &quot;&#x2F;&quot;)</span><br><span class="line">    public List index() &#123;</span><br><span class="line">        List list &#x3D; new ArrayList();</span><br><span class="line">        list.add(&quot;这是测试&quot;);</span><br><span class="line">        return list;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>yml文件</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">server:</span><br><span class="line">  port: 9002</span><br><span class="line"></span><br><span class="line">spring:</span><br><span class="line">  application:</span><br><span class="line">    name: exam-web</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>启动ExamApplication，浏览器打开地址，<a target="_blank" rel="noopener" href="http://localhost:9002/index/">http://localhost:9002/index/</a>，即可看到效果。</p>
+<p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/springboot20200331212943.png" alt="演示效果"></p>
+<h2 id="1-4-小结"><a href="#1-4-小结" class="headerlink" title="1.4. 小结"></a>1.4. 小结</h2><p>以上我们利用SpringBoot源码构建一个完整Web应用，让大家熟悉下Springboot的目录结构，方便后一章节我们分析跟踪源码。</p>
+<h1 id="2-源码分析"><a href="#2-源码分析" class="headerlink" title="2. 源码分析"></a>2. 源码分析</h1><h2 id="2-1-主函数入口"><a href="#2-1-主函数入口" class="headerlink" title="2.1. 主函数入口"></a>2.1. 主函数入口</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">package xyz.wongs.weathertop;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">import org.springframework.boot.SpringApplication;</span><br><span class="line">import org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"></span><br><span class="line">@SpringBootApplication</span><br><span class="line">public class ExamApplication &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        SpringApplication.run(ExamApplication.class,args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-Maven依赖"><a href="#2-2-Maven依赖" class="headerlink" title="2.2. Maven依赖"></a>2.2. Maven依赖</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-web&lt;&#x2F;artifactId&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<p>web的pom依赖，打开源码，它已经为我们继承好tomcat容器和spring-web、mvc的依赖。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;spring-boot-starter&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;&#x2F;dependency&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;spring-boot-starter-json&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;&#x2F;dependency&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;spring-boot-starter-tomcat&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;&#x2F;dependency&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;spring-boot-starter-validation&lt;&#x2F;artifactId&gt;</span><br><span class="line">        &lt;exclusions&gt;</span><br><span class="line">            &lt;exclusion&gt;</span><br><span class="line">                &lt;groupId&gt;org.apache.tomcat.embed&lt;&#x2F;groupId&gt;</span><br><span class="line">                &lt;artifactId&gt;tomcat-embed-el&lt;&#x2F;artifactId&gt;</span><br><span class="line">            &lt;&#x2F;exclusion&gt;</span><br><span class="line">        &lt;&#x2F;exclusions&gt;</span><br><span class="line">    &lt;&#x2F;dependency&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.springframework&lt;&#x2F;groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;spring-web&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;&#x2F;dependency&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.springframework&lt;&#x2F;groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;spring-webmvc&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;&#x2F;dependency&gt;</span><br><span class="line">&lt;&#x2F;dependencies&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-依赖分析"><a href="#2-3-依赖分析" class="headerlink" title="2.3. 依赖分析"></a>2.3. 依赖分析</h2><p>在当前模块执行mvn dependency:tree，分析下依赖包，我们可以看到，这一层为我们融合很多，试想一下，如果这些都让我们自己挨个去做，不可想象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">$ mvn dependency:tree</span><br><span class="line">[INFO] Scanning for projects...</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[INFO] Building spring boot example 2.2.2.RELEASE</span><br><span class="line">[INFO] ------------------------------------------------------------------------</span><br><span class="line">[INFO]</span><br><span class="line">[INFO] --- maven-dependency-plugin:3.1.1:tree (default-cli) @ spring-boot-example ---</span><br><span class="line">[INFO] org.springframework.boot:spring-boot-example:jar:2.2.2.RELEASE</span><br><span class="line">[INFO] +- org.springframework.boot:spring-boot-starter-web:jar:2.2.2.RELEASE:compile</span><br><span class="line">[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:2.2.2.RELEASE:compile</span><br><span class="line">[INFO] |  |  +- org.springframework.boot:spring-boot:jar:2.2.2.RELEASE:compile</span><br><span class="line">[INFO] |  |  +- org.springframework.boot:spring-boot-autoconfigure:jar:2.2.2.RELEASE:compile</span><br><span class="line">[INFO] |  |  +- org.springframework.boot:spring-boot-starter-logging:jar:2.2.2.RELEASE:compile</span><br><span class="line">[INFO] |  |  |  +- ch.qos.logback:logback-classic:jar:1.2.3:compile</span><br><span class="line">[INFO] |  |  |  |  +- ch.qos.logback:logback-core:jar:1.2.3:compile</span><br><span class="line">[INFO] |  |  |  |  \- org.slf4j:slf4j-api:jar:1.7.29:compile</span><br><span class="line">[INFO] |  |  |  +- org.apache.logging.log4j:log4j-to-slf4j:jar:2.12.1:compile</span><br><span class="line">[INFO] |  |  |  |  \- org.apache.logging.log4j:log4j-api:jar:2.12.1:compile</span><br><span class="line">[INFO] |  |  |  \- org.slf4j:jul-to-slf4j:jar:1.7.29:compile</span><br><span class="line">[INFO] |  |  +- jakarta.annotation:jakarta.annotation-api:jar:1.3.5:compile</span><br><span class="line">[INFO] |  |  \- org.yaml:snakeyaml:jar:1.25:runtime</span><br><span class="line">[INFO] |  +- org.springframework.boot:spring-boot-starter-json:jar:2.2.2.RELEASE:compile</span><br><span class="line">[INFO] |  |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.10.1:compile</span><br><span class="line">[INFO] |  |  |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.10.1:compile</span><br><span class="line">[INFO] |  |  |  \- com.fasterxml.jackson.core:jackson-core:jar:2.10.1:compile</span><br><span class="line">[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jdk8:jar:2.10.1:compile</span><br><span class="line">[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.10.1:compile</span><br><span class="line">[INFO] |  |  \- com.fasterxml.jackson.module:jackson-module-parameter-names:jar:2.10.1:compile</span><br><span class="line">[INFO] |  +- org.springframework.boot:spring-boot-starter-tomcat:jar:2.2.2.RELEASE:compile</span><br><span class="line">[INFO] |  |  +- org.apache.tomcat.embed:tomcat-embed-core:jar:9.0.29:compile</span><br><span class="line">[INFO] |  |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:9.0.29:compile</span><br><span class="line">[INFO] |  |  \- org.apache.tomcat.embed:tomcat-embed-websocket:jar:9.0.29:compile</span><br><span class="line">[INFO] |  +- org.springframework.boot:spring-boot-starter-validation:jar:2.2.2.RELEASE:compile</span><br><span class="line">[INFO] |  |  +- jakarta.validation:jakarta.validation-api:jar:2.0.1:compile</span><br><span class="line">[INFO] |  |  \- org.hibernate.validator:hibernate-validator:jar:6.0.18.Final:compile</span><br><span class="line">[INFO] |  |     +- org.jboss.logging:jboss-logging:jar:3.4.1.Final:compile</span><br><span class="line">[INFO] |  |     \- com.fasterxml:classmate:jar:1.5.1:compile</span><br><span class="line">[INFO] |  +- org.springframework:spring-web:jar:5.2.2.RELEASE:compile</span><br><span class="line">[INFO] |  |  \- org.springframework:spring-beans:jar:5.2.2.RELEASE:compile</span><br><span class="line">[INFO] |  \- org.springframework:spring-webmvc:jar:5.2.2.RELEASE:compile</span><br><span class="line">[INFO] |     +- org.springframework:spring-aop:jar:5.2.2.RELEASE:compile</span><br><span class="line">[INFO] |     +- org.springframework:spring-context:jar:5.2.2.RELEASE:compile</span><br><span class="line">[INFO] |     \- org.springframework:spring-expression:jar:5.2.2.RELEASE:compile</span><br><span class="line">[INFO] +- org.junit.jupiter:junit-jupiter:jar:5.5.2:test</span><br><span class="line">[INFO] |  +- org.junit.jupiter:junit-jupiter-api:jar:5.5.2:test</span><br><span class="line">[INFO] |  |  +- org.opentest4j:opentest4j:jar:1.2.0:test</span><br><span class="line">[INFO] |  |  \- org.junit.platform:junit-platform-commons:jar:1.5.2:test</span><br><span class="line">[INFO] |  +- org.junit.jupiter:junit-jupiter-params:jar:5.5.2:test</span><br><span class="line">[INFO] |  \- org.junit.jupiter:junit-jupiter-engine:jar:5.5.2:test</span><br><span class="line">[INFO] +- org.junit.vintage:junit-vintage-engine:jar:5.5.2:test</span><br><span class="line">[INFO] |  +- org.apiguardian:apiguardian-api:jar:1.1.0:test</span><br><span class="line">[INFO] |  +- org.junit.platform:junit-platform-engine:jar:1.5.2:test</span><br><span class="line">[INFO] |  \- junit:junit:jar:4.12:test</span><br><span class="line">[INFO] +- org.mockito:mockito-junit-jupiter:jar:3.1.0:test</span><br><span class="line">[INFO] +- org.assertj:assertj-core:jar:3.13.2:test</span><br><span class="line">[INFO] +- org.mockito:mockito-core:jar:3.1.0:test</span><br><span class="line">[INFO] |  +- net.bytebuddy:byte-buddy:jar:1.10.4:test</span><br><span class="line">[INFO] |  +- net.bytebuddy:byte-buddy-agent:jar:1.10.4:test</span><br><span class="line">[INFO] |  \- org.objenesis:objenesis:jar:2.6:test</span><br><span class="line">[INFO] +- org.hamcrest:hamcrest:jar:2.1:test</span><br><span class="line">[INFO] \- org.springframework:spring-test:jar:5.2.2.RELEASE:test</span><br><span class="line">[INFO]    \- org.springframework:spring-core:jar:5.2.2.RELEASE:compile</span><br><span class="line">[INFO]       \- org.springframework:spring-jcl:jar:5.2.2.RELEASE:compile</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-重点知识"><a href="#3-重点知识" class="headerlink" title="3. 重点知识"></a>3. 重点知识</h1><h2 id="3-1-注解"><a href="#3-1-注解" class="headerlink" title="3.1. 注解"></a>3.1. 注解</h2><p>SpringBoot项目唯一入口就是上面的Application类，这个类有一个annotation注解<strong>SpringBootApplication</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@Target(ElementType.TYPE)</span><br><span class="line">@Retention(RetentionPolicy.RUNTIME)</span><br><span class="line">@Documented</span><br><span class="line">@Inherited</span><br><span class="line">@SpringBootConfiguration</span><br><span class="line">@EnableAutoConfiguration</span><br><span class="line">@ComponentScan(excludeFilters &#x3D; &#123; @Filter(type &#x3D; FilterType.CUSTOM, classes &#x3D; TypeExcludeFilter.class),</span><br><span class="line">        @Filter(type &#x3D; FilterType.CUSTOM, classes &#x3D; AutoConfigurationExcludeFilter.class) &#125;)</span><br><span class="line">public @interface SpringBootApplication &#123;</span><br></pre></td></tr></table></figure>
+
+<p>上面的注解有几个要重点说下</p>
+<ul>
+<li>核心SpringBootConfiguration：源于Spring时代中的Configuration，都是将当前类标记为配置类，并将当前类以@Bean注解方法注入到Spring容器。默认允许在配置类中进行bean间引用以及对该配置的@Bean方法的外部调用。当proxyBeanMethods为false时候，等同于它删除@Configuration构造型</li>
+<li>核心EnableAutoConfiguration：启用自动配置，帮助所有符合条件的Configuration都加载容器中。它的核心就是借助<strong>AutoConfigurationPackage</strong>存储导入的基本包<br>，引入了<strong>AutoConfigurationImportSelector</strong>来实现Configuration列表的导出。</li>
+</ul>
+<p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/springboot20200331213010.png" alt="EnableAutoConfiguration类图"></p>
+<p>注：AutoConfigurationImportSelector.selectImports的实现方式上，在2.1和2.2之间有明显区别，这点大家看的过程中需要关注下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">public String[] selectImports(AnnotationMetadata annotationMetadata) &#123;</span><br><span class="line">    if (!isEnabled(annotationMetadata)) &#123;</span><br><span class="line">        return NO_IMPORTS;</span><br><span class="line">    &#125;</span><br><span class="line">    AutoConfigurationMetadata autoConfigurationMetadata &#x3D; AutoConfigurationMetadataLoader</span><br><span class="line">            .loadMetadata(this.beanClassLoader);</span><br><span class="line">    AutoConfigurationEntry autoConfigurationEntry &#x3D; getAutoConfigurationEntry(autoConfigurationMetadata,</span><br><span class="line">            annotationMetadata);</span><br><span class="line">    return StringUtils.toStringArray(autoConfigurationEntry.getConfigurations());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">protected AutoConfigurationEntry getAutoConfigurationEntry(AutoConfigurationMetadata autoConfigurationMetadata,</span><br><span class="line">        AnnotationMetadata annotationMetadata) &#123;</span><br><span class="line">    if (!isEnabled(annotationMetadata)) &#123;</span><br><span class="line">        return EMPTY_ENTRY;</span><br><span class="line">    &#125;</span><br><span class="line">    AnnotationAttributes attributes &#x3D; getAttributes(annotationMetadata);</span><br><span class="line">    List&lt;String&gt; configurations &#x3D; getCandidateConfigurations(annotationMetadata, attributes);</span><br><span class="line">    configurations &#x3D; removeDuplicates(configurations);</span><br><span class="line">    Set&lt;String&gt; exclusions &#x3D; getExclusions(annotationMetadata, attributes);</span><br><span class="line">    checkExcludedClasses(configurations, exclusions);</span><br><span class="line">    configurations.removeAll(exclusions);</span><br><span class="line">    configurations &#x3D; filter(configurations, autoConfigurationMetadata);</span><br><span class="line">    fireAutoConfigurationImportEvents(configurations, exclusions);</span><br><span class="line">    return new AutoConfigurationEntry(configurations, exclusions);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line">*核心就是用SpringFactoriesLoader 类的 loadFactoryNames()方法，加载ClassPath路径下META-INF&#x2F;spring.factories，也就是“org.springframework.boot.autoconfigure.EnableAutoConfiguration&#x3D;对应所有的导出类”</span><br><span class="line">*</span><br><span class="line">**&#x2F;</span><br><span class="line">protected List&lt;String&gt; getCandidateConfigurations(AnnotationMetadata metadata, AnnotationAttributes attributes) &#123;</span><br><span class="line">    List&lt;String&gt; configurations &#x3D; SpringFactoriesLoader.loadFactoryNames(getSpringFactoriesLoaderFactoryClass(),</span><br><span class="line">            getBeanClassLoader());</span><br><span class="line">    Assert.notEmpty(configurations, &quot;No auto configuration classes found in META-INF&#x2F;spring.factories. If you &quot;</span><br><span class="line">            + &quot;are using a custom packaging, make sure that file is correct.&quot;);</span><br><span class="line">    return configurations;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>也就是说<strong>EnableAutoConfiguration</strong>会从<strong>classpath</strong>路径下加载所有<strong>META-INF/spring.factories</strong>，将<strong>spring.factories</strong>文件中的EnableAutoConfiguration对应的类，通过反射机制实例化标注为@Configuration的容器类，然后即可完成依赖注入。</p>
+<ul>
+<li><p>Target：用于描述类、接口(包括注解类型) 或enum声明，可选值有：1、FIELD-用于描述域；2、LOCAL_VARIABLE-用于描述局部变量；3、METHOD-用于描述方法；4、PACKAGE-用于描述包；5、PARAMETER-用于描述参数</p>
+</li>
+<li><p>Retention：用于描述生命周期，可选值有：1、SOURCE-只保留在源文件，当Java文件编译成class文件的时候，注解被遗弃；2、CLASS-被保留到class文件，但jvm加载class文件时候被遗弃，这是默认的生命周期；3、RUNTIME-注解不仅被保存到class文件中，jvm加载class文件之后，仍然存在</p>
+</li>
+<li><p>Documented：javadoc记录，这里略过</p>
+</li>
+<li><p>Inherited：具备可被继承的属性，即子类也有同样的注解</p>
+</li>
+<li><p>ComponentScan： 接触过传统spring的XML文件，我们应该熟悉标签<a href="context:component-scan">context:component-scan</a>，即将特定的Bean批量注册到Spring容器中。常用的Bean包括：@Entity、@Service、@Controller、@Repository、@Component。它默认扫描SpringApplication的run方法里的Booter.class所在的包路径下文件，所以实际运用中把该启动类放到包的根路径。</p>
+</li>
+</ul>
+<h2 id="3-2-构造函数部分"><a href="#3-2-构造函数部分" class="headerlink" title="3.2. 构造函数部分"></a>3.2. 构造函数部分</h2><p>main函数，main中的SpringApplication.run启动整个web应用，打开run对应类与方法，差不多入口都是一些静态方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line">    * Static helper that can be used to run a &#123;@link SpringApplication&#125; from the</span><br><span class="line">    * specified source using default settings.</span><br><span class="line">    * @param primarySource the primary source to load</span><br><span class="line">    * @param args the application arguments (usually passed from a Java main method)</span><br><span class="line">    * @return the running &#123;@link ApplicationContext&#125;</span><br><span class="line">    *&#x2F;</span><br><span class="line">public static ConfigurableApplicationContext run(Class&lt;?&gt; primarySource, String... args) &#123;</span><br><span class="line">    return run(new Class&lt;?&gt;[] &#123; primarySource &#125;, args);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line">    * Static helper that can be used to run a &#123;@link SpringApplication&#125; from the</span><br><span class="line">    * specified sources using default settings and user supplied arguments.</span><br><span class="line">    * @param primarySources the primary sources to load</span><br><span class="line">    * @param args the application arguments (usually passed from a Java main method)</span><br><span class="line">    * @return the running &#123;@link ApplicationContext&#125;</span><br><span class="line">    *&#x2F;</span><br><span class="line">public static ConfigurableApplicationContext run(Class&lt;?&gt;[] primarySources, String[] args) &#123;</span><br><span class="line">    return new SpringApplication(primarySources).run(args);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的**ConfigurableApplicationContext run(Class&lt;?&gt;[] primarySources, String[] args)**方法中利用构造函数初始化SpringApplication应用，并执行run。这就是我们要分析的入口。</p>
+<h3 id="3-2-1-构造方法"><a href="#3-2-1-构造方法" class="headerlink" title="3.2.1. 构造方法"></a>3.2.1. 构造方法</h3><p><strong>SpringApplication</strong>的核心构造函数，主要做了两件事来完成实例化操作：初始化上下文<strong>ApplicationContextInitializer</strong>以及<strong>ApplicationListener</strong>监听器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public SpringApplication(ResourceLoader resourceLoader, Class&lt;?&gt;... primarySources) &#123;</span><br><span class="line">    this.resourceLoader &#x3D; resourceLoader;</span><br><span class="line">    Assert.notNull(primarySources, &quot;PrimarySources must not be null&quot;);</span><br><span class="line">    this.primarySources &#x3D; new LinkedHashSet&lt;&gt;(Arrays.asList(primarySources));</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;判断是否是web程序(javax.servlet.Servlet和</span><br><span class="line">    &#x2F;&#x2F;org.springframework.web.context.ConfigurableWebApplicationContext是否存在)</span><br><span class="line">    this.webApplicationType &#x3D; WebApplicationType.deduceFromClasspath();</span><br><span class="line">    setInitializers((Collection) getSpringFactoriesInstances(ApplicationContextInitializer.class));</span><br><span class="line">    setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));</span><br><span class="line">    this.mainApplicationClass &#x3D; deduceMainApplicationClass();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>以下就是<strong>ApplicationContextInitializer</strong>以及<strong>ApplicationListener</strong>初始化操作的核心部分，乍一看<strong>ClassLoader</strong>就大概清楚这是一个JDK原生类加载器。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">private &lt;T&gt; Collection&lt;T&gt; getSpringFactoriesInstances(Class&lt;T&gt; type, Class&lt;?&gt;[] parameterTypes, Object... args) &#123;</span><br><span class="line">    ClassLoader classLoader &#x3D; getClassLoader();</span><br><span class="line">    &#x2F;&#x2F; Use names and ensure unique to protect against duplicates</span><br><span class="line">    Set&lt;String&gt; names &#x3D; new LinkedHashSet&lt;&gt;(SpringFactoriesLoader.loadFactoryNames(type, classLoader));</span><br><span class="line">    List&lt;T&gt; instances &#x3D; createSpringFactoriesInstances(type, parameterTypes, classLoader, args, names);</span><br><span class="line">    AnnotationAwareOrderComparator.sort(instances);</span><br><span class="line">    return instances;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>需要加载的Class路径写在<strong>META-INF/spring.factories</strong>中，我们打开<strong>org.springframework.boot:spring-boot</strong>和<strong>org.springframework.boo:spring-boot-autocofigure</strong>两个jar包，看到键值对，这里我们只看<strong>ApplicationContextInitializer</strong>和<strong>ApplicationListener</strong>部分（“\”这是换行符），获取到实现类全名后交由<strong>SpringFactoriesLoader</strong>加载。</p>
+<p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/springboot20200331213035.png" alt="spring.factories截图"></p>
+<h3 id="3-2-2-spring-factories机制"><a href="#3-2-2-spring-factories机制" class="headerlink" title="3.2.2. spring.factories机制"></a>3.2.2. spring.factories机制</h3><p>在上一节，我们看到spring.factories，这种扩展机制实际上是仿照Java中的SPI（Service Provider Interface）扩展机制来实现的，它就是在<strong>META-INF/spring.factories</strong>，获取指定接口的配置的功能。而<strong>ApplicationListener</strong>就是在spring-core包中，它有两个核心方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">public static &lt;T&gt; List&lt;T&gt; loadFactories(Class&lt;T&gt; factoryType, @Nullable ClassLoader classLoader);</span><br><span class="line">public static List&lt;String&gt; loadFactoryNames(Class&lt;?&gt; factoryType, @Nullable ClassLoader classLoader);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>loadFactories: 通过类加载器加载指定的类并实例化</li>
+<li>loadFactoryNames: 由类加载器根据自定义标准类获取其实现类的实例</li>
+</ul>
+<p>这样Spring会遍历整个ClassLoader中所有jar包下的spring.factories文件，这样其实也为了方便开发人员自定义自己配置中spring.factories文件，这样做既不会影响到其它地方的配置，也不会被别人的配置覆盖，这也是官方推荐的做法。</p>
+<h2 id="3-3-核心run方法简介"><a href="#3-3-核心run方法简介" class="headerlink" title="3.3. 核心run方法简介"></a>3.3. 核心run方法简介</h2><p>初始化上下文和监听器之后，就会进入run方法，它负责Spring的启动流程。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line">    * Run the Spring application, creating and refreshing a new</span><br><span class="line">    * &#123;@link ApplicationContext&#125;.</span><br><span class="line">    * @param args the application arguments (usually passed from a Java main method)</span><br><span class="line">    * @return a running &#123;@link ApplicationContext&#125;</span><br><span class="line">    *&#x2F;</span><br><span class="line">public ConfigurableApplicationContext run(String... args) &#123;</span><br><span class="line">    &#x2F;&#x2F;1、创建计时器</span><br><span class="line">    StopWatch stopWatch &#x3D; new StopWatch();</span><br><span class="line">    stopWatch.start();</span><br><span class="line">    ConfigurableApplicationContext context &#x3D; null;</span><br><span class="line">    Collection&lt;SpringBootExceptionReporter&gt; exceptionReporters &#x3D; new ArrayList&lt;&gt;();</span><br><span class="line">    &#x2F;&#x2F;2、设置headless模式</span><br><span class="line">    configureHeadlessProperty();</span><br><span class="line">    &#x2F;&#x2F;3、获取META-INF&#x2F;spring.factories，这里主要是SpringApplicationRunListener监听</span><br><span class="line">    SpringApplicationRunListeners listeners &#x3D; getRunListeners(args);</span><br><span class="line">    listeners.starting();</span><br><span class="line">    try &#123;</span><br><span class="line">        &#x2F;&#x2F;4、将命令行输入的参数包装为ApplicationArguments</span><br><span class="line">        ApplicationArguments applicationArguments &#x3D; new DefaultApplicationArguments(args);</span><br><span class="line">        &#x2F;&#x2F;5、准备environment</span><br><span class="line">        ConfigurableEnvironment environment &#x3D; prepareEnvironment(listeners, applicationArguments);</span><br><span class="line">        configureIgnoreBeanInfo(environment);</span><br><span class="line">        &#x2F;&#x2F;6、打印Banner，也就是我们看到的Springboot的Logo，如果有自定义，则覆盖模式</span><br><span class="line">        Banner printedBanner &#x3D; printBanner(environment);</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;7、创建上下文ApplicationContext</span><br><span class="line">        context &#x3D; createApplicationContext();</span><br><span class="line">        &#x2F;&#x2F;8、从META-INF&#x2F;spring.factories 获取SpringBootExceptionReporter</span><br><span class="line">        exceptionReporters &#x3D; getSpringFactoriesInstances(SpringBootExceptionReporter.class,</span><br><span class="line">                new Class[] &#123; ConfigurableApplicationContext.class &#125;, context);</span><br><span class="line">        &#x2F;&#x2F;9、准备上下文ApplicationContext</span><br><span class="line">        prepareContext(context, environment, listeners, applicationArguments, printedBanner);</span><br><span class="line">        &#x2F;&#x2F;10、刷新上下文</span><br><span class="line">        refreshContext(context);</span><br><span class="line">        afterRefresh(context, applicationArguments);</span><br><span class="line">        stopWatch.stop();</span><br><span class="line">        if (this.logStartupInfo) &#123;</span><br><span class="line">            new StartupInfoLogger(this.mainApplicationClass).logStarted(getApplicationLog(), stopWatch);</span><br><span class="line">        &#125;</span><br><span class="line">        &#x2F;&#x2F;11、发布started事件</span><br><span class="line">        listeners.started(context);</span><br><span class="line">        &#x2F;&#x2F;12、执行所有Runners</span><br><span class="line">        callRunners(context, applicationArguments);</span><br><span class="line">    &#125;</span><br><span class="line">    catch (Throwable ex) &#123;</span><br><span class="line">        handleRunFailure(context, ex, exceptionReporters, listeners);</span><br><span class="line">        throw new IllegalStateException(ex);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    try &#123;</span><br><span class="line">        &#x2F;&#x2F;13、发布running事件</span><br><span class="line">        listeners.running(context);</span><br><span class="line">    &#125;</span><br><span class="line">    catch (Throwable ex) &#123;</span><br><span class="line">        handleRunFailure(context, ex, exceptionReporters, null);</span><br><span class="line">        throw new IllegalStateException(ex);</span><br><span class="line">    &#125;</span><br><span class="line">    return context;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-1-创建计时器"><a href="#3-3-1-创建计时器" class="headerlink" title="3.3.1. 创建计时器"></a>3.3.1. 创建计时器</h3><p>org.springframework.util包下面一个工具类，主要用于对程序部分的模块进行计时(ms级别)，一般用于同步单线程。<br>在springboot中创建匿名定时器，再开启计时。<br>它的好处也有无非，大家感兴趣的时候可以参看另外一篇文章<a target="_blank" rel="noopener" href="https://blog.csdn.net/gxs1688/article/details/87185030">作者：一个不二，标题：Spring计时器StopWatch使用</a></p>
+<h3 id="3-3-2-设置headless模式"><a href="#3-3-2-设置headless模式" class="headerlink" title="3.3.2. 设置headless模式"></a>3.3.2. 设置headless模式</h3><p>java.awt.headless是系统的一种配置模式。在该模式下，系统缺少显示设备、键盘或鼠标。尤其在面向服务器（如提供Web服务）往往可能缺少前述设备，但又需要使用他们提供的功能，生成相应的模拟数据，以提供给客户端（如浏览器所在的配有相关的、键盘和的主机）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">private void configureHeadlessProperty() &#123;</span><br><span class="line">    System.setProperty(SYSTEM_PROPERTY_JAVA_AWT_HEADLESS,</span><br><span class="line">            System.getProperty(SYSTEM_PROPERTY_JAVA_AWT_HEADLESS, Boolean.toString(this.headless)));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-3-获取SpringApplicationRunListener监听列表"><a href="#3-3-3-获取SpringApplicationRunListener监听列表" class="headerlink" title="3.3.3. 获取SpringApplicationRunListener监听列表"></a>3.3.3. 获取SpringApplicationRunListener监听列表</h3><h2 id="3-4-ConfigurableApplicationContext部分"><a href="#3-4-ConfigurableApplicationContext部分" class="headerlink" title="3.4. ConfigurableApplicationContext部分"></a>3.4. ConfigurableApplicationContext部分</h2><p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/springboot20200331213054.png" alt="ConfigurableApplicationContext层次图"></p>
+<p>这是一个接口，对应在spring-context包中，它囊括ApplicationContext需要实现的所有接口，查看源码可知它继承<strong>ApplicationContext, Lifecycle, Closeable</strong>，封装上下文的配置和生命周期管理，在启动和关闭容器过程中执行此操作。</p>
+<p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/springboot20200331213123.png" alt="ConfigurableApplicationContext源码"></p>
+
+</div>
+
+
+    <div class="post-guide">
+        <div class="item left">
+            
+              <a href="/2020/01/10/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/00%20Nacos/CentOS%E7%8E%AF%E5%A2%83%E4%B8%8B%E5%AE%89%E8%A3%85Nacos/">
+                  <i class="fa fa-angle-left" aria-hidden="true"></i>
+                  CentOS环境下安装Nacos
+              </a>
+            
+        </div>
+        <div class="item right">
+            
+              <a href="/2020/01/01/01%20%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/01%20Linux/Linux%E5%9F%BA%E7%A1%80/">
+                Linux基础
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+              </a>
+            
+        </div>
+    </div>
+
+
+
+	<div id="vcomments"></div>
+
+
+<script>
+	
+		// 评论
+		new Valine({
+			av: AV,
+			el: '#vcomments',
+			notify: false,
+			verify: false,
+			path: window.location.pathname,
+			appId: '',
+			appKey: '',
+			placeholder: '请输入评论',
+			avatar: 'retro',
+			recordIP: false
+		})
+	
+	
+</script>
+	</div>
+	<div id="footer">
+	<p>
+	©2019-<span id="footerYear"></span> 
+	<a href="/">Rothschil</a> 
+	
+	
+		|
+		<span id="busuanzi_container_site_pv">
+			pv
+			<span id="busuanzi_value_site_pv"></span>
+		</span>
+		|
+		<span id="busuanzi_container_site_uv"> 
+			uv
+			<span id="busuanzi_value_site_uv"></span>
+		</span>
+	
+	<br>
+	Powered by <a href="//hexo.io" target="_blank">Hexo</a>
+	</p>
+</div>
+
+<script type="text/javascript"> 
+	document.getElementById('footerYear').innerHTML = new Date().getFullYear() + '';
+</script>
+	<button id="totop-toggle" class="toggle"><i class="fa fa-angle-double-up" aria-hidden="true"></i></button>
+</body>
+</html>

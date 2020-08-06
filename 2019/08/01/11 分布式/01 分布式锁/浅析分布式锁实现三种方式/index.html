@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+	
+	<!-- title -->
+	
+	<title>
+	
+		浅析分布式锁实现三种方式 | 
+	 
+	王老邪
+	</title>
+	
+	<!-- keywords,description -->
+	 
+		<meta name="description" content="分布式应用必看分布式锁，乐观锁、悲观锁等" />
+	
+
+	<!-- favicon -->
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+	
+  
+
+	
+<link rel="stylesheet" href="/css/main.css">
+
+	
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/darcula.min.css">
+
+
+	
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/highlight.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/npm/jquery-pjax@2.0.1/jquery.pjax.min.js"></script>
+
+	
+<script src="/js/main.js"></script>
+
+	
+		
+<script src="https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min.js"></script>
+
+		
+<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
+
+	
+	
+		<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+	
+	<script>
+		var _hmt = _hmt || [];
+		(function() {
+			var hm = document.createElement("script");
+			hm.src = "https://hm.baidu.com/hm.js?1b1318d1b07a2360e12cec2ed56cd0d6";
+			var s = document.getElementsByTagName("script")[0]; 
+			s.parentNode.insertBefore(hm, s);
+		})();
+	</script>
+		
+<meta name="generator" content="Hexo 5.0.0"></head>
+
+<body>
+	<header id="header">
+    <a id="title" href="/" class="logo">王老邪</a>
+
+	<ul id="menu">
+		<li class="menu-item">
+			<a href="about.html" class="menu-item-link">ABOUT</a>
+		</li>
+		
+		<li class="menu-item">
+			<a href="https://github.com/king-angmar/weathertop" class="menu-item-link" target="_blank">
+				weathertop
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="https://github.com/rothschil" class="menu-item-link" target="_blank">
+				<i class="fa fa-github fa-2x"></i>
+			</a>
+		</li>
+	</ul>
+</header>
+
+	
+<div id="sidebar">
+	<button id="sidebar-toggle" class="toggle" ><i class="fa fa-arrow-right " aria-hidden="true"></i></button>
+	
+	<div id="site-toc">
+		<input id="search-input" class="search-input" type="text" placeholder="search...">
+		<div id="tree">
+			
+
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 操作系统
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 Linux
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/01/01/01%20%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/01%20Linux/Linux%E5%9F%BA%E7%A1%80/">
+										Linux基础
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										06 Java
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 JVM
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/05/21/06%20Java/01%20JVM/JVM%E8%B0%83%E4%BC%98%E6%94%BB%E7%95%A5/">
+										JVM调优攻略
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										02 多线程
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/CountDownLatch%E3%80%81Semaphone%E3%80%81CyclicBarrier%E5%85%A5%E9%97%A8/">
+										CountDownLatch、Semaphone、CyclicBarrier入门
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95Java%E9%98%9F%E5%88%97/">
+										死磕Java队列
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/05/14/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95ThreadPoolExecutor%E7%BA%BF%E7%A8%8B%E6%B1%A0/">
+										死磕ThreadPoolExecutor线程池
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/05/20/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95Volatile/">
+										死磕Volatile
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/05/14/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95synchronized/">
+										死磕synchronized
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										03 网络编程
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/06%20Java/03%20%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/TCP/">
+										TCP
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										04 设计模式
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/03/29/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%901%E3%80%91%E2%80%94%E2%80%94%E8%A7%82%E5%AF%9F%E8%80%85/">
+										浅析Java设计模式【1】——观察者
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/03/29/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%902%E3%80%91%E2%80%94%E2%80%94%E9%80%82%E9%85%8D%E5%99%A8/">
+										浅析Java设计模式【2】——适配器
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/03/30/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%903%E3%80%91%E2%80%94%E2%80%94%E4%BB%A3%E7%90%86/">
+										浅析Java设计模式【3】——代理
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/06/19/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%904%E3%80%91%E2%80%94%E2%80%94%E7%AD%96%E7%95%A5/">
+										浅析Java设计模式【4】——策略
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										07 框架
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										03 Springboot
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/06/19/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/SpringBoot%E9%9B%86%E6%88%90Elasticsearch7.4-%E5%AE%9E%E6%88%98(1)/">
+										SpringBoot集成Elasticsearch7.4-实战(1)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/06/20/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/SpringBoot%E9%9B%86%E6%88%90Elasticsearch7.4-%E5%AE%9E%E6%88%98(2)/">
+										SpringBoot集成Elasticsearch7.4-实战(2)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/06/21/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/SpringBoot%E9%9B%86%E6%88%90Elasticsearch7.4-%E5%AE%9E%E6%88%98(3)/">
+										SpringBoot集成Elasticsearch7.4-实战(3)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/02/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/%E6%B5%85%E8%B0%88SpringBoot%E5%90%AF%E5%8A%A8%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/">
+										浅谈SpringBoot启动那些事儿
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										08 微服务
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 Nacos
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/01/10/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/00%20Nacos/CentOS%E7%8E%AF%E5%A2%83%E4%B8%8B%E5%AE%89%E8%A3%85Nacos/">
+										CentOS环境下安装Nacos
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/12/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/00%20Nacos/SpringCloud%E9%9B%86%E6%88%90Nacos%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0/">
+										SpringCloud集成Nacos实现服务发现
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/11/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/00%20Nacos/SpringCloud%E9%9B%86%E6%88%90Nacos%E5%AE%9E%E7%8E%B0%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/">
+										SpringCloud集成Nacos实现配置管理
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										10 架构分析
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/04/09/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/10%20%E6%9E%B6%E6%9E%84%E5%88%86%E6%9E%90/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%88%86%E6%9E%90/">
+										微服务架构设计分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										09 区块链
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/12/24/09%20%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E7%9F%A5%E8%AF%86%E5%85%A5%E9%97%A8/">
+										区块链知识入门
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										10 容器
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 Docker
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/07/18/10%20%E5%AE%B9%E5%99%A8/00%20Docker/Docker%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7Portainer/">
+										Docker管理工具Portainer
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										11 分布式
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 分布式事务
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/08/02/11%20%E5%88%86%E5%B8%83%E5%BC%8F/00%20%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E8%AF%A6%E8%A7%A3%E2%80%94%E2%80%94SpringBoot+Atomikos%E7%AF%87/">
+										分布式事务详解——SpringBoot+Atomikos篇
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 分布式锁
+									</a>
+									
+							<ul>
+								<li class="file active">
+									<a href="/2019/08/01/11%20%E5%88%86%E5%B8%83%E5%BC%8F/01%20%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/%E6%B5%85%E6%9E%90%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%AE%9E%E7%8E%B0%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F/">
+										浅析分布式锁实现三种方式
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										14 中间件
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/14%20%E4%B8%AD%E9%97%B4%E4%BB%B6/Redis/">
+										Redis
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/07/31/14%20%E4%B8%AD%E9%97%B4%E4%BB%B6/RocketMQ%E9%9B%86%E7%BE%A4%E4%B8%8ESpringBoot%E9%9B%86%E6%88%90%EF%BC%88%E4%B8%80%EF%BC%89/">
+										RocketMQ集群与SpringBoot集成（一）
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										28 杂谈
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/09/20/28%20%E6%9D%82%E8%B0%88/%E4%BA%BA%E5%8D%83%E7%9B%B8%EF%BC%8C%E4%BD%9B%E6%97%A0%E7%9B%B8/">
+										人千相，佛无相
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/03/19/28%20%E6%9D%82%E8%B0%88/%E5%8E%86%E5%8F%B2%E4%B8%8A%E7%9A%84%E5%AE%89%E5%BE%BD%E4%BA%BA%E7%89%A9/">
+										历史上的安徽人物
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/28%20%E6%9D%82%E8%B0%88/%E8%B5%A2%E5%9C%A8%E6%A0%BC%E5%B1%80%E3%80%81%E8%BE%93%E5%9C%A8%E8%AE%A1%E8%BE%83/">
+										赢在格局、输在计较
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										54 产品设计
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/01/15/54%20%E4%BA%A7%E5%93%81%E8%AE%BE%E8%AE%A1/%E6%B5%85%E8%B0%88%E7%94%A8%E6%88%B7%E7%94%BB%E5%83%8F/">
+										浅谈用户画像
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/20/54%20%E4%BA%A7%E5%93%81%E8%AE%BE%E8%AE%A1/%E7%BB%9F%E4%B8%80%E5%AE%A1%E8%AE%A1/">
+										统一审计
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										98 管理类
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 项目交接
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/04/01/98%20%E7%AE%A1%E7%90%86%E7%B1%BB/00%20%E9%A1%B9%E7%9B%AE%E4%BA%A4%E6%8E%A5/%E5%AF%B9%E9%A1%B9%E7%9B%AE%E4%BA%A4%E6%8E%A5%E8%BF%87%E7%A8%8B%E8%A6%81%E6%B1%82/">
+										对项目交接过程要求
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										99 工具等
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/12/18/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/Win10%E9%BB%91%E7%A7%91%E6%8A%80%EF%BC%8C%E4%BD%A0%E5%88%B0%E5%BA%95%E7%9F%A5%E9%81%93%E5%A4%9A%E5%B0%91/">
+										Win10黑科技，你到底知道多少
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/Wlx2Explore%E5%85%A5%E9%97%A8/">
+										Wlx2Explore入门
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/31/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/lantern%E9%82%80%E8%AF%B7%E7%A0%81/">
+										lantern邀请码
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/08/06/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/%E5%8F%AF%E7%94%A8%E5%85%8D%E6%BF%80%E6%B4%BBAdobe%20Acrobat%20DC%202020/">
+										可用免激活Adobe Acrobat DC 2020
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2018/04/18/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/%E8%AF%A6%E8%A7%A3CMD%E5%91%BD%E4%BB%A4%E6%BB%A1%E9%80%9F%E4%B8%8B%E8%BD%BD%E7%99%BE%E5%BA%A6%E4%BA%91/">
+										详解CMD命令满速下载百度云
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+		</div>
+	</div>
+</div>
+
+	<!-- 引入正文 -->
+	<div id="content">
+		<h1 id="article-title">
+
+	浅析分布式锁实现三种方式
+</h1>
+<div class="article-meta">
+	
+	<span>Rothschil</span>
+	<span>2019-08-01 17:14:42</span>
+    
+		<div id="article-categories">
+            
+                
+                    <span>
+                        <i class="fa fa-folder" aria-hidden="true"></i>
+                        <a href="/categories/分布式锁/">分布式锁</a>
+						
+                    </span>
+                
+            
+		</div>
+    
+</div>
+
+<div id="article-content">
+	<h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h1><p>当前主流大型互联网的业务系统的业务都是高度复杂，技术架构都是分布式，这样提高可用性和和稳定性的同时，也带来多节点在同时段执行的过程中相互干扰，这在对同一资源的处理会产生数据的不一致。<br>那如何能保证在同一时刻该资源只能被一个应用处理，而不能并发处理。答案就是引入一种分布式协调机制来调度，而这种分布式协调机制的核心我们称之为分布式锁。</p>
+<p><img src="https://raw.githubusercontent.com/rothschil/picgo/master/images/dist_tran/20200401102854.png" alt="20200401102854"></p>
+<ul>
+<li>成员变量 V 存在 JVM_1、JVM_2、JVM_3 三个 JVM 内存中</li>
+<li>成员变量 V 同时都会在JVM分配一块内存，三个请求发过来同时对这个变量操作，显然结果是不对的</li>
+<li>不是同时发过来，三个请求分别操作三个不同 JVM 内存区域的数据，变量 V 之间不存在共享，也不具有可见性，处理的结果也是不对的</li>
+</ul>
+<p>注：在类中，该成员变量<strong>V</strong>是一个有状态的对象。</p>
+<h1 id="2-特点"><a href="#2-特点" class="headerlink" title="2. 特点"></a>2. 特点</h1><ul>
+<li>在分布式系统环境下，同一个方法在同一时间只能被一个机器的同一个线程执行；</li>
+<li>高可用的获取锁与释放锁；</li>
+<li>高性能的获取锁与释放锁；</li>
+<li>具备可重入特性；</li>
+<li>具备锁的自我失效机制，防止死锁；</li>
+<li>满足非阻塞锁特性，即没有获取到锁将直接返回获取锁失败。</li>
+</ul>
+<a id="more"></a>
+
+<h1 id="3-实现方式"><a href="#3-实现方式" class="headerlink" title="3. 实现方式"></a>3. 实现方式</h1><p>根据分布式的CAP理论我们了解“任何一个分布式系统都无法同时满足一致性（Consistency）、可用性（Availability）和分区容错性（Partition tolerance），最多只能同时满足两项。”</p>
+<p>所以我们在系统设计之初就分析调研，根据分析调研结果对这三者做取舍。</p>
+<p>借鉴在主流互联网的经验，通常靠牺牲一致性 来换取系统的高可用性，系统的“一致性”保障只能用“最终一致性”来保证，这个最终时间需要在可控可接受的范围内。很多场景下，我们为了保证最终一致性，都会做很多技术方案来支持，比如分布式事务、分布式锁。</p>
+<p>在分布式锁的技术实现上，主流认可有三种实现方式，从复杂度来看，由难至易依次增加：</p>
+<blockquote>
+<p>基于数据库实现分布式锁；</p>
+</blockquote>
+<blockquote>
+<p>基于缓存（Redis/Memcached等）实现分布式锁；</p>
+</blockquote>
+<blockquote>
+<p>基于Zookeeper实现分布式锁；</p>
+</blockquote>
+<p>无论哪一种方式，都不可能完美，需要根据实际业务场景做出选择。</p>
+<h1 id="4-数据库实现"><a href="#4-数据库实现" class="headerlink" title="4. 数据库实现"></a>4. 数据库实现</h1><h2 id="4-1-前提"><a href="#4-1-前提" class="headerlink" title="4.1. 前提"></a>4.1. 前提</h2><p>在了解数据库实现分布式锁的之前，我们首了解<strong>乐观锁（Optimistic Lock）</strong>和<strong>悲观锁（Pessimistic Lock）</strong>。</p>
+<h3 id="4-1-1-乐观锁"><a href="#4-1-1-乐观锁" class="headerlink" title="4.1.1. 乐观锁"></a>4.1.1. 乐观锁</h3><p>每次去取数据的时候都会认为不会有其他线程对数据进行修改，因此不会上锁，但是在更新时会判断其他线程在这之前有没有对数据进行修改，一般会使用版本号机制或CAS操作实现；乐观锁适用于只“读” 的应用场景，这样做可以提高吞吐量，像数据库使用的write_condition的机制，本身就是乐观锁。</p>
+<h3 id="4-1-2-悲观锁"><a href="#4-1-2-悲观锁" class="headerlink" title="4.1.2. 悲观锁"></a>4.1.2. 悲观锁</h3><p>每次取数据时都认为其他线程会修改，所以都会加锁（读锁、写锁、行锁等），当其他线程想要访问数据时，都需要阻塞（block）挂起。可以依靠数据库实现，如行锁、读锁和写锁等，都是在操作之前加锁，它对数据被外界（包括本系统当前的其他事务，以及来自外部系统的事务处理）修改持保守态度，因此，在整个数据处理过程中，将数据处于锁定状态。悲观锁的实现，往往依靠数据库提供的锁机制（也只有数据库层提供的锁机制才能真正保证数据访问的排他性，否则，即使在本系统中实现了加锁机制，也无法保证外部系统不会修改数据）。在 Java中，synchronized的思想也是悲观锁。</p>
+<p><strong>乐观锁、悲观锁</strong>两种锁各有优缺点，不可认为一种好于另一种，像乐观锁适用于写比较少的情况下，即冲突真的很少发生的时候，这样可以省去了锁的开销，加大了系统的整个吞吐量。但如果经常产生冲突，上层应用会不断的进行retry，这样反倒是降低了性能，所以这种情况下用悲观锁就比较合适。本质上，数据库的乐观锁做法和悲观锁做法主要就是避免丢失更新问题：</p>
+<h2 id="4-2-乐观锁实现"><a href="#4-2-乐观锁实现" class="headerlink" title="4.2. 乐观锁实现"></a>4.2. 乐观锁实现</h2><p>从上面的前提概要我们知道，乐观锁机制其实就是在数据库表中引入一个版本号（version）字段来实现的。</p>
+<p>当我们要从数据库中读取数据的时候，同时把这个version字段也读出来，如果要对读出来的数据进行修改写回数据库时，则需要将version加1，同时将新的数据与新的version更新到数据表中，且必须在更新的时候同时检查目前数据库里version值是不是之前的那个version，如果是，则正常更新。如果不是，则更新失败，说明在这个过程中有其它的进程去更新过数据了。</p>
+<p><img src="https://raw.githubusercontent.com/rothschil/picgo/master/images/dist_tran/20200401102907.png" alt="20200401102907"></p>
+<p>假定同一账号下，小明和小明媳妇同时取银行进行取款操作，账户余额200￥，小明取款100￥，小明媳妇取款150￥。</p>
+<ul>
+<li><p>没有锁机制的场景下，可能会出现账户同时被扣款150￥和100￥，导致账户余额出现负数情况，这样的话银行可能混不下去。</p>
+</li>
+<li><p>如果我们用到锁机制，小明和小明媳妇都在取款时候，除看到余额的操作，还在后台事务中读取版本号version=1，不论小明和小明媳妇先成功执行取款操作，都会将版本号version+1，即version=2，没有成功执行的那一方再去操作时候读取出来的version是2，那么就会触发重新获取余额。</p>
+</li>
+</ul>
+<p>乐观锁关键点：</p>
+<ul>
+<li><p>锁服务要有递增的版本号version</p>
+</li>
+<li><p>每次更新数据都要先判断版本号对不对，然后再写入新的版本号</p>
+</li>
+</ul>
+<h2 id="4-3-悲观锁实现"><a href="#4-3-悲观锁实现" class="headerlink" title="4.3. 悲观锁实现"></a>4.3. 悲观锁实现</h2><h3 id="4-3-1-方案1-for-update"><a href="#4-3-1-方案1-for-update" class="headerlink" title="4.3.1. 方案1_for update"></a>4.3.1. 方案1_for update</h3><p>Oracle、Mysql中是基于<strong>for update</strong>来实现加锁的。在MYSQL中需要注意的是，在InnoDB中只有字段加了索引的，才会是行级锁，否者是表级锁，所以一定要对where的条件字段加索引。</p>
+<p>当这条记录加上排它锁之后，其它线程是无法操作这条记录的。</p>
+<h3 id="4-3-2-方案2-唯一性约束"><a href="#4-3-2-方案2-唯一性约束" class="headerlink" title="4.3.2. 方案2_唯一性约束"></a>4.3.2. 方案2_唯一性约束</h3><p>对method_name做了唯一性约束，这里如果有多个请求同时提交到数据库的话，数据库会保证只有一个操作可以成功。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">INSERT INTO method_lock (method_name, desc) VALUES (&#39;methodName&#39;, &#39;methodName&#39;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-3-方案3-查询并占有"><a href="#4-3-3-方案3-查询并占有" class="headerlink" title="4.3.3. 方案3_查询并占有"></a>4.3.3. 方案3_查询并占有</h3><p>先获取锁的信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select id, method_name, state,version from method_lock where state&#x3D;1 and method_name&#x3D;&#39;methodName&#39;;</span><br></pre></td></tr></table></figure>
+
+<p>再占有</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">update t_resoure set state&#x3D;2, version&#x3D;2, update_time&#x3D;now() where method_name&#x3D;&#39;methodName&#39; and state&#x3D;1 and version&#x3D;2;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>如果没有更新影响到一行数据，则说明这个资源已经被别人占位。</p>
+<h3 id="4-3-4-附-表结构"><a href="#4-3-4-附-表结构" class="headerlink" title="4.3.4. 附 表结构"></a>4.3.4. 附 表结构</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">DROP TABLE IF EXISTS method_lock;</span><br><span class="line"></span><br><span class="line">CREATE TABLE method_lock (</span><br><span class="line">lck_id INT(11) NOT NULL AUTO_INCREMENT COMMENT &#39;主键&#39;,</span><br><span class="line">method_name VARCHAR(64) NOT NULL COMMENT &#39;锁定的方法名&#39;,</span><br><span class="line">state TINYINT NOT NULL COMMENT &#39;1:未分配；2：已分配&#39;,</span><br><span class="line">update_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,</span><br><span class="line">ver INT NOT NULL COMMENT &#39;版本号&#39;,</span><br><span class="line">PRIMARY KEY (lck_id),</span><br><span class="line">UNIQUE KEY uidx_method_name (method_name) USING BTREE</span><br><span class="line">) ENGINE&#x3D;INNODB AUTO_INCREMENT&#x3D;3 DEFAULT CHARSET&#x3D;utf8 COMMENT&#x3D;&#39;锁定中的方法&#39;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-4-总结"><a href="#4-4-总结" class="headerlink" title="4.4. 总结"></a>4.4. 总结</h2><h3 id="4-4-1-缺点"><a href="#4-4-1-缺点" class="headerlink" title="4.4.1. 缺点"></a>4.4.1. 缺点</h3><blockquote>
+<p>这把锁强依赖数据库的可用性，数据库是一个单点，一旦数据库挂掉，会导致业务系统不可用。</p>
+</blockquote>
+<blockquote>
+<p>这把锁没有失效时间，一旦解锁操作失败，就会导致锁记录一直在数据库中，其他线程无法再获得到锁。</p>
+</blockquote>
+<blockquote>
+<p>这把锁只能是非阻塞的，因为数据的insert操作，一旦插入失败就会直接报错。没有获得锁的线程并不会进入排队队列，要想再次获得锁就要再次触发获得锁操作。</p>
+</blockquote>
+<blockquote>
+<p>这把锁是非重入的，同一个线程在没有释放锁之前无法再次获得该锁。因为数据中数据已经存在了。</p>
+</blockquote>
+<p>配置实现细节</p>
+<ul>
+<li><p>数据库是单点？搞两个数据库，数据之前双向同步。一旦挂掉快速切换到备库上。</p>
+</li>
+<li><p>没有失效时间？只要做一个定时任务，每隔一定时间把数据库中的超时数据清理一遍。</p>
+</li>
+<li><p>非阻塞的？搞一个while循环，直到insert成功再返回成功。</p>
+</li>
+<li><p>非重入的？在数据库表中加个字段，记录当前获得锁的机器的主机信息和线程信息，那么下次再获取锁的时候先查询数据库，如果当前机器的主机信息和线程信息在数据库可以查到的话，直接把锁分配给他就可以了。</p>
+</li>
+</ul>
+<h1 id="5-Redis实现"><a href="#5-Redis实现" class="headerlink" title="5. Redis实现"></a>5. Redis实现</h1><p>基于Redis实现的锁机制，主要是依赖redis自身的原子操作，因为redis是单线程。要求redis版本大于2.6.12。</p>
+<h2 id="5-1-redis单实例"><a href="#5-1-redis单实例" class="headerlink" title="5.1. redis单实例"></a>5.1. redis单实例</h2><ul>
+<li>引入pom</li>
+</ul>
+<p>版本号大家以实际使用中的为准，我这里仅供参考，因为spring-boot的自动注册功能会为我们提供StringRedisTemplate，直接使用即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-data-redis&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.1.3.RELEASE&lt;&#x2F;version&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>yml文件</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">server:</span><br><span class="line">  port: 9090</span><br><span class="line"></span><br><span class="line">spring:</span><br><span class="line">  datasource:</span><br><span class="line">    name: mysql</span><br><span class="line">    type: com.alibaba.druid.pool.DruidDataSource</span><br><span class="line">    driver-class-name: com.mysql.jdbc.Driver</span><br><span class="line">    url: jdbc:mysql:&#x2F;&#x2F;127.0.0.1:3306&#x2F;springboot?characterEncoding&#x3D;utf-8&amp;useSSL&#x3D;true</span><br><span class="line">    username: root</span><br><span class="line">    password: 123456</span><br><span class="line">    druid:</span><br><span class="line">      initial-size: 5</span><br><span class="line">      min-idle: 5</span><br><span class="line">      max-active: 20</span><br><span class="line">      max-wait: 30000</span><br><span class="line">      time-between-eviction-runs-millis: 60000</span><br><span class="line">      min-evictable-idle-time-millis: 300000</span><br><span class="line">      validation-query: select 1</span><br><span class="line">      test-while-idle: true</span><br><span class="line">      test-on-borrow: false</span><br><span class="line">      test-on-return: false</span><br><span class="line">      pool-prepared-statements: false</span><br><span class="line">      max-pool-prepared-statement-per-connection-size: 20</span><br><span class="line">      connectionProperties: druid.stat.mergeSql&#x3D;true;druid.stat.slowSqlMillis&#x3D;6000</span><br><span class="line"></span><br><span class="line">  redis:</span><br><span class="line">    database: 0</span><br><span class="line">    host: 127.0.0.1</span><br><span class="line">    port: 6379</span><br><span class="line"></span><br><span class="line">mybatis:</span><br><span class="line">  mapperLocations: classpath:mapper&#x2F;**&#x2F;*.xml</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>核心实现</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">package xyz.wongs.weathertop.comp;</span><br><span class="line"></span><br><span class="line">import com.google.common.base.Strings;</span><br><span class="line">import lombok.extern.slf4j.Slf4j;</span><br><span class="line">import org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line">import org.springframework.data.redis.core.StringRedisTemplate;</span><br><span class="line">import org.springframework.stereotype.Component;</span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">@Component</span><br><span class="line">@Slf4j</span><br><span class="line">public class RedisLockComponent &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private StringRedisTemplate stringRedisTemplate;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * @Description 获取锁，默认：失效时间为5，失效时间的单位为秒，重试次数为3，休眠4秒</span><br><span class="line">     * @param key</span><br><span class="line">     * @param value</span><br><span class="line">     * @param expire    redis过期时间</span><br><span class="line">     * @return boolean</span><br><span class="line">     * @throws</span><br><span class="line">     * @date 2019&#x2F;11&#x2F;16 21:37</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public boolean getLock(String key,String value)&#123;</span><br><span class="line">        return getLock(key,value,5, TimeUnit.SECONDS,3,5000);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * @Description 获取锁，默认：失效时间的单位为秒，重试次数为3，休眠4秒</span><br><span class="line">     * @param key</span><br><span class="line">     * @param value</span><br><span class="line">     * @param expire    redis过期时间</span><br><span class="line">     * @return boolean</span><br><span class="line">     * @throws</span><br><span class="line">     * @date 2019&#x2F;11&#x2F;16 21:37</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public boolean getLock(String key,String value,long expire)&#123;</span><br><span class="line">        return getLock(key,value,expire, TimeUnit.SECONDS,3,5000);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * @Description 获取锁，默认重试次数为3，休眠5秒</span><br><span class="line">     * @param key</span><br><span class="line">     * @param value</span><br><span class="line">     * @param expire    redis过期时间</span><br><span class="line">     * @param unit</span><br><span class="line">     * @return boolean</span><br><span class="line">     * @throws</span><br><span class="line">     * @date 2019&#x2F;11&#x2F;16 21:37</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public boolean getLock(String key,String value,long expire, TimeUnit unit)&#123;</span><br><span class="line">        return getLock(key,value,expire, unit,3,5000);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * @Description</span><br><span class="line">     * @param key</span><br><span class="line">     * @param value</span><br><span class="line">     * @param expire    redis过期时间</span><br><span class="line">     * @param unit</span><br><span class="line">     * @param tryCount  重试次数</span><br><span class="line">     * @param waitMillis 每次重试要等待时间</span><br><span class="line">     * @return boolean</span><br><span class="line">     * @throws</span><br><span class="line">     * @date 2019&#x2F;11&#x2F;16 21:37</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public boolean getLock(String key,String value,long expire, TimeUnit unit,int tryCount,int waitMillis)&#123;</span><br><span class="line">        &#x2F;&#x2F;setIfAbsent如果键不存在则新增,存在则不改变已经有的值。</span><br><span class="line">        boolean success &#x3D; stringRedisTemplate.opsForValue().setIfAbsent(key,value,expire,unit);</span><br><span class="line">        if(success) &#123;</span><br><span class="line">            return true;</span><br><span class="line">        &#125;</span><br><span class="line">        &#x2F;&#x2F;判断锁超时 - 防止原来的操作异常，没有运行解锁操作  防止死锁</span><br><span class="line">        String val &#x3D; stringRedisTemplate.opsForValue().get(key);</span><br><span class="line">        if(!Strings.isNullOrEmpty(val))&#123;</span><br><span class="line">            if(System.currentTimeMillis() - Long.parseLong(val) &gt; unit.toMillis(expire))&#123;</span><br><span class="line">                &#x2F;&#x2F; 超时移除</span><br><span class="line">                stringRedisTemplate.delete(key);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        &#x2F;&#x2F; 重试、等待</span><br><span class="line">        if (tryCount &gt; 0 &amp;&amp; waitMillis &gt; 0) &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                Thread.sleep(waitMillis);</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                log.error(&quot;getLock exception&#123;&#125;&quot;,e.getMessage());</span><br><span class="line">            &#125;</span><br><span class="line">            return getLock(key,value,expire,unit,tryCount - 1,waitMillis);</span><br><span class="line">        &#125;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * @Description 获取等待时间</span><br><span class="line">     * @param key</span><br><span class="line">     * @param expire</span><br><span class="line">     * @param unit</span><br><span class="line">     * @return long 秒</span><br><span class="line">     * @throws</span><br><span class="line">     * @date 2019&#x2F;11&#x2F;16 21:44</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public long getWaitSecond(String key,long expire,TimeUnit unit) &#123;</span><br><span class="line">        long currentTime &#x3D; System.currentTimeMillis();</span><br><span class="line">        long preTime &#x3D; Long.parseLong(stringRedisTemplate.opsForValue().get(key));</span><br><span class="line">        return (preTime + unit.toMillis(expire) - currentTime) &#x2F; 1000;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * @Description 设置锁的过期时间，默认单位为毫秒</span><br><span class="line">     * @param key</span><br><span class="line">     * @param expTime</span><br><span class="line">     * @return Boolean</span><br><span class="line">     * @throws</span><br><span class="line">     * @date 2019&#x2F;11&#x2F;16 21:18</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public Boolean renewal(String key,int expTime)&#123;</span><br><span class="line">        return renewal(key, expTime, TimeUnit.MILLISECONDS);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * @Description 设置锁的过期时间</span><br><span class="line">     * @param key</span><br><span class="line">     * @param expTime</span><br><span class="line">     * @param unit</span><br><span class="line">     * @return Boolean</span><br><span class="line">     * @throws</span><br><span class="line">     * @date 2019&#x2F;11&#x2F;16 21:18</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public Boolean renewal(String key,int expTime,TimeUnit unit)&#123;</span><br><span class="line">        return stringRedisTemplate.expire(key, expTime, unit);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * @Description 解锁</span><br><span class="line">     * @param key</span><br><span class="line">     * @param val</span><br><span class="line">     * @return void</span><br><span class="line">     * @throws</span><br><span class="line">     * @date 2019&#x2F;11&#x2F;16 21:13</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public void unlock(String key,String val)&#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            String value &#x3D; stringRedisTemplate.opsForValue().get(key);</span><br><span class="line">            if(!Strings.isNullOrEmpty(value) &amp;&amp; val.equals(value) )&#123;</span><br><span class="line">                &#x2F;&#x2F; 删除锁状态</span><br><span class="line">                stringRedisTemplate.opsForValue().getOperations().delete(key);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            log.error(&quot;unlock exception&#123;&#125;&quot;,e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>模拟样例</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">package xyz.wongs.weathertop.web;</span><br><span class="line"></span><br><span class="line">import lombok.extern.slf4j.Slf4j;</span><br><span class="line">import org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line">import org.springframework.web.bind.annotation.PathVariable;</span><br><span class="line">import org.springframework.web.bind.annotation.RequestMapping;</span><br><span class="line">import org.springframework.web.bind.annotation.RestController;</span><br><span class="line">import xyz.wongs.weathertop.base.message.enums.ResponseCode;</span><br><span class="line">import xyz.wongs.weathertop.base.message.response.ResponseResult;</span><br><span class="line">import xyz.wongs.weathertop.comp.RedisLockComponent;</span><br><span class="line">import xyz.wongs.weathertop.deno.entity.RedisLock;</span><br><span class="line">import xyz.wongs.weathertop.deno.mapper.RedisLockMapper;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">@RestController</span><br><span class="line">@Slf4j</span><br><span class="line">public class RedisController &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private RedisLockMapper redisLockMapper;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private RedisLockComponent redisLockComponent;</span><br><span class="line"></span><br><span class="line">    &#x2F;**</span><br><span class="line">     * 超时时间 5s</span><br><span class="line">     *&#x2F;</span><br><span class="line">    private static final int TIMEOUT &#x3D; 3;</span><br><span class="line"></span><br><span class="line">    @RequestMapping(value &#x3D; &quot;&#x2F;seckilling&#x2F;&#123;key&#125;&quot;)</span><br><span class="line">    public ResponseResult Seckilling(@PathVariable(&quot;key&quot;) String key)&#123;</span><br><span class="line">        ResponseResult responseResult &#x3D; new ResponseResult();</span><br><span class="line">        &#x2F;&#x2F;1、加锁</span><br><span class="line">        String value &#x3D; System.currentTimeMillis() + &quot;&quot;;</span><br><span class="line">        if(!redisLockComponent.getLock(key,value,6))&#123;</span><br><span class="line">            responseResult.setStatus(false);</span><br><span class="line">            responseResult.setCode(ResponseCode.DICT_LOCK_FAIL.getCode());</span><br><span class="line">            responseResult.setMsg(&quot;排队人数太多，请稍后再试.&quot;);</span><br><span class="line">            return responseResult;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        RedisLock redisLock &#x3D; redisLockMapper.selectByPrimaryKey(1);</span><br><span class="line">        &#x2F;&#x2F; 2、查询库存，为0则活动结束</span><br><span class="line">        if(redisLock.getCounts()&#x3D;&#x3D;0)&#123;</span><br><span class="line">            responseResult.setStatus(false);</span><br><span class="line">            responseResult.setCode(ResponseCode.RESOURCE_NOT_EXIST.getCode());</span><br><span class="line">            responseResult.setMsg(&quot;库存不够.&quot;);</span><br><span class="line">            return responseResult;</span><br><span class="line">        &#125;</span><br><span class="line">        &#x2F;&#x2F;3、减库存</span><br><span class="line">        redisLock.setCounts(redisLock.getCounts()-1);</span><br><span class="line">        redisLockMapper.updateByPrimaryKeySelective(redisLock);</span><br><span class="line">        try&#123;</span><br><span class="line">            Thread.sleep(5000);&#x2F;&#x2F;模拟减库存的处理时间</span><br><span class="line">        &#125;catch (InterruptedException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        &#x2F;&#x2F;4、释放锁</span><br><span class="line">        redisLockComponent.unlock(key,value);</span><br><span class="line">        responseResult.setMsg(&quot;恭喜您，秒杀成功。&quot;);</span><br><span class="line">        return responseResult;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/rothschil/picgo/master/images/dist_tran/20200401102930.png" alt="20200401102930"></p>
+<h2 id="5-2-redis集群实现"><a href="#5-2-redis集群实现" class="headerlink" title="5.2. redis集群实现"></a>5.2. redis集群实现</h2><p>实际上我们为了高可用，降低单机故障概率，肯定将redis集群模式部署，这样情况下我们整合redisson，由于篇幅有限，这里暂时挖个坑，就不探讨这个，下一篇再说</p>
+<h1 id="6-Zookeeper实现"><a href="#6-Zookeeper实现" class="headerlink" title="6. Zookeeper实现"></a>6. Zookeeper实现</h1><p>在上一节，给大家演示基于Redis的实现，这一章节我们来看另一种分布式锁的实现——Zookeeper。</p>
+<p>关于Zookeeper的为什么能实现分布式锁，这里只说明zookeeper核心保存结构是DataTree数据结构，内部实现基于Map&lt;String, DataNode&gt;的数据结构，其他详细内容大家自行取官网查阅，这里也不赘述。</p>
+<p><a target="_blank" rel="noopener" href="https://zookeeper.apache.org/">Zookeeper官方描述</a></p>
+<p><img src="https://raw.githubusercontent.com/rothschil/picgo/master/images/dist_tran/20200401102941.png" alt="zookeeper原理"></p>
+<p>Zookeeper中提供了节点类型主要有:</p>
+<ul>
+<li><p>持久节点：节点创建后，将一直存在，直到有删除操作来主动清除。</p>
+</li>
+<li><p>顺序节点：假如当前一个父节点为/lock，可以在该父节点下面创建子节点；Zookeeper本身提供了可选的有序特性，例如我们可以创建子节点“/lock/test_”并且指明有序，那么Zookeeper在生成子节点时会根据当前子节点数量自动添加整数序号，如果第一个子节点为/lock/test_0000000000，下一个节点则为/lock/test_0000000001，依次类推。</p>
+</li>
+<li><p>临时节点：客户端可以建立一个临时节点，在会话结束或者会话超时后，zookeeper会自动删除该节点。</p>
+</li>
+</ul>
+<p>Zookeeper从诞生至今，市面上也有基于zk作为分布式锁实现的成熟框架，这里我们就以Curator就是代表 ，它就是Netflix开源的一套ZooKeeper客户端框架，它提供zk场景的绝大部分实现，使用Curator就不必关心其内部算法，Curator为使用者提供操作锁的API，比如获取锁、释放锁等，在实际开发中都非常方便，最后别忘记代码的finally代码块中，要最终确保锁能正确释放即可。 </p>
+<p>Curator提供了四种分布式锁：</p>
+<ul>
+<li><p>InterProcessMutex：分布式可重入排它锁</p>
+</li>
+<li><p>InterProcessSemaphoreMutex：分布式排它锁</p>
+</li>
+<li><p>InterProcessReadWriteLock：分布式读写锁</p>
+</li>
+<li><p>InterProcessMultiLock：将多个锁作为单个实体管理的容器</p>
+</li>
+</ul>
+<p>说了这么多，不上代码，许多老铁恐怕都要犯困，没激情，下来我们用Coding带大家了解Zookeeper如何实现分布式锁，我们还是以Springboot基本框架，写一个案例。</p>
+<h2 id="6-1-引入POM依赖"><a href="#6-1-引入POM依赖" class="headerlink" title="6.1. 引入POM依赖"></a>6.1. 引入POM依赖</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.zookeeper&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;zookeeper&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;3.4.10&lt;&#x2F;version&gt;</span><br><span class="line">    &lt;exclusions&gt;</span><br><span class="line">        &lt;exclusion&gt;</span><br><span class="line">            &lt;groupId&gt;org.slf4j&lt;&#x2F;groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;slf4j-log4j12&lt;&#x2F;artifactId&gt;</span><br><span class="line">        &lt;&#x2F;exclusion&gt;</span><br><span class="line">        &lt;exclusion&gt;</span><br><span class="line">            &lt;groupId&gt;org.slf4j&lt;&#x2F;groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;slf4j-api&lt;&#x2F;artifactId&gt;</span><br><span class="line">        &lt;&#x2F;exclusion&gt;</span><br><span class="line">        &lt;exclusion&gt;</span><br><span class="line">            &lt;artifactId&gt;log4j&lt;&#x2F;artifactId&gt;</span><br><span class="line">            &lt;groupId&gt;log4j&lt;&#x2F;groupId&gt;</span><br><span class="line">        &lt;&#x2F;exclusion&gt;</span><br><span class="line">    &lt;&#x2F;exclusions&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.curator&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;curator-framework&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.12.0&lt;&#x2F;version&gt;</span><br><span class="line">    &lt;exclusions&gt;</span><br><span class="line">        &lt;exclusion&gt;</span><br><span class="line">            &lt;groupId&gt;org.slf4j&lt;&#x2F;groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;slf4j-api&lt;&#x2F;artifactId&gt;</span><br><span class="line">        &lt;&#x2F;exclusion&gt;</span><br><span class="line">    &lt;&#x2F;exclusions&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br><span class="line"></span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.curator&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;curator-recipes&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.12.0&lt;&#x2F;version&gt;</span><br><span class="line">    &lt;exclusions&gt;</span><br><span class="line">        &lt;exclusion&gt;</span><br><span class="line">            &lt;groupId&gt;org.slf4j&lt;&#x2F;groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;slf4j-api&lt;&#x2F;artifactId&gt;</span><br><span class="line">        &lt;&#x2F;exclusion&gt;</span><br><span class="line">    &lt;&#x2F;exclusions&gt;</span><br><span class="line">&lt;&#x2F;dependency&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="6-2-application文件"><a href="#6-2-application文件" class="headerlink" title="6.2. application文件"></a>6.2. application文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">curator:</span><br><span class="line">  retryCount: 5</span><br><span class="line">  elapsedTimeMs: 5000</span><br><span class="line">  connectString: 192.168.147.132:2181 </span><br><span class="line">  sessionTimeoutMs: 60000</span><br><span class="line">  connectionTimeoutMs: 5000</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-3-核心实现"><a href="#6-3-核心实现" class="headerlink" title="6.3. 核心实现"></a>6.3. 核心实现</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line">    * @Description 获取分布式锁</span><br><span class="line">    * @param path 提供可供写入的路径</span><br><span class="line">    * @return void</span><br><span class="line">    * @throws</span><br><span class="line">    * @date 2019&#x2F;11&#x2F;4 9:36</span><br><span class="line">    *&#x2F;</span><br><span class="line">public boolean acquireDistributedLock(String path) &#123;</span><br><span class="line"></span><br><span class="line">    boolean lock &#x3D; true;</span><br><span class="line">    String keyPath &#x3D; &quot;&#x2F;&quot; + ROOT_PATH_LOCK + &quot;&#x2F;&quot; + path;</span><br><span class="line">    while (true) &#123;</span><br><span class="line">        try &#123;</span><br><span class="line">            curatorFramework</span><br><span class="line">                    .create()</span><br><span class="line">                    .creatingParentsIfNeeded()</span><br><span class="line">                    .withMode(CreateMode.EPHEMERAL)</span><br><span class="line">                    .withACL(ZooDefs.Ids.OPEN_ACL_UNSAFE)</span><br><span class="line">                    .forPath(keyPath);</span><br><span class="line">            log.info(&quot;success to acquire lock for path:&#123;&#125;&quot;, keyPath);</span><br><span class="line">            break;</span><br><span class="line">        &#125; catch (Exception e) &#123;</span><br><span class="line">            log.info(&quot;failed to acquire lock for path:&#123;&#125;&quot;, keyPath);</span><br><span class="line">            log.info(&quot;while try again .......&quot;);</span><br><span class="line">            try &#123;</span><br><span class="line">                if (countDownLatch.getCount() &lt;&#x3D; 0) &#123;</span><br><span class="line">                    countDownLatch &#x3D; new CountDownLatch(1);</span><br><span class="line">                &#125;</span><br><span class="line">                countDownLatch.await();</span><br><span class="line">            &#125; catch (InterruptedException e1) &#123;</span><br><span class="line">                e1.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            lock &#x3D; false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return lock;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line">    * @Description</span><br><span class="line">    * @param path  释放分布式锁</span><br><span class="line">    * @return boolean</span><br><span class="line">    * @throws</span><br><span class="line">    * @date 2019&#x2F;11&#x2F;4 9:36</span><br><span class="line">    *&#x2F;</span><br><span class="line">public boolean releaseDistributedLock(String path) &#123;</span><br><span class="line">    boolean release &#x3D; true;</span><br><span class="line">    String keyPath &#x3D; &quot;&#x2F;&quot; + ROOT_PATH_LOCK + &quot;&#x2F;&quot; + path;;</span><br><span class="line">    try &#123;</span><br><span class="line">        if (curatorFramework.checkExists().forPath(keyPath) !&#x3D; null) &#123;</span><br><span class="line">            curatorFramework.delete().forPath(keyPath);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; catch (Exception e) &#123;</span><br><span class="line">        log.error(&quot;failed to release lock&quot;);</span><br><span class="line">        release &#x3D; false;</span><br><span class="line">    &#125;</span><br><span class="line">    return release;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-4-演示结果"><a href="#6-4-演示结果" class="headerlink" title="6.4. 演示结果"></a>6.4. 演示结果</h2><p>我用webcontroller实现一个restfull接口，同时打开两个URL获取同一把锁，获取的为成功，否则失败。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">@GetMapping(&quot;&#x2F;lock10&quot;)</span><br><span class="line">public ResponseResult getLock1() &#123;</span><br><span class="line">    ResponseResult responseResult &#x3D; new ResponseResult();</span><br><span class="line">    Boolean acquire &#x3D; distributedLockByZookeeper.acquireDistributedLock(PATH);</span><br><span class="line">    try &#123;</span><br><span class="line">        if(acquire) &#123;</span><br><span class="line">            log.error(&quot;I am lock1，i am updating resource……！！！&quot;);</span><br><span class="line">            Thread.sleep(2000);</span><br><span class="line">        &#125; else&#123;</span><br><span class="line">            responseResult.setCode(ResponseCode.SYSNC_LOCK.getCode());</span><br><span class="line">            responseResult.setMsg(ResponseCode.SYSNC_LOCK.getMsg());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; catch (InterruptedException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        distributedLockByZookeeper.releaseDistributedLock(PATH);</span><br><span class="line">    &#125;</span><br><span class="line">    return responseResult;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://raw.githubusercontent.com/rothschil/picgo/master/images/dist_tran/20200401103001.png" alt="获取锁成功"></p>
+<p><img src="https://raw.githubusercontent.com/rothschil/picgo/master/images/dist_tran/20200401103019.png" alt="获取锁失败"></p>
+<h1 id="7-三种锁的比较"><a href="#7-三种锁的比较" class="headerlink" title="7. 三种锁的比较"></a>7. 三种锁的比较</h1><p>这三种方式都不是尽善尽美，如同CAP，在复杂性、可靠性、性能等方面皆无法同时满足，所以，根据实际业务情况选择最适合的方案，优雅的解决问题，少带来弊端即可。</p>
+<ul>
+<li><p>实现难易程度自低至高：数据库 、 缓存 、 Zookeeper</p>
+</li>
+<li><p>实现的复杂性自低至高：Zookeeper 、缓存  、数据库</p>
+</li>
+<li><p>从性能角度自高到低：缓存 、Zookeeper 、 数据库</p>
+</li>
+<li><p>从可靠性角度自高到低：Zookeeper  、缓存 、数据库</p>
+</li>
+</ul>
+<p>在技术层面Redis是nosql数据，而Zookeeper是分布式协调工具，都用于分布式解决方案；防死锁的实现上Redis是通过对key设置有效期来解决死锁，而Zookeeper使用会话有效期方式解决死锁现象；数据库的实现上，高并发过程中对库的压力会增大</p>
+<h1 id="8-源码"><a href="#8-源码" class="headerlink" title="8. 源码"></a>8. 源码</h1><p><a href="%5Bhttps://github.com/king-angmar/weathertop/tree/master/akkad-springboot/springboot-dist-lock%5D">Github演示源码</a> ，记得给Star。</p>
+
+</div>
+
+
+    <div class="post-guide">
+        <div class="item left">
+            
+              <a href="/2019/08/02/11%20%E5%88%86%E5%B8%83%E5%BC%8F/00%20%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E8%AF%A6%E8%A7%A3%E2%80%94%E2%80%94SpringBoot+Atomikos%E7%AF%87/">
+                  <i class="fa fa-angle-left" aria-hidden="true"></i>
+                  分布式事务详解——SpringBoot+Atomikos篇
+              </a>
+            
+        </div>
+        <div class="item right">
+            
+              <a href="/2019/07/18/10%20%E5%AE%B9%E5%99%A8/00%20Docker/Docker%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7Portainer/">
+                Docker管理工具Portainer
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+              </a>
+            
+        </div>
+    </div>
+
+
+
+	<div id="vcomments"></div>
+
+
+<script>
+	
+		// 评论
+		new Valine({
+			av: AV,
+			el: '#vcomments',
+			notify: false,
+			verify: false,
+			path: window.location.pathname,
+			appId: '',
+			appKey: '',
+			placeholder: '请输入评论',
+			avatar: 'retro',
+			recordIP: false
+		})
+	
+	
+</script>
+	</div>
+	<div id="footer">
+	<p>
+	©2019-<span id="footerYear"></span> 
+	<a href="/">Rothschil</a> 
+	
+	
+		|
+		<span id="busuanzi_container_site_pv">
+			pv
+			<span id="busuanzi_value_site_pv"></span>
+		</span>
+		|
+		<span id="busuanzi_container_site_uv"> 
+			uv
+			<span id="busuanzi_value_site_uv"></span>
+		</span>
+	
+	<br>
+	Powered by <a href="//hexo.io" target="_blank">Hexo</a>
+	</p>
+</div>
+
+<script type="text/javascript"> 
+	document.getElementById('footerYear').innerHTML = new Date().getFullYear() + '';
+</script>
+	<button id="totop-toggle" class="toggle"><i class="fa fa-angle-double-up" aria-hidden="true"></i></button>
+</body>
+</html>
