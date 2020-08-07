@@ -8,12 +8,16 @@
 	<!-- title -->
 	
 	<title>
+	
+		撸起Arthas排雷 | 
 	 
 	王老邪
 	</title>
 	
 	<!-- keywords,description -->
 	 
+		<meta name="description" content="Arthas" />
+	
 
 	<!-- favicon -->
 	
@@ -724,6 +728,26 @@
 								<li class="directory">
 									<a href="#" class="directory">
 										<i class="fa fa-plus-square-o"></i>
+										JVM
+									</a>
+									
+							<ul>
+								<li class="file active">
+									<a href="/2020/07/14/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/JVM/%E6%92%B8%E8%B5%B7Arthas%E6%8E%92%E9%9B%B7/">
+										撸起Arthas排雷
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
 										VPN
 									</a>
 									
@@ -788,43 +812,281 @@
 
 	<!-- 引入正文 -->
 	<div id="content">
-		<div id="index">
-	
-		<div class="index-li">
-			<a href="/2020/07/14/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/Windows/Wlx2Explore%E5%85%A5%E9%97%A8/">
-				<h2 class="index-title">
-					Wlx2Explore入门
-				</h2>
-				<div class="index-brief">
-					Wlx2Explorer 比 QuickLook快的可不是一丁半点，而且更为灵活，丰富的插件社区，自由度很高！鉴于网上Wlx2Explorer 资料偏少，这里整理下，供各位童鞋阅览，市面上的TC插件太多，必须要具备插件基本知识才能完整掌握。
-1. 设置项下载Wlx2Explorer
+		<h1 id="article-title">
 
-Windows
-					...
-				</div>
-			</a>
-                <div class="article-meta">
-				    <span>2020-07-14</span>
-                    
-                            
-                                
-                                    <span>
-                                        <i class="fa fa-folder" aria-hidden="true"></i>
-                                        <a href="/categories/Wlx2Explorer-Windows-快速预览/">Wlx2Explorer,Windows,快速预览</a>
-										
-                                    </span>
-                                
-                            
-                    
-                </div>
-		</div>	
+	撸起Arthas排雷
+</h1>
+<div class="article-meta">
 	
-	
-	<div id="index-paginator">
-		
-	</div>
+	<span>Rothschil</span>
+	<span>2020-07-14 20:18:00</span>
+    
+		<div id="article-categories">
+            
+		</div>
+    
 </div>
 
+<div id="article-content">
+	<h1 id="1-下载"><a href="#1-下载" class="headerlink" title="1. 下载"></a>1. 下载</h1><p><a target="_blank" rel="noopener" href="https://github.com/alibaba/arthas/releases/download/arthas-all-3.3.7/arthas-bin.zip">Githup中Arthas下载</a></p>
+<h1 id="2-解压"><a href="#2-解压" class="headerlink" title="2. 解压"></a>2. 解压</h1><p>下载出来是一个Zip压缩包，不多说，直接解压到目录下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@centos8 data]$ unzip arthas-bin-3.3.7.zip -d arthas&#x2F;</span><br><span class="line">Archive:  arthas-bin-3.3.7.zip</span><br><span class="line">   creating: arthas&#x2F;async-profiler&#x2F;</span><br><span class="line">  inflating: arthas&#x2F;arthas-spy.jar   </span><br><span class="line">  inflating: arthas&#x2F;arthas-core.jar  </span><br><span class="line">  inflating: arthas&#x2F;logback.xml      </span><br><span class="line">  inflating: arthas&#x2F;arthas.properties  </span><br><span class="line">  inflating: arthas&#x2F;arthas-agent.jar  </span><br><span class="line">  inflating: arthas&#x2F;arthas-client.jar  </span><br><span class="line">  inflating: arthas&#x2F;arthas-boot.jar  </span><br><span class="line">  inflating: arthas&#x2F;arthas-demo.jar  </span><br><span class="line">  inflating: arthas&#x2F;install-local.sh  </span><br><span class="line">  inflating: arthas&#x2F;as.sh            </span><br><span class="line">  inflating: arthas&#x2F;as.bat           </span><br><span class="line">  inflating: arthas&#x2F;as-service.bat   </span><br><span class="line">  inflating: arthas&#x2F;async-profiler&#x2F;libasyncProfiler-linux-arm.so  </span><br><span class="line">  inflating: arthas&#x2F;async-profiler&#x2F;libasyncProfiler-linux-x64.so  </span><br><span class="line">  inflating: arthas&#x2F;async-profiler&#x2F;libasyncProfiler-mac-x64.so </span><br></pre></td></tr></table></figure>
+
+<h1 id="3-使用简介"><a href="#3-使用简介" class="headerlink" title="3. 使用简介"></a>3. 使用简介</h1><h2 id="3-1-启动演示Demo"><a href="#3-1-启动演示Demo" class="headerlink" title="3.1. 启动演示Demo"></a>3.1. 启动演示Demo</h2><p>原生<code>Arthas</code> 提供一个用于学习和演示用的 Demo，我们这里直接启动它，<code>arthas-demo.jar</code>，它是一个简单的程序，每隔一秒生成一个随机数，再执行质因数分解，并打印出分解结果。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@centos8 arthas]$ java -jar arthas-demo.jar</span><br><span class="line">illegalArgumentCount:  1, number is: -121785, need &gt;&#x3D; 2</span><br><span class="line">illegalArgumentCount:  2, number is: -71779, need &gt;&#x3D; 2</span><br><span class="line">illegalArgumentCount:  3, number is: -108566, need &gt;&#x3D; 2</span><br><span class="line">67261&#x3D;67261</span><br><span class="line">illegalArgumentCount:  4, number is: -22833, need &gt;&#x3D; 2</span><br><span class="line">illegalArgumentCount:  5, number is: -24786, need &gt;&#x3D; 2</span><br><span class="line">illegalArgumentCount:  6, number is: -101489, need &gt;&#x3D; 2</span><br><span class="line">illegalArgumentCount:  7, number is: -95959, need &gt;&#x3D; 2</span><br><span class="line">165377&#x3D;59*2803</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-2-启动Arthas"><a href="#3-2-启动Arthas" class="headerlink" title="3.2. 启动Arthas"></a>3.2. 启动Arthas</h2><p>在启动中会让你输入需要监控的进程，演示环境中我这里只有 <code>1</code>，输入 <code>1</code> 回车。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[root@centos8 arthas]$ java -jar arthas-boot.jar</span><br><span class="line">[INFO] arthas-boot version: 3.3.7</span><br><span class="line">[INFO] Found existing java process, please choose one and input the serial number of the process, eg : 1. Then hit ENTER.</span><br><span class="line">* [1]: 1714 arthas-demo.jar</span><br><span class="line">1</span><br><span class="line">[INFO] arthas home: &#x2F;data&#x2F;arthas</span><br><span class="line">[INFO] Try to attach process 1714</span><br><span class="line">[INFO] Attach process 1714 success.</span><br><span class="line">[INFO] arthas-client connect 127.0.0.1 3658</span><br><span class="line">  ,---.  ,------. ,--------.,--.  ,--.  ,---.   ,---.                           </span><br><span class="line"> &#x2F;  O  \ |  .--. &#39;&#39;--.  .--&#39;|  &#39;--&#39;  | &#x2F;  O  \ &#39;   .-&#39;                          </span><br><span class="line">|  .-.  ||  &#39;--&#39;.&#39;   |  |   |  .--.  ||  .-.  |&#96;.  &#96;-.                          </span><br><span class="line">|  | |  ||  |\  \    |  |   |  |  |  ||  | |  |.-&#39;    |                         </span><br><span class="line">&#96;--&#39; &#96;--&#39;&#96;--&#39; &#39;--&#39;   &#96;--&#39;   &#96;--&#39;  &#96;--&#39;&#96;--&#39; &#96;--&#39;&#96;-----&#39;                          </span><br><span class="line">                                                                                </span><br><span class="line"></span><br><span class="line">wiki      https:&#x2F;&#x2F;alibaba.github.io&#x2F;arthas                                      </span><br><span class="line">tutorials https:&#x2F;&#x2F;alibaba.github.io&#x2F;arthas&#x2F;arthas-tutorials                     </span><br><span class="line">version   3.3.7                                                                 </span><br><span class="line">pid       1714                                                                  </span><br><span class="line">time      2020-08-07 11:08:57                                                   </span><br><span class="line"></span><br><span class="line">## 3.3. 常用命令集</span><br><span class="line"></span><br><span class="line">经常用的命令我基本罗列出来，当然也不都是最好用，当然这里头既有实际情况和个人喜好在里面！</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>详解</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>dashboard</td>
+<td>展示当前进程的信息</td>
+</tr>
+<tr>
+<td>thread</td>
+<td>线程栈信息，在实际应用比较有用，可以定位问题线程</td>
+</tr>
+<tr>
+<td>jvm</td>
+<td>查看当前JVM信息，感觉有点类似 <code>jinfo</code></td>
+</tr>
+<tr>
+<td>sc</td>
+<td>查看JVM已加载的类信息</td>
+</tr>
+<tr>
+<td>trace</td>
+<td>方法内部调用路径，并输出方法路径上的每个节点上耗时</td>
+</tr>
+<tr>
+<td>monitor</td>
+<td>方法执行监控，是一个非实时返回命令.</td>
+</tr>
+<tr>
+<td>vmoption</td>
+<td>查看和修改JVM里诊断相关的option</td>
+</tr>
+</tbody></table>
+<h3 id="3-3-1-dashboard"><a href="#3-3-1-dashboard" class="headerlink" title="3.3.1. dashboard"></a>3.3.1. dashboard</h3><p>前系统的实时数据面板，按 ctrl+c 退出。</p>
+<p>当运行在Ali-tomcat时，会显示当前tomcat的实时信息，如HTTP请求的qps, rt, 错误数, 线程池信息等等。</p>
+<p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/java/arthas/20200807231925.png" alt="dashboard仪表盘"></p>
+<h4 id="3-3-1-1-说明"><a href="#3-3-1-1-说明" class="headerlink" title="3.3.1.1. 说明"></a>3.3.1.1. 说明</h4><ul>
+<li><p>ID: Java级别的线程ID，注意这个ID不能跟jstack中的nativeID一一对应</p>
+</li>
+<li><p>NAME: 线程名</p>
+</li>
+<li><p>GROUP: 线程组名</p>
+</li>
+<li><p>PRIORITY: 线程优先级, 1~10之间的数字，越大表示优先级越高</p>
+</li>
+<li><p>STATE: 线程的状态</p>
+</li>
+<li><p>CPU%: 线程消耗的cpu占比，采样100ms，将所有线程在这100ms内的cpu使用量求和，再算出每个线程的cpu使用占比。</p>
+</li>
+<li><p>TIME: 线程运行总时间，数据格式为分：秒</p>
+</li>
+<li><p>INTERRUPTED: 线程当前的中断位状态</p>
+</li>
+<li><p>DAEMON: 是否是daemon线程</p>
+</li>
+</ul>
+<h4 id="3-3-1-2-样例图"><a href="#3-3-1-2-样例图" class="headerlink" title="3.3.1.2. 样例图"></a>3.3.1.2. 样例图</h4><p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/java/arthas/20200807231925.png" alt="dashboard仪表盘"></p>
+<h3 id="3-3-2-thread"><a href="#3-3-2-thread" class="headerlink" title="3.3.2. thread"></a>3.3.2. thread</h3><p>查看当前线程信息，查看线程的堆栈。</p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>线程id</td>
+</tr>
+<tr>
+<td>[n:]</td>
+<td>指定最忙的前N个线程并打印堆栈</td>
+</tr>
+<tr>
+<td>[b]</td>
+<td>找出当前阻塞其他线程的线程</td>
+</tr>
+<tr>
+<td>[i <value>]</td>
+<td>指定cpu占比统计的采样间隔，单位为毫秒</td>
+</tr>
+</tbody></table>
+<p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/java/arthas/20200807232137.png" alt="thread-1"></p>
+<p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/java/arthas/20200807232241.png" alt="thread-2"></p>
+<h3 id="3-3-3-JVM"><a href="#3-3-3-JVM" class="headerlink" title="3.3.3. JVM"></a>3.3.3. JVM</h3><p>查看当前JVM信息。</p>
+<ul>
+<li><p>和Thread有关的参数</p>
+<ul>
+<li>COUNT: JVM当前活跃的线程数</li>
+<li>DAEMON-COUNT: JVM当前活跃的守护线程数</li>
+<li>PEAK-COUNT: 从JVM启动开始曾经活着的最大线程数</li>
+<li>STARTED-COUNT: 从JVM启动开始总共启动过的线程次数</li>
+<li>DEADLOCK-COUNT: JVM当前死锁的线程数</li>
+</ul>
+</li>
+<li><p>文件描述符</p>
+</li>
+</ul>
+<p>此处省略</p>
+<p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/java/arthas/20200807232503.png" alt="jvm"></p>
+<h3 id="3-3-4-sc"><a href="#3-3-4-sc" class="headerlink" title="3.3.4. sc"></a>3.3.4. sc</h3><p>查看JVM已加载的类信息</p>
+<p>“Search-Class” 的简写，这个命令能搜索出所有已经加载到 JVM 中的 Class 信息，这个命令支持的参数有 [d]、[E]、[f] 和 [x:]。</p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>class-pattern</td>
+<td>类名表达式匹配</td>
+</tr>
+<tr>
+<td>method-pattern</td>
+<td>方法名表达式匹配</td>
+</tr>
+<tr>
+<td>[d]</td>
+<td>输出当前类的详细信息，包括这个类所加载的原始文件来源、类的声明、加载的ClassLoader等详细信息。</td>
+</tr>
+<tr>
+<td>如果一个类被多个ClassLoader所加载，则会出现多次</td>
+<td></td>
+</tr>
+<tr>
+<td>[E]</td>
+<td>开启正则表达式匹配，默认为通配符匹配</td>
+</tr>
+<tr>
+<td>[f]</td>
+<td>输出当前类的成员变量信息（需要配合参数-d一起使用）</td>
+</tr>
+<tr>
+<td>[x:]</td>
+<td>指定输出静态变量时属性的遍历深度，默认为 0，即直接使用 toString 输出</td>
+</tr>
+</tbody></table>
+<p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/java/arthas/20200807234622.png" alt="sc"></p>
+<h3 id="3-3-5-trace"><a href="#3-3-5-trace" class="headerlink" title="3.3.5. trace"></a>3.3.5. trace</h3><p>方法内部调用路径，并输出方法路径上的每个节点上耗时。</p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>class-pattern</td>
+<td>类名表达式匹配</td>
+</tr>
+<tr>
+<td>method-pattern</td>
+<td>方法名表达式匹配</td>
+</tr>
+<tr>
+<td>condition-express</td>
+<td>条件表达式</td>
+</tr>
+<tr>
+<td>[E]</td>
+<td>开启正则表达式匹配，默认为通配符匹配</td>
+</tr>
+<tr>
+<td>[n:]</td>
+<td>命令执行次数</td>
+</tr>
+<tr>
+<td>#cost</td>
+<td>方法执行耗时</td>
+</tr>
+</tbody></table>
+<p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/java/arthas/20200807235135.png" alt="trace"></p>
+<h3 id="3-3-6-monitor"><a href="#3-3-6-monitor" class="headerlink" title="3.3.6. monitor"></a>3.3.6. monitor</h3><p>方法执行监控</p>
+<p>对匹配 class-pattern／method-pattern的类、方法的调用进行监控。</p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>class-pattern</td>
+<td>类名表达式匹配</td>
+</tr>
+<tr>
+<td>method-pattern</td>
+<td>方法名表达式匹配</td>
+</tr>
+<tr>
+<td>[E]</td>
+<td>开启正则表达式匹配，默认为通配符匹配</td>
+</tr>
+<tr>
+<td>[c:]</td>
+<td>统计周期，默认值为120秒</td>
+</tr>
+</tbody></table>
+<p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/java/arthas/20200807235553.png" alt="monitor"></p>
+
+</div>
+
+
+    <div class="post-guide">
+        <div class="item left">
+            
+              <a href="/2020/07/14/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/Windows/Wlx2Explore%E5%85%A5%E9%97%A8/">
+                  <i class="fa fa-angle-left" aria-hidden="true"></i>
+                  Wlx2Explore入门
+              </a>
+            
+        </div>
+        <div class="item right">
+            
+              <a href="/2020/07/12/14%20%E4%B8%AD%E9%97%B4%E4%BB%B6/%E7%BC%93%E5%AD%98/Redis/">
+                Redis
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+              </a>
+            
+        </div>
+    </div>
+
+
+
+	<div id="vcomments"></div>
+
+
+<script>
+	
+		// 评论
+		new Valine({
+			av: AV,
+			el: '#vcomments',
+			notify: false,
+			verify: false,
+			path: window.location.pathname,
+			appId: '',
+			appKey: '',
+			placeholder: '请输入评论',
+			avatar: 'retro',
+			recordIP: false
+		})
+	
+	
+</script>
 	</div>
 	<div id="footer">
 	<p>
