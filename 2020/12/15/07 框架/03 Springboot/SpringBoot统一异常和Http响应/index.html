@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+	
+	<!-- title -->
+	
+	<title>
+	
+		SpringBoot统一异常和Http响应 | 
+	 
+	王老邪
+	</title>
+	
+	<!-- keywords,description -->
+	 
+		<meta name="description" content="SpringBoot统一异常和Http响应" />
+	
+
+	<!-- favicon -->
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+	
+  
+
+	
+<link rel="stylesheet" href="/css/main.css">
+
+	
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/darcula.min.css">
+
+
+	
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/highlight.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/npm/jquery-pjax@2.0.1/jquery.pjax.min.js"></script>
+
+	
+<script src="/js/main.js"></script>
+
+	
+		
+<script src="https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min.js"></script>
+
+		
+<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
+
+	
+	
+		<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+	
+	<script>
+		var _hmt = _hmt || [];
+		(function() {
+			var hm = document.createElement("script");
+			hm.src = "https://hm.baidu.com/hm.js?1b1318d1b07a2360e12cec2ed56cd0d6";
+			var s = document.getElementsByTagName("script")[0]; 
+			s.parentNode.insertBefore(hm, s);
+		})();
+	</script>
+		
+<meta name="generator" content="Hexo 5.0.0"></head>
+
+<body>
+	<header id="header">
+    <a id="title" href="/" class="logo">王老邪</a>
+
+	<ul id="menu">
+		<li class="menu-item">
+			<a href="about.html" class="menu-item-link">ABOUT</a>
+		</li>
+		
+		<li class="menu-item">
+			<a href="https://github.com/king-angmar/weathertop" class="menu-item-link" target="_blank">
+				weathertop
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="https://github.com/rothschil" class="menu-item-link" target="_blank">
+				<i class="fa fa-github fa-2x"></i>
+			</a>
+		</li>
+	</ul>
+</header>
+
+	
+<div id="sidebar">
+	<button id="sidebar-toggle" class="toggle" ><i class="fa fa-arrow-right " aria-hidden="true"></i></button>
+	
+	<div id="site-toc">
+		<input id="search-input" class="search-input" type="text" placeholder="search...">
+		<div id="tree">
+			
+
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 操作系统
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 Linux
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/01/01/01%20%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/01%20Linux/Linux%E5%9F%BA%E7%A1%80/">
+										Linux基础
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										06 Java
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 JVM
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/05/21/06%20Java/01%20JVM/JVM%E8%B0%83%E4%BC%98%E6%94%BB%E7%95%A5/">
+										JVM调优攻略
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										02 多线程
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/05/27/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/CountDownLatch%E3%80%81Semaphone%E3%80%81CyclicBarrier%E5%85%A5%E9%97%A8/">
+										CountDownLatch、Semaphone、CyclicBarrier入门
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/05/18/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95Java%E9%98%9F%E5%88%97/">
+										死磕Java队列
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/05/14/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95ThreadPoolExecutor%E7%BA%BF%E7%A8%8B%E6%B1%A0/">
+										死磕ThreadPoolExecutor线程池
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/05/20/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95Volatile/">
+										死磕Volatile
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/05/14/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95synchronized/">
+										死磕synchronized
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										03 网络编程
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/05/08/06%20Java/03%20%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/TCP/">
+										TCP
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										04 设计模式
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/03/29/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%901%E3%80%91%E2%80%94%E2%80%94%E8%A7%82%E5%AF%9F%E8%80%85/">
+										浅析Java设计模式【1】——观察者
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/03/29/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%902%E3%80%91%E2%80%94%E2%80%94%E9%80%82%E9%85%8D%E5%99%A8/">
+										浅析Java设计模式【2】——适配器
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/03/30/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%903%E3%80%91%E2%80%94%E2%80%94%E4%BB%A3%E7%90%86/">
+										浅析Java设计模式【3】——代理
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/06/19/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%904%E3%80%91%E2%80%94%E2%80%94%E7%AD%96%E7%95%A5/">
+										浅析Java设计模式【4】——策略
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										07 框架
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										03 Springboot
+									</a>
+									
+							<ul>
+								<li class="file active">
+									<a href="/2020/12/15/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/SpringBoot%E7%BB%9F%E4%B8%80%E5%BC%82%E5%B8%B8%E5%92%8CHttp%E5%93%8D%E5%BA%94/">
+										SpringBoot统一异常和Http响应
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/06/19/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/SpringBoot%E9%9B%86%E6%88%90Elasticsearch7.4-%E5%AE%9E%E6%88%98(1)/">
+										SpringBoot集成Elasticsearch7.4-实战(1)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/06/20/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/SpringBoot%E9%9B%86%E6%88%90Elasticsearch7.4-%E5%AE%9E%E6%88%98(2)/">
+										SpringBoot集成Elasticsearch7.4-实战(2)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/06/21/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/SpringBoot%E9%9B%86%E6%88%90Elasticsearch7.4-%E5%AE%9E%E6%88%98(3)/">
+										SpringBoot集成Elasticsearch7.4-实战(3)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/12/16/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/Springboot%E9%9B%86%E6%88%90ip2region%E7%A6%BB%E7%BA%BFIP%E5%9C%B0%E5%90%8D%E6%98%A0%E5%B0%84/">
+										Springboot集成ip2region离线IP地名映射
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/12/17/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/%E6%89%8B%E5%86%99Java%E7%88%AC%E8%99%AB%E8%8E%B7%E5%8F%96%E5%9B%BD%E5%AE%B6%E7%BB%9F%E8%AE%A1%E5%B1%80%E8%A1%8C%E6%94%BF%E5%8C%BA%E5%88%92%E6%95%B0%E6%8D%AE/">
+										手写Java爬虫获取国家统计局行政区划数据
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/02/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/%E6%B5%85%E8%B0%88SpringBoot%E5%90%AF%E5%8A%A8%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/">
+										浅谈SpringBoot启动那些事儿
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										08 微服务
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 Nacos
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/01/10/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/00%20Nacos/CentOS%E7%8E%AF%E5%A2%83%E4%B8%8B%E5%AE%89%E8%A3%85Nacos/">
+										CentOS环境下安装Nacos
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/12/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/00%20Nacos/SpringCloud%E9%9B%86%E6%88%90Nacos%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0/">
+										SpringCloud集成Nacos实现服务发现
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/11/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/00%20Nacos/SpringCloud%E9%9B%86%E6%88%90Nacos%E5%AE%9E%E7%8E%B0%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/">
+										SpringCloud集成Nacos实现配置管理
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										10 架构分析
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/04/09/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/10%20%E6%9E%B6%E6%9E%84%E5%88%86%E6%9E%90/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%88%86%E6%9E%90/">
+										微服务架构设计分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										09 区块链
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/12/24/09%20%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E7%9F%A5%E8%AF%86%E5%85%A5%E9%97%A8/">
+										区块链知识入门
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										10 容器
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 Docker
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/07/18/10%20%E5%AE%B9%E5%99%A8/00%20Docker/Docker%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7Portainer/">
+										Docker管理工具Portainer
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										11 分布式
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 分布式事务
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/08/02/11%20%E5%88%86%E5%B8%83%E5%BC%8F/00%20%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E8%AF%A6%E8%A7%A3%E2%80%94%E2%80%94SpringBoot+Atomikos%E7%AF%87/">
+										分布式事务详解——SpringBoot+Atomikos篇
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 分布式锁
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/08/01/11%20%E5%88%86%E5%B8%83%E5%BC%8F/01%20%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/%E6%B5%85%E6%9E%90%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%AE%9E%E7%8E%B0%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F/">
+										浅析分布式锁实现三种方式
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										14 中间件
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										消息
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										RocketMQ
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/07/31/14%20%E4%B8%AD%E9%97%B4%E4%BB%B6/%E6%B6%88%E6%81%AF/RocketMQ/SpringBoot%E9%9B%86%E6%88%90RocketMQ%EF%BC%881%EF%BC%89%E9%9B%86%E7%BE%A4/">
+										SpringBoot集成RocketMQ（1）集群
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/08/07/14%20%E4%B8%AD%E9%97%B4%E4%BB%B6/%E6%B6%88%E6%81%AF/RocketMQ/SpringBoot%E9%9B%86%E6%88%90RocketMQ%EF%BC%882%EF%BC%89%E9%87%8D%E8%AF%95%E6%9C%BA%E5%88%B6/">
+										SpringBoot集成RocketMQ（2）重试机制
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										缓存
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/07/12/14%20%E4%B8%AD%E9%97%B4%E4%BB%B6/%E7%BC%93%E5%AD%98/Redis/">
+										Redis
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										28 杂谈
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/09/20/28%20%E6%9D%82%E8%B0%88/%E4%BA%BA%E5%8D%83%E7%9B%B8%EF%BC%8C%E4%BD%9B%E6%97%A0%E7%9B%B8/">
+										人千相，佛无相
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/03/19/28%20%E6%9D%82%E8%B0%88/%E5%8E%86%E5%8F%B2%E4%B8%8A%E7%9A%84%E5%AE%89%E5%BE%BD%E4%BA%BA%E7%89%A9/">
+										历史上的安徽人物
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/03/19/28%20%E6%9D%82%E8%B0%88/%E8%B5%A2%E5%9C%A8%E6%A0%BC%E5%B1%80%E3%80%81%E8%BE%93%E5%9C%A8%E8%AE%A1%E8%BE%83/">
+										赢在格局、输在计较
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										54 产品设计
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										需求分析
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/01/15/54%20%E4%BA%A7%E5%93%81%E8%AE%BE%E8%AE%A1/%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/%E6%B5%85%E8%B0%88%E7%94%A8%E6%88%B7%E7%94%BB%E5%83%8F/">
+										浅谈用户画像
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/20/54%20%E4%BA%A7%E5%93%81%E8%AE%BE%E8%AE%A1/%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/%E7%BB%9F%E4%B8%80%E5%AE%A1%E8%AE%A1/">
+										统一审计
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										98 管理类
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 项目交接
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/04/01/98%20%E7%AE%A1%E7%90%86%E7%B1%BB/00%20%E9%A1%B9%E7%9B%AE%E4%BA%A4%E6%8E%A5/%E5%AF%B9%E9%A1%B9%E7%9B%AE%E4%BA%A4%E6%8E%A5%E8%BF%87%E7%A8%8B%E8%A6%81%E6%B1%82/">
+										对项目交接过程要求
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										99 工具等
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										Download
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2018/04/18/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/Download/%E8%AF%A6%E8%A7%A3CMD%E5%91%BD%E4%BB%A4%E6%BB%A1%E9%80%9F%E4%B8%8B%E8%BD%BD%E7%99%BE%E5%BA%A6%E4%BA%91/">
+										详解CMD命令满速下载百度云
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										JVM
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/08/08/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/JVM/%E6%92%B8%E8%B5%B7Arthas%E6%8E%92%E9%9B%B7/">
+										撸起Arthas排雷
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										VPN
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/01/31/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/VPN/lantern%E9%82%80%E8%AF%B7%E7%A0%81/">
+										lantern邀请码
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										Windows
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/12/18/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/Windows/Win10%E9%BB%91%E7%A7%91%E6%8A%80%EF%BC%8C%E4%BD%A0%E5%88%B0%E5%BA%95%E7%9F%A5%E9%81%93%E5%A4%9A%E5%B0%91/">
+										Win10黑科技，你到底知道多少
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/07/14/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/Windows/Wlx2Explore%E5%85%A5%E9%97%A8/">
+										Wlx2Explore入门
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/07/28/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/Windows/%E5%8F%AF%E7%94%A8%E5%85%8D%E6%BF%80%E6%B4%BBAdobe%20Acrobat%20DC%202020/">
+										可用免激活Adobe Acrobat DC 2020
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+		</div>
+	</div>
+</div>
+
+	<!-- 引入正文 -->
+	<div id="content">
+		<h1 id="article-title">
+
+	SpringBoot统一异常和Http响应
+</h1>
+<div class="article-meta">
+	
+	<span>Rothschil</span>
+	<span>2020-12-15 20:00:00</span>
+    
+		<div id="article-categories">
+            
+                
+                    <span>
+                        <i class="fa fa-folder" aria-hidden="true"></i>
+                        <a href="/categories/springboot/">springboot</a>
+						
+                    </span>
+                
+            
+		</div>
+    
+</div>
+
+<div id="article-content">
+	<h2 id="1-2-Http响应内容统一封装"><a href="#1-2-Http响应内容统一封装" class="headerlink" title="1.2. Http响应内容统一封装"></a>1.2. Http响应内容统一封装</h2><p>我们在开发<code>前端</code>和<code>后端</code>进行交互服务过程中，受制于前后端的工作职责明确，在交互协议的定义上理解也较为不同，造成一个项目服务中重复定义交互内容以及编码上重复编写，不利于项目维护。所以基于此，将<code>后端</code>按照约定请求URL路径，并传入相关参数，<code>后端</code>服务器接收请求，进行业务处理，返回数据给前端，进行再次封装，供前端以及外部调用。</p>
+<p>通常情况下我们<code>后端</code>返回给<code>前端</code>都会采用 <code>JSON</code> 的定义，具体如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">&#x2F;&#x2F; 返回状态码</span><br><span class="line">code:integer,</span><br><span class="line">&#x2F;&#x2F; 返回信息描述</span><br><span class="line">message:string,</span><br><span class="line">&#x2F;&#x2F; 返回值</span><br><span class="line">data:object</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>code状态码</li>
+</ul>
+<p>在状态码的定义上，在满足业务需求的基础上，避免凌乱，一般业界同行做法就是参考HTTP请求返回的状态码。<br>具体如 <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/5053660?fr=aladdin">百度 - HTTP状态码</a>。</p>
+<p>这里我贴出我将我项目中的常用的罗列出来，供大家参考。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> xyz.wongs.drunkard.base.message.enums;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span></span></span><br><span class="line"><span class="comment"> * 1000～1999 区间表示参数错误</span></span><br><span class="line"><span class="comment"> * 2000～2999 区间表示用户错误</span></span><br><span class="line"><span class="comment"> * 3000～3999 区间表示接口异常</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> WCNGS@QQ.COM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Github</span> &lt;a&gt;https://github.com/rothschil&lt;/a&gt;</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2020/8/2 13:31</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Version</span> 1.0.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> ResultCode &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 成功 **/</span></span><br><span class="line">    SUCCESS(<span class="number">0</span>,<span class="string">&quot;成功&quot;</span>),</span><br><span class="line">    <span class="comment">/** 失败 **/</span></span><br><span class="line">    FAILURE(-<span class="number">1</span>,<span class="string">&quot;失败&quot;</span>),</span><br><span class="line"></span><br><span class="line">    EXCEPTION(<span class="number">201</span>, <span class="string">&quot;未知异常&quot;</span>),</span><br><span class="line">    RUNTIME_EXCEPTION(<span class="number">202</span>, <span class="string">&quot;运行时异常&quot;</span>),</span><br><span class="line">    NULL_POINTER_EXCEPTION(<span class="number">203</span>, <span class="string">&quot;空指针异常&quot;</span>),</span><br><span class="line">    CLASS_CAST_EXCEPTION(<span class="number">204</span>, <span class="string">&quot;类型转换异常&quot;</span>),</span><br><span class="line">    IO_EXCEPTION(<span class="number">205</span>, <span class="string">&quot;IO异常&quot;</span>),</span><br><span class="line">    SYSTEM_EXCEPTION(<span class="number">210</span>, <span class="string">&quot;系统异常&quot;</span>),</span><br><span class="line">    NOT_FOUND(<span class="number">404</span>, <span class="string">&quot;Not Found&quot;</span>),</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 1000～1999 区间表示参数错误</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    PARAMS_IS_INVALID(<span class="number">1001</span>,<span class="string">&quot;参数无效&quot;</span>),</span><br><span class="line">    PARAMS_IS_BANK(<span class="number">1002</span>,<span class="string">&quot;参数为空&quot;</span>),</span><br><span class="line">    PARAMS_TYPE_BIND_ERROR(<span class="number">1003</span>,<span class="string">&quot;参数类型错误&quot;</span>),</span><br><span class="line">    PARAMS_NOT_COMPLETE(<span class="number">1004</span>,<span class="string">&quot;参数缺失&quot;</span>),</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 2000～2999 区间表示用户错误</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    USER_NOT_LOGGED_IN(<span class="number">2001</span>,<span class="string">&quot;用户未登录，访问路径需要验证&quot;</span>),</span><br><span class="line">    USER_NOT_LOGIN_ERROR(<span class="number">2002</span>,<span class="string">&quot;用户不存在或密码错误&quot;</span>),</span><br><span class="line">    USER_ACCOUNT_FORBIDDEN(<span class="number">2003</span>,<span class="string">&quot;用户被禁用&quot;</span>),</span><br><span class="line">    USER_NOT_EXIST(<span class="number">2004</span>,<span class="string">&quot;用户不存在&quot;</span>),</span><br><span class="line">    USER_HAS_EXISTED(<span class="number">2005</span>,<span class="string">&quot;用户已存在&quot;</span>),</span><br><span class="line">    USER_IS_EXPIRED(<span class="number">2006</span>,<span class="string">&quot;用户账号已过期&quot;</span>),</span><br><span class="line">    USER_FIRST_LANDING(<span class="number">2007</span>, <span class="string">&quot;首次登录&quot;</span>),</span><br><span class="line">    USER_TOKEN_EXPIRED(<span class="number">2008</span>,<span class="string">&quot;Token过期&quot;</span>),</span><br><span class="line">    USER_TOKEN_GENERTATION_FAIL(<span class="number">2009</span>,<span class="string">&quot;生成Token失败&quot;</span>),</span><br><span class="line">    USER_SIGN_VERIFI_NOT_COMPLIANT(<span class="number">2010</span>,<span class="string">&quot;签名校验不合规&quot;</span>),</span><br><span class="line">    USER_PASSWORD_RESET_FAILED(<span class="number">2011</span>, <span class="string">&quot;重置密码失败&quot;</span>),</span><br><span class="line">    USER_UNKONWN_INDENTITY(<span class="number">2012</span>, <span class="string">&quot;未知身份&quot;</span>),</span><br><span class="line">    MANY_USER_LOGINS(<span class="number">2111</span>,<span class="string">&quot;多用户在线&quot;</span>),</span><br><span class="line">    TOO_MANY_PASSWD_ENTER(<span class="number">2112</span>, <span class="string">&quot;密码输入次数过多&quot;</span>),</span><br><span class="line">    VERIFICATION_CODE_INCORECT(<span class="number">2202</span>,<span class="string">&quot;图形验证码不正确&quot;</span>),</span><br><span class="line">    VERIFICATION_CODE_FAIL(<span class="number">2203</span>,<span class="string">&quot;图形验证码生产失败&quot;</span>),</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 3000～3999 区间表示接口异常</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    API_EXCEPTION(<span class="number">3000</span>, <span class="string">&quot;接口异常&quot;</span>),</span><br><span class="line">    API_NOT_FOUND_EXCEPTION(<span class="number">3002</span>, <span class="string">&quot;接口不存在&quot;</span>),</span><br><span class="line">    API_REQ_MORE_THAN_SET(<span class="number">3003</span>, <span class="string">&quot;接口访问过于频繁，请稍后再试&quot;</span>),</span><br><span class="line">    API_IDEMPOTENT_EXCEPTION(<span class="number">3004</span>, <span class="string">&quot;接口不可以重复提交，请稍后再试&quot;</span>),</span><br><span class="line">    API_PARAM_EXCEPTION(<span class="number">3005</span>, <span class="string">&quot;参数异常&quot;</span>),</span><br><span class="line">    API_PARAM_MISSING_EXCEPTION(<span class="number">3006</span>, <span class="string">&quot;缺少参数&quot;</span>),</span><br><span class="line">    API_METHOD_NOT_SUPPORTED_EXCEPTION(<span class="number">3007</span>, <span class="string">&quot;不支持的Method类型&quot;</span>),</span><br><span class="line">    API_METHOD_PARAM_TYPE_EXCEPTIION(<span class="number">3008</span>, <span class="string">&quot;参数类型不匹配&quot;</span>),</span><br><span class="line"></span><br><span class="line">    ARRAY_EXCEPTION(<span class="number">11001</span>, <span class="string">&quot;数组异常&quot;</span>),</span><br><span class="line">    ARRAY_OUT_OF_BOUNDS_EXCEPTION(<span class="number">11002</span>, <span class="string">&quot;数组越界异常&quot;</span>),</span><br><span class="line"></span><br><span class="line">    JSON_SERIALIZE_EXCEPTION(<span class="number">30000</span>, <span class="string">&quot;序列化数据异常&quot;</span>),</span><br><span class="line">    JSON_DESERIALIZE_EXCEPTION(<span class="number">30001</span>, <span class="string">&quot;反序列化数据异常&quot;</span>),</span><br><span class="line"></span><br><span class="line">    READ_RESOURSE_EXCEPTION(<span class="number">31002</span>, <span class="string">&quot;读取资源异常&quot;</span>),</span><br><span class="line">    READ_RESOURSE_NOT_FOUND_EXCEPTION(<span class="number">31003</span>, <span class="string">&quot;资源不存在异常&quot;</span>),</span><br><span class="line"></span><br><span class="line">    DATA_EXCEPTION(<span class="number">32004</span>, <span class="string">&quot;数据异常&quot;</span>),</span><br><span class="line">    DATA_NOT_FOUND_EXCEPTION(<span class="number">32005</span>, <span class="string">&quot;未找到符合条件的数据异常&quot;</span>),</span><br><span class="line">    DATA_CALCULATION_EXCEPTION(<span class="number">32006</span>, <span class="string">&quot;数据计算异常&quot;</span>),</span><br><span class="line">    DATA_COMPRESS_EXCEPTION(<span class="number">32007</span>, <span class="string">&quot;数据压缩异常&quot;</span>),</span><br><span class="line">    DATA_DE_COMPRESS_EXCEPTION(<span class="number">32008</span>, <span class="string">&quot;数据解压缩异常&quot;</span>),</span><br><span class="line">    DATA_PARSE_EXCEPTION(<span class="number">32009</span>, <span class="string">&quot;数据转换异常&quot;</span>),</span><br><span class="line"></span><br><span class="line">    ENCODING_EXCEPTION(<span class="number">33006</span>, <span class="string">&quot;编码异常&quot;</span>),</span><br><span class="line">    ENCODING_UNSUPPORTED_EXCEPTION(<span class="number">33006</span>, <span class="string">&quot;编码不支持异常&quot;</span>),</span><br><span class="line"></span><br><span class="line">    DATE_PARSE_EXCEPTION(<span class="number">34001</span>, <span class="string">&quot;日期转换异常&quot;</span>),</span><br><span class="line"></span><br><span class="line">    MAILE_SEND_EXCEPTION(<span class="number">35001</span>, <span class="string">&quot;邮件发送异常&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Integer code;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String msg;</span><br><span class="line"></span><br><span class="line">    ResultCode(Integer code, String msg) &#123;</span><br><span class="line">        <span class="keyword">this</span>.code = code;</span><br><span class="line">        <span class="keyword">this</span>.msg = msg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCode</span><span class="params">(Integer code)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.code = code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getMsg</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> msg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMsg</span><span class="params">(String msg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.msg = msg;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>message内容</li>
+</ul>
+<p>这个不解释啦， 就是编码的文字的意义，说清楚就行，没必要太较真，自行脑补。</p>
+<ul>
+<li>data数据</li>
+</ul>
+<p>这就是业务具体数据啦，根据具体业务，内容也不同，这一章节也没必要说。</p>
+<pre><code>这里小结下，我们除了要有需要定义的内容有两块：返回的JSON消息体（这里区分正常响应返回、异常响应返回），还需要一套状态码详细定义；再有我们这里做的是WEB，既然做通用，怎能少拦截器。</code></pre>
+<p>摆脱了繁琐的文字，下面开始张罗着贴实现代码啦。</p>
+<h3 id="1-2-1-消息体"><a href="#1-2-1-消息体" class="headerlink" title="1.2.1. 消息体"></a>1.2.1. 消息体</h3><p>结合我们定义的状态码，我们返回的消息体主要实现一个 <code>Serializable</code>，不要问我为什么。</p>
+<h4 id="1-2-1-1-正常响应"><a href="#1-2-1-1-正常响应" class="headerlink" title="1.2.1.1. 正常响应"></a>1.2.1.1. 正常响应</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> xyz.wongs.drunkard.base.message.response;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"><span class="keyword">import</span> xyz.wongs.drunkard.base.message.enums.ResultCode;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span></span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> WCNGS@QQ.COM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Github</span> &lt;a&gt;https://github.com/rothschil&lt;/a&gt;</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2020/8/2 13:48</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Version</span> 1.0.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Result</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">4505655308965878999L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Integer code;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String message;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Object data;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Result</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Result</span><span class="params">(ResultCode resultCode, Object data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.code = resultCode.getCode();</span><br><span class="line">        <span class="keyword">this</span>.message = resultCode.getMsg();</span><br><span class="line">        <span class="keyword">this</span>.data = data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setResultCode</span><span class="params">(ResultCode resultCode)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.code = resultCode.getCode();</span><br><span class="line">        <span class="keyword">this</span>.message = resultCode.getMsg();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 返回成功</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> xyz.wongs.drunkard.base.message.response.R</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 20/11/13 17:15</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Result <span class="title">success</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        Result result = <span class="keyword">new</span> Result();</span><br><span class="line">        result.setResultCode(ResultCode.SUCCESS);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/** 返回成功</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> xyz.wongs.drunkard.base.message.response.R</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 20/11/13 17:15</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Result <span class="title">success</span><span class="params">(Object data)</span> </span>&#123;</span><br><span class="line">        Result result = <span class="keyword">new</span> Result();</span><br><span class="line">        result.setResultCode(ResultCode.SUCCESS);</span><br><span class="line">        result.setData(data);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 返回失败</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> xyz.wongs.drunkard.base.message.response.R</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 20/11/13 17:15</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Result <span class="title">fail</span><span class="params">(Integer code, String message)</span> </span>&#123;</span><br><span class="line">        Result result = <span class="keyword">new</span> Result();</span><br><span class="line">        result.setCode(code);</span><br><span class="line">        result.setMessage(message);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 返回失败</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> xyz.wongs.drunkard.base.message.response.R</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 20/11/13 17:15</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Result <span class="title">fail</span><span class="params">(ResultCode resultCode)</span> </span>&#123;</span><br><span class="line">        Result result = <span class="keyword">new</span> Result();</span><br><span class="line">        result.setResultCode(resultCode);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="1-2-1-2-异常响应"><a href="#1-2-1-2-异常响应" class="headerlink" title="1.2.1.2. 异常响应"></a>1.2.1.2. 异常响应</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> xyz.wongs.drunkard.base.message.response;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.Data;</span><br><span class="line"><span class="keyword">import</span> xyz.wongs.drunkard.base.message.enums.ResultCode;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> WCNGS@QQ.COM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span> ErrorResult</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span> 异常错误的返回信息实体</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Github</span> &lt;a&gt;https://github.com/rothschil&lt;/a&gt;</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 20/11/18 10:42</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Version</span> 1.0.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ErrorResult</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">4505655308965878999L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 错误编码</span></span><br><span class="line"><span class="comment">     **/</span></span><br><span class="line">    <span class="keyword">private</span> Integer code;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 消息描述</span></span><br><span class="line"><span class="comment">     **/</span></span><br><span class="line">    <span class="keyword">private</span> String msg;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 错误</span></span><br><span class="line"><span class="comment">     **/</span></span><br><span class="line">    <span class="keyword">private</span> String exception;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ErrorResult <span class="title">fail</span><span class="params">(ResultCode resultCode, Throwable e, String message)</span> </span>&#123;</span><br><span class="line">        ErrorResult errorResult = ErrorResult.fail(resultCode, e);</span><br><span class="line">        errorResult.setMsg(message);</span><br><span class="line">        <span class="keyword">return</span> errorResult;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ErrorResult <span class="title">fail</span><span class="params">(ResultCode resultCode, Throwable e)</span> </span>&#123;</span><br><span class="line">        ErrorResult errorResult = <span class="keyword">new</span> ErrorResult();</span><br><span class="line">        errorResult.setCode(resultCode.getCode());</span><br><span class="line">        errorResult.setMsg(resultCode.getMsg());</span><br><span class="line">        errorResult.setException(e.getClass().getName());</span><br><span class="line">        <span class="keyword">return</span> errorResult;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ErrorResult <span class="title">fail</span><span class="params">(Integer code, String message)</span> </span>&#123;</span><br><span class="line">        ErrorResult errorResult = <span class="keyword">new</span> ErrorResult();</span><br><span class="line">        errorResult.setCode(code);</span><br><span class="line">        errorResult.setMsg(message);</span><br><span class="line">        <span class="keyword">return</span> errorResult;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这样两个消息体就写完啦。</p>
+<h3 id="1-2-2-拦截器"><a href="#1-2-2-拦截器" class="headerlink" title="1.2.2. 拦截器"></a>1.2.2. 拦截器</h3><p>我们这里需要做的就是利用拦截器拦截请求，检查判断是否此请求返回的值需要包装。核心就是判断一个注解<code>annoation</code>是否存在方法或类中。</p>
+<p>为了演示的完整，我将代码贴完整。</p>
+<h4 id="1-2-2-1-Annoation注解"><a href="#1-2-2-1-Annoation注解" class="headerlink" title="1.2.2.1. Annoation注解"></a>1.2.2.1. Annoation注解</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span> ResponseResult</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span> </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> WCNGS@QQ.COM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Github</span> &lt;a&gt;https://github.com/rothschil&lt;/a&gt;</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 20/10/30 21:57</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Version</span> 1.0.0</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Target(&#123;ElementType.TYPE,ElementType.METHOD&#125;)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> ResponseResult &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-2-2-2-拦截器"><a href="#1-2-2-2-拦截器" class="headerlink" title="1.2.2.2. 拦截器"></a>1.2.2.2. 拦截器</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> xyz.wongs.drunkard.base.interceptor;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.method.HandlerMethod;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.HandlerInterceptor;</span><br><span class="line"><span class="keyword">import</span> xyz.wongs.drunkard.base.message.annoation.ResponseResult;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> WCNGS@QQ.COM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span> ResponseResultInterceptor</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span> 请求的拦截器</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Github</span> &lt;a&gt;https://github.com/rothschil&lt;/a&gt;</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 20/10/30 22:08</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Version</span> 1.0.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ResponseResultInterceptor</span> <span class="keyword">implements</span> <span class="title">HandlerInterceptor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String RESPONSE_RESULT_ANN = <span class="string">&quot;RESPONSE-RESULT-ANN&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (handler <span class="keyword">instanceof</span> HandlerMethod) &#123;</span><br><span class="line">            <span class="keyword">final</span> HandlerMethod handlerMethod = (HandlerMethod) handler;</span><br><span class="line">            <span class="keyword">final</span> Class&lt;?&gt; clazz = handlerMethod.getBeanType();</span><br><span class="line">            <span class="keyword">final</span> Method method = handlerMethod.getMethod();</span><br><span class="line">            <span class="keyword">if</span> (clazz.isAnnotationPresent(ResponseResult.class)) &#123;</span><br><span class="line">                request.setAttribute(RESPONSE_RESULT_ANN, clazz.getAnnotation(ResponseResult.class));</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (method.isAnnotationPresent(ResponseResult.class)) &#123;</span><br><span class="line">                request.setAttribute(RESPONSE_RESULT_ANN, method.getAnnotation(ResponseResult.class));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>着十几行代码的核心处理逻辑，就是获取此请求Annoation注解，是否需要返回值包装，并设置一个属性标记，交由下一处理<code>ResponseResultHandler</code>来具体封装返回值。</p>
+<p>细心的人会发现这里只处置正常成功的内容返回，对于异常的内容并未处置。关于异常处置我理解统一放在一起来编写，这样代码结构性会更好。由此引出下一章节，<code>全局异常</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> xyz.wongs.drunkard.base.handler;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.springframework.core.MethodParameter;</span><br><span class="line"><span class="keyword">import</span> org.springframework.http.MediaType;</span><br><span class="line"><span class="keyword">import</span> org.springframework.http.converter.HttpMessageConverter;</span><br><span class="line"><span class="keyword">import</span> org.springframework.http.server.ServerHttpRequest;</span><br><span class="line"><span class="keyword">import</span> org.springframework.http.server.ServerHttpResponse;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.ControllerAdvice;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.context.request.RequestContextHolder;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.context.request.ServletRequestAttributes;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;</span><br><span class="line"><span class="keyword">import</span> xyz.wongs.drunkard.base.message.annoation.ResponseResult;</span><br><span class="line"><span class="keyword">import</span> xyz.wongs.drunkard.base.message.response.Result;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span> ResponseResultHandler</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span> 消息返回体</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> WCNGS@QQ.COM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Github</span> &lt;a&gt;https://github.com/rothschil&lt;/a&gt;</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 20/11/10 09:28</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Version</span> 1.0.0</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@ControllerAdvice(basePackages = &quot;xyz.wongs.drunkard&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ResponseResultHandler</span> <span class="keyword">implements</span> <span class="title">ResponseBodyAdvice</span>&lt;<span class="title">Object</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String RESPONSE_RESULT_ANN = <span class="string">&quot;RESPONSE-RESULT-ANN&quot;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span> 判断是否要执行 beforeBodyWrite 方法，true为执行，false不执行，有注解标记的时候处理返回值</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> returnType</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> converterType</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> boolean</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 20/11/13 10:50</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">supports</span><span class="params">(MethodParameter returnType, Class&lt;? extends HttpMessageConverter&lt;?&gt;&gt; converterType)</span> </span>&#123;</span><br><span class="line">        ServletRequestAttributes sra =(ServletRequestAttributes)RequestContextHolder.getRequestAttributes();</span><br><span class="line">        HttpServletRequest request = sra.getRequest();</span><br><span class="line">        ResponseResult responseResult = (ResponseResult)request.getAttribute(RESPONSE_RESULT_ANN);</span><br><span class="line">        <span class="keyword">return</span> responseResult==<span class="keyword">null</span>?<span class="keyword">false</span>:<span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">beforeBodyWrite</span><span class="params">(Object body, MethodParameter returnType, MediaType selectContentType, Class&lt;? extends HttpMessageConverter&lt;?&gt;&gt; selectConverterType, ServerHttpRequest request, ServerHttpResponse response)</span> </span>&#123;</span><br><span class="line">        log.error(<span class="string">&quot; ENTER MSG .... Excu&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span>(body <span class="keyword">instanceof</span> Result)&#123;</span><br><span class="line">            <span class="keyword">return</span> (Result) body;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Result.success(body);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="1-2-2-3-全局异常"><a href="#1-2-2-3-全局异常" class="headerlink" title="1.2.2.3. 全局异常"></a>1.2.2.3. 全局异常</h4><p>这里所有的异常都使用到 <code>ErrorResult</code> 类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> xyz.wongs.drunkard.base.message.exception;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.springframework.http.HttpStatus;</span><br><span class="line"><span class="keyword">import</span> org.springframework.validation.BindException;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.MethodArgumentNotValidException;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.ExceptionHandler;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.ResponseBody;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.ResponseStatus;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RestControllerAdvice;</span><br><span class="line"><span class="keyword">import</span> xyz.wongs.drunkard.base.message.enums.ResultCode;</span><br><span class="line"><span class="keyword">import</span> xyz.wongs.drunkard.base.message.response.ErrorResult;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.validation.ConstraintViolationException;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> WCNGS@QQ.COM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span> GlobalExceptionHandler</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span> 全局异常处理Handler</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Github</span> &lt;a&gt;https://github.com/rothschil&lt;/a&gt;</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2019/9/23 15:03</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Version</span> 1.0.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@RestControllerAdvice</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GlobalExceptionHandler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 参数校验不通过</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> ex</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> xyz.wongs.drunkard.base.message.response.ErrorResult</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@author</span> WCNGS@QQ.COM</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@See</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2019/9/23 17:53</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@since</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ExceptionHandler(value = ConstraintViolationException.class)</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ErrorResult <span class="title">handleConstraintViolationException</span><span class="params">(ConstraintViolationException ex)</span> </span>&#123;</span><br><span class="line">        log.error(<span class="string">&quot;ConstraintViolationException msg:&#123;&#125;&quot;</span>, ex.getMessage());</span><br><span class="line">        <span class="keyword">return</span> ErrorResult.fail(ResultCode.PARAMS_IS_INVALID, ex);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 自定义异常</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> request</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> ex</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> xyz.wongs.drunkard.base.message.response.ErrorResult</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@author</span> WCNGS@QQ.COM</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@See</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2019/9/23 17:53</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@since</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@org</span>.springframework.web.bind.annotation.ExceptionHandler(DrunkardException.class)</span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ErrorResult <span class="title">handleWeathertopException</span><span class="params">(HttpServletRequest request, DrunkardException ex)</span> </span>&#123;</span><br><span class="line">        log.error(<span class="string">&quot;WeathertopRuntimeException code:&#123;&#125;,msg:&#123;&#125;&quot;</span>, ex.getCode(), ex.getMessage());</span><br><span class="line">        <span class="keyword">return</span> ErrorResult.fail(ex.getCode(), ex.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> e</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> request</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> xyz.wongs.drunkard.base.message.response.ErrorResult</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span> 拦截抛出的异常，<span class="doctag">@ResponseStatus</span>：用来改变响应状态码</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 20/11/13 11:14</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)</span></span><br><span class="line">    <span class="meta">@ExceptionHandler(Throwable.class)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ErrorResult <span class="title">handlerThrowable</span><span class="params">(Throwable e, HttpServletRequest request)</span> </span>&#123;</span><br><span class="line">        log.error(<span class="string">&quot;发生未知异常！原因是: &quot;</span>, e);</span><br><span class="line">        ErrorResult error = ErrorResult.fail(ResultCode.RUNTIME_EXCEPTION, e);</span><br><span class="line">        <span class="keyword">return</span> error;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> e</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> request</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> xyz.wongs.drunkard.base.message.response.ErrorResult</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span> 参数校验异常</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 20/11/13 11:14</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ExceptionHandler(BindException.class)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ErrorResult <span class="title">handleBindExcpetion</span><span class="params">(BindException e, HttpServletRequest request)</span> </span>&#123;</span><br><span class="line">        log.error(<span class="string">&quot;发生参数校验异常！原因是：&quot;</span>, e);</span><br><span class="line">        ErrorResult error = ErrorResult.fail(ResultCode.API_PARAM_EXCEPTION, e, e.getAllErrors().get(<span class="number">0</span>).getDefaultMessage());</span><br><span class="line">        <span class="keyword">return</span> error;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ExceptionHandler(MethodArgumentNotValidException.class)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ErrorResult <span class="title">handleMethodArgumentNotValidException</span><span class="params">(MethodArgumentNotValidException e, HttpServletRequest request)</span> </span>&#123;</span><br><span class="line">        log.error(<span class="string">&quot;发生参数校验异常！原因是：&quot;</span>, e);</span><br><span class="line">        ErrorResult error = ErrorResult.fail(ResultCode.API_PARAM_EXCEPTION, e, e.getBindingResult().getAllErrors().get(<span class="number">0</span>).getDefaultMessage());</span><br><span class="line">        <span class="keyword">return</span> error;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-3-例子"><a href="#1-2-3-例子" class="headerlink" title="1.2.3. 例子"></a>1.2.3. 例子</h3><p>以上虽然将所有代码贴出，这列为凑完整，顺道将写个例子来，写个 <code>Controller</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> xyz.wongs.drunkard.war3.web.controller;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.github.hiwepy.ip2region.spring.boot.IP2regionTemplate;</span><br><span class="line"><span class="keyword">import</span> com.github.hiwepy.ip2region.spring.boot.ext.RegionAddress;</span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.nutz.plugins.ip2region.DataBlock;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.*;</span><br><span class="line"><span class="keyword">import</span> xyz.wongs.drunkard.base.aop.annotion.ApplicationLog;</span><br><span class="line"><span class="keyword">import</span> xyz.wongs.drunkard.base.message.annoation.ResponseResult;</span><br><span class="line"><span class="keyword">import</span> xyz.wongs.drunkard.base.message.exception.DrunkardException;</span><br><span class="line"><span class="keyword">import</span> xyz.wongs.drunkard.war3.limit.RequestLimit;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span> IndexController</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span> </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> WCNGS@QQ.COM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Github</span> &lt;a&gt;https://github.com/rothschil&lt;/a&gt;</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 20/11/18 11:00</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Version</span> 1.0.0</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@ResponseResult</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IndexController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestLimit(maxCount=3,second=20)</span></span><br><span class="line">    <span class="meta">@ApplicationLog</span></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/test&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Map&lt;String, Object&gt; <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        HashMap&lt;String, Object&gt; data = <span class="keyword">new</span> HashMap&lt;&gt;(<span class="number">3</span>);</span><br><span class="line">        data.put(<span class="string">&quot;info&quot;</span>, <span class="string">&quot;测试成功&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ApplicationLog</span></span><br><span class="line">    <span class="meta">@GetMapping(&quot;/fail&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">error</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 查询结果数</span></span><br><span class="line">        <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>( res == <span class="number">0</span> ) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> DrunkardException(<span class="string">&quot;没有数据&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    IP2regionTemplate template;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 根据输入IP地址，返回解析后的地址</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> ip</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> xyz.wongs.drunkard.base.message.response.ResponseResult</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2020/8/17 18:26</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@GetMapping(value = &quot;/convert/&#123;ip&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> DataBlock <span class="title">convertDataBlock</span><span class="params">(<span class="meta">@PathVariable</span> String ip)</span></span>&#123;</span><br><span class="line">        DataBlock dataBlock = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            dataBlock = template.binarySearch(ip);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dataBlock;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 根据输入IP地址，返回解析后的地址</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> ip</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> xyz.wongs.drunkard.base.message.response.ResponseResult</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2020/8/17 18:26</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@RequestLimit(maxCount=3)</span></span><br><span class="line">    <span class="meta">@GetMapping(value = &quot;/region/&#123;ip&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> RegionAddress <span class="title">convert</span><span class="params">(<span class="meta">@PathVariable</span> String ip)</span></span>&#123;</span><br><span class="line">        RegionAddress regionAddress = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            regionAddress = template.getRegionAddress(ip);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> regionAddress;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(value = &quot;/region/ip=&#123;ip&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> RegionAddress <span class="title">caseInsensitive</span><span class="params">(<span class="meta">@PathVariable</span> String ip)</span></span>&#123;</span><br><span class="line">        RegionAddress regionAddress = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            regionAddress = template.getRegionAddress(ip);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> regionAddress;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>访问 <code>http://localhost:9090/region/ip=109.27.45.12</code> 这是我之前一个例子，用来解析IP地址，获取地域信息的。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/7232803-2f9f14af2cf95740.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="正常响应"></p>
+<p><img src="https://upload-images.jianshu.io/upload_images/7232803-d0d959cdb20311cc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="异常响应"></p>
+<h3 id="1-2-4-源码地址，如果觉得对你有帮助，请Star"><a href="#1-2-4-源码地址，如果觉得对你有帮助，请Star" class="headerlink" title="1.2.4. 源码地址，如果觉得对你有帮助，请Star"></a>1.2.4. 源码地址，如果觉得对你有帮助，请Star</h3><p><img src="https://upload-images.jianshu.io/upload_images/7232803-0aba9a120b758b4e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="觉得对你有帮助，请Star"></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/rothschil/drunkard/tree/master/akkad-war3/war3-area">Github源码地址</a></p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/rothschil/drunkard.git">Gitee源码地址</a></p>
+
+</div>
+
+
+    <div class="post-guide">
+        <div class="item left">
+            
+              <a href="/2020/12/16/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/Springboot%E9%9B%86%E6%88%90ip2region%E7%A6%BB%E7%BA%BFIP%E5%9C%B0%E5%90%8D%E6%98%A0%E5%B0%84/">
+                  <i class="fa fa-angle-left" aria-hidden="true"></i>
+                  Springboot集成ip2region离线IP地名映射
+              </a>
+            
+        </div>
+        <div class="item right">
+            
+              <a href="/2020/08/08/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/JVM/%E6%92%B8%E8%B5%B7Arthas%E6%8E%92%E9%9B%B7/">
+                撸起Arthas排雷
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+              </a>
+            
+        </div>
+    </div>
+
+
+
+	<div id="vcomments"></div>
+
+
+<script>
+	
+		// 评论
+		new Valine({
+			av: AV,
+			el: '#vcomments',
+			notify: false,
+			verify: false,
+			path: window.location.pathname,
+			appId: '',
+			appKey: '',
+			placeholder: '请输入评论',
+			avatar: 'retro',
+			recordIP: false
+		})
+	
+	
+</script>
+	</div>
+	<div id="footer">
+	<p>
+	©2019-<span id="footerYear"></span> 
+	<a href="/">Rothschil</a> 
+	
+	
+		|
+		<span id="busuanzi_container_site_pv">
+			pv
+			<span id="busuanzi_value_site_pv"></span>
+		</span>
+		|
+		<span id="busuanzi_container_site_uv"> 
+			uv
+			<span id="busuanzi_value_site_uv"></span>
+		</span>
+	
+	<br>
+	Powered by <a href="//hexo.io" target="_blank">Hexo</a>
+	</p>
+</div>
+
+<script type="text/javascript"> 
+	document.getElementById('footerYear').innerHTML = new Date().getFullYear() + '';
+</script>
+	<button id="totop-toggle" class="toggle"><i class="fa fa-angle-double-up" aria-hidden="true"></i></button>
+</body>
+</html>

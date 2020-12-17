@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+	
+	<!-- title -->
+	
+	<title>
+	
+		Springboot集成ip2region离线IP地名映射 | 
+	 
+	王老邪
+	</title>
+	
+	<!-- keywords,description -->
+	 
+		<meta name="description" content="Springboot集成ip2region离线IP地名映射" />
+	
+
+	<!-- favicon -->
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+	
+  
+
+	
+<link rel="stylesheet" href="/css/main.css">
+
+	
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/darcula.min.css">
+
+
+	
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/highlight.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/npm/jquery-pjax@2.0.1/jquery.pjax.min.js"></script>
+
+	
+<script src="/js/main.js"></script>
+
+	
+		
+<script src="https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min.js"></script>
+
+		
+<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
+
+	
+	
+		<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+	
+	<script>
+		var _hmt = _hmt || [];
+		(function() {
+			var hm = document.createElement("script");
+			hm.src = "https://hm.baidu.com/hm.js?1b1318d1b07a2360e12cec2ed56cd0d6";
+			var s = document.getElementsByTagName("script")[0]; 
+			s.parentNode.insertBefore(hm, s);
+		})();
+	</script>
+		
+<meta name="generator" content="Hexo 5.0.0"></head>
+
+<body>
+	<header id="header">
+    <a id="title" href="/" class="logo">王老邪</a>
+
+	<ul id="menu">
+		<li class="menu-item">
+			<a href="about.html" class="menu-item-link">ABOUT</a>
+		</li>
+		
+		<li class="menu-item">
+			<a href="https://github.com/king-angmar/weathertop" class="menu-item-link" target="_blank">
+				weathertop
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="https://github.com/rothschil" class="menu-item-link" target="_blank">
+				<i class="fa fa-github fa-2x"></i>
+			</a>
+		</li>
+	</ul>
+</header>
+
+	
+<div id="sidebar">
+	<button id="sidebar-toggle" class="toggle" ><i class="fa fa-arrow-right " aria-hidden="true"></i></button>
+	
+	<div id="site-toc">
+		<input id="search-input" class="search-input" type="text" placeholder="search...">
+		<div id="tree">
+			
+
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 操作系统
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 Linux
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/01/01/01%20%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/01%20Linux/Linux%E5%9F%BA%E7%A1%80/">
+										Linux基础
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										06 Java
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 JVM
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/05/21/06%20Java/01%20JVM/JVM%E8%B0%83%E4%BC%98%E6%94%BB%E7%95%A5/">
+										JVM调优攻略
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										02 多线程
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/05/27/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/CountDownLatch%E3%80%81Semaphone%E3%80%81CyclicBarrier%E5%85%A5%E9%97%A8/">
+										CountDownLatch、Semaphone、CyclicBarrier入门
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/05/18/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95Java%E9%98%9F%E5%88%97/">
+										死磕Java队列
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/05/14/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95ThreadPoolExecutor%E7%BA%BF%E7%A8%8B%E6%B1%A0/">
+										死磕ThreadPoolExecutor线程池
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/05/20/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95Volatile/">
+										死磕Volatile
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/05/14/06%20Java/02%20%E5%A4%9A%E7%BA%BF%E7%A8%8B/%E6%AD%BB%E7%A3%95synchronized/">
+										死磕synchronized
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										03 网络编程
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/05/08/06%20Java/03%20%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/TCP/">
+										TCP
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										04 设计模式
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/03/29/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%901%E3%80%91%E2%80%94%E2%80%94%E8%A7%82%E5%AF%9F%E8%80%85/">
+										浅析Java设计模式【1】——观察者
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/03/29/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%902%E3%80%91%E2%80%94%E2%80%94%E9%80%82%E9%85%8D%E5%99%A8/">
+										浅析Java设计模式【2】——适配器
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/03/30/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%903%E3%80%91%E2%80%94%E2%80%94%E4%BB%A3%E7%90%86/">
+										浅析Java设计模式【3】——代理
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/06/19/06%20Java/04%20%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E6%B5%85%E6%9E%90Java%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E3%80%904%E3%80%91%E2%80%94%E2%80%94%E7%AD%96%E7%95%A5/">
+										浅析Java设计模式【4】——策略
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										07 框架
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										03 Springboot
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/12/15/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/SpringBoot%E7%BB%9F%E4%B8%80%E5%BC%82%E5%B8%B8%E5%92%8CHttp%E5%93%8D%E5%BA%94/">
+										SpringBoot统一异常和Http响应
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/06/19/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/SpringBoot%E9%9B%86%E6%88%90Elasticsearch7.4-%E5%AE%9E%E6%88%98(1)/">
+										SpringBoot集成Elasticsearch7.4-实战(1)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/06/20/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/SpringBoot%E9%9B%86%E6%88%90Elasticsearch7.4-%E5%AE%9E%E6%88%98(2)/">
+										SpringBoot集成Elasticsearch7.4-实战(2)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/06/21/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/SpringBoot%E9%9B%86%E6%88%90Elasticsearch7.4-%E5%AE%9E%E6%88%98(3)/">
+										SpringBoot集成Elasticsearch7.4-实战(3)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file active">
+									<a href="/2020/12/16/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/Springboot%E9%9B%86%E6%88%90ip2region%E7%A6%BB%E7%BA%BFIP%E5%9C%B0%E5%90%8D%E6%98%A0%E5%B0%84/">
+										Springboot集成ip2region离线IP地名映射
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/12/17/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/%E6%89%8B%E5%86%99Java%E7%88%AC%E8%99%AB%E8%8E%B7%E5%8F%96%E5%9B%BD%E5%AE%B6%E7%BB%9F%E8%AE%A1%E5%B1%80%E8%A1%8C%E6%94%BF%E5%8C%BA%E5%88%92%E6%95%B0%E6%8D%AE/">
+										手写Java爬虫获取国家统计局行政区划数据
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/02/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/%E6%B5%85%E8%B0%88SpringBoot%E5%90%AF%E5%8A%A8%E9%82%A3%E4%BA%9B%E4%BA%8B%E5%84%BF/">
+										浅谈SpringBoot启动那些事儿
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										08 微服务
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 Nacos
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/01/10/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/00%20Nacos/CentOS%E7%8E%AF%E5%A2%83%E4%B8%8B%E5%AE%89%E8%A3%85Nacos/">
+										CentOS环境下安装Nacos
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/12/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/00%20Nacos/SpringCloud%E9%9B%86%E6%88%90Nacos%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0/">
+										SpringCloud集成Nacos实现服务发现
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/11/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/00%20Nacos/SpringCloud%E9%9B%86%E6%88%90Nacos%E5%AE%9E%E7%8E%B0%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86/">
+										SpringCloud集成Nacos实现配置管理
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										10 架构分析
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/04/09/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/10%20%E6%9E%B6%E6%9E%84%E5%88%86%E6%9E%90/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%88%86%E6%9E%90/">
+										微服务架构设计分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										09 区块链
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/12/24/09%20%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E7%9F%A5%E8%AF%86%E5%85%A5%E9%97%A8/">
+										区块链知识入门
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										10 容器
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 Docker
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/07/18/10%20%E5%AE%B9%E5%99%A8/00%20Docker/Docker%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7Portainer/">
+										Docker管理工具Portainer
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										11 分布式
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 分布式事务
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/08/02/11%20%E5%88%86%E5%B8%83%E5%BC%8F/00%20%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E8%AF%A6%E8%A7%A3%E2%80%94%E2%80%94SpringBoot+Atomikos%E7%AF%87/">
+										分布式事务详解——SpringBoot+Atomikos篇
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 分布式锁
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/08/01/11%20%E5%88%86%E5%B8%83%E5%BC%8F/01%20%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/%E6%B5%85%E6%9E%90%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%AE%9E%E7%8E%B0%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F/">
+										浅析分布式锁实现三种方式
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										14 中间件
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										消息
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										RocketMQ
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/07/31/14%20%E4%B8%AD%E9%97%B4%E4%BB%B6/%E6%B6%88%E6%81%AF/RocketMQ/SpringBoot%E9%9B%86%E6%88%90RocketMQ%EF%BC%881%EF%BC%89%E9%9B%86%E7%BE%A4/">
+										SpringBoot集成RocketMQ（1）集群
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/08/07/14%20%E4%B8%AD%E9%97%B4%E4%BB%B6/%E6%B6%88%E6%81%AF/RocketMQ/SpringBoot%E9%9B%86%E6%88%90RocketMQ%EF%BC%882%EF%BC%89%E9%87%8D%E8%AF%95%E6%9C%BA%E5%88%B6/">
+										SpringBoot集成RocketMQ（2）重试机制
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										缓存
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/07/12/14%20%E4%B8%AD%E9%97%B4%E4%BB%B6/%E7%BC%93%E5%AD%98/Redis/">
+										Redis
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										28 杂谈
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/09/20/28%20%E6%9D%82%E8%B0%88/%E4%BA%BA%E5%8D%83%E7%9B%B8%EF%BC%8C%E4%BD%9B%E6%97%A0%E7%9B%B8/">
+										人千相，佛无相
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/03/19/28%20%E6%9D%82%E8%B0%88/%E5%8E%86%E5%8F%B2%E4%B8%8A%E7%9A%84%E5%AE%89%E5%BE%BD%E4%BA%BA%E7%89%A9/">
+										历史上的安徽人物
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/03/19/28%20%E6%9D%82%E8%B0%88/%E8%B5%A2%E5%9C%A8%E6%A0%BC%E5%B1%80%E3%80%81%E8%BE%93%E5%9C%A8%E8%AE%A1%E8%BE%83/">
+										赢在格局、输在计较
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										54 产品设计
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										需求分析
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/01/15/54%20%E4%BA%A7%E5%93%81%E8%AE%BE%E8%AE%A1/%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/%E6%B5%85%E8%B0%88%E7%94%A8%E6%88%B7%E7%94%BB%E5%83%8F/">
+										浅谈用户画像
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/01/20/54%20%E4%BA%A7%E5%93%81%E8%AE%BE%E8%AE%A1/%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/%E7%BB%9F%E4%B8%80%E5%AE%A1%E8%AE%A1/">
+										统一审计
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										98 管理类
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										00 项目交接
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/04/01/98%20%E7%AE%A1%E7%90%86%E7%B1%BB/00%20%E9%A1%B9%E7%9B%AE%E4%BA%A4%E6%8E%A5/%E5%AF%B9%E9%A1%B9%E7%9B%AE%E4%BA%A4%E6%8E%A5%E8%BF%87%E7%A8%8B%E8%A6%81%E6%B1%82/">
+										对项目交接过程要求
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										99 工具等
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										Download
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2018/04/18/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/Download/%E8%AF%A6%E8%A7%A3CMD%E5%91%BD%E4%BB%A4%E6%BB%A1%E9%80%9F%E4%B8%8B%E8%BD%BD%E7%99%BE%E5%BA%A6%E4%BA%91/">
+										详解CMD命令满速下载百度云
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										JVM
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/08/08/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/JVM/%E6%92%B8%E8%B5%B7Arthas%E6%8E%92%E9%9B%B7/">
+										撸起Arthas排雷
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										VPN
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/01/31/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/VPN/lantern%E9%82%80%E8%AF%B7%E7%A0%81/">
+										lantern邀请码
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										Windows
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/12/18/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/Windows/Win10%E9%BB%91%E7%A7%91%E6%8A%80%EF%BC%8C%E4%BD%A0%E5%88%B0%E5%BA%95%E7%9F%A5%E9%81%93%E5%A4%9A%E5%B0%91/">
+										Win10黑科技，你到底知道多少
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/07/14/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/Windows/Wlx2Explore%E5%85%A5%E9%97%A8/">
+										Wlx2Explore入门
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/07/28/99%20%E5%B7%A5%E5%85%B7%E7%AD%89/Windows/%E5%8F%AF%E7%94%A8%E5%85%8D%E6%BF%80%E6%B4%BBAdobe%20Acrobat%20DC%202020/">
+										可用免激活Adobe Acrobat DC 2020
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+		</div>
+	</div>
+</div>
+
+	<!-- 引入正文 -->
+	<div id="content">
+		<h1 id="article-title">
+
+	Springboot集成ip2region离线IP地名映射
+</h1>
+<div class="article-meta">
+	
+	<span>Rothschil</span>
+	<span>2020-12-16 11:15:34</span>
+    
+		<div id="article-categories">
+            
+                
+                    <span>
+                        <i class="fa fa-folder" aria-hidden="true"></i>
+                        <a href="/categories/springboot/">springboot</a>
+						
+                    </span>
+                
+            
+		</div>
+    
+</div>
+
+<div id="article-content">
+	<p>前段时间因业务需要，客户提出分析外网访问的IP，即针对一些热点区域的IP访问想做到事后预警与分析。<br>因为我们服务是运行在相对隔离的资源环境中，无法直接去请求外网，于是想到用离线的方式来处理从网关发来的数据。找了下，看到个开源项目</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/lionsoul2014/ip2region">Ip2region参考1</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/hiwepy/ip2region-spring-boot-starter">ip2region参考2</a></li>
+</ul>
+<p>使用起来相对成本较低，本着先用满足需求再说，虽然在性能上并不能满足海量IP的分析，还有提升的空间。</p>
+<p>看作者的例子，较为简单，也不多说。先看下我的目录结构吧</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">war3-infi</span><br><span class="line">+---src</span><br><span class="line">|   +---main</span><br><span class="line">|   |   +---java</span><br><span class="line">|   |   \---resources</span><br><span class="line">|   |       +---generator</span><br><span class="line">|   |       +---ipdb</span><br><span class="line">|   |   |   |   +---ip2region.db</span><br><span class="line">|   |       +---mapper</span><br><span class="line">|   |       +---application.yml</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>ip2region.db</code> 这是需要下载，<a target="_blank" rel="noopener" href="https://github.com/lionsoul2014/ip2region/tree/master/data">下载地址</a>，这里提供Csv、Txt、Db文件三种格式，根据需要自行选择。</p>
+</li>
+<li><p><code>ipdb</code>这是我放db库文件的路径，当然可以自定义，只需要在<code>application.yml</code> 中配置即可。</p>
+</li>
+<li><p><code>application.yml</code> 这个就不多说啦。</p>
+</li>
+</ul>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">9090</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">redis:</span></span><br><span class="line">    <span class="attr">database:</span> <span class="number">0</span></span><br><span class="line">    <span class="attr">host:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br><span class="line">    <span class="attr">port:</span> <span class="number">6379</span></span><br><span class="line"></span><br><span class="line"><span class="attr">ip2region:</span></span><br><span class="line">  <span class="attr">external:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">index-block-size:</span> <span class="number">4096</span></span><br><span class="line">  <span class="attr">total-header-size:</span> <span class="number">8192</span></span><br><span class="line">  <span class="attr">location:</span> <span class="string">classpath:ipdb/ip2region.db</span></span><br></pre></td></tr></table></figure>
+
+<p>例子如下,<code>RegionAddress</code>、<code>DataBlock</code> 两种结果返回封装。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> xyz.wongs.drunkard.war3.web.controller;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.github.hiwepy.ip2region.spring.boot.IP2regionTemplate;</span><br><span class="line"><span class="keyword">import</span> com.github.hiwepy.ip2region.spring.boot.ext.RegionAddress;</span><br><span class="line"><span class="keyword">import</span> lombok.extern.slf4j.Slf4j;</span><br><span class="line"><span class="keyword">import</span> org.nutz.plugins.ip2region.DataBlock;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.*;</span><br><span class="line"><span class="keyword">import</span> xyz.wongs.drunkard.base.aop.annotion.ApplicationLog;</span><br><span class="line"><span class="keyword">import</span> xyz.wongs.drunkard.base.message.annoation.ResponseResult;</span><br><span class="line"><span class="keyword">import</span> xyz.wongs.drunkard.base.message.exception.DrunkardException;</span><br><span class="line"><span class="keyword">import</span> xyz.wongs.drunkard.war3.limit.RequestLimit;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@ClassName</span> IndexController</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Description</span> </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> WCNGS@QQ.COM</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Github</span> &lt;a&gt;https://github.com/rothschil&lt;/a&gt;</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 20/11/18 11:00</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Version</span> 1.0.0</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@ResponseResult</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IndexController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    IP2regionTemplate template;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 根据输入IP地址，返回解析后的地址</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> ip</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> xyz.wongs.drunkard.base.message.response.ResponseResult</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2020/8/17 18:26</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@GetMapping(value = &quot;/convert/&#123;ip&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> DataBlock <span class="title">convertDataBlock</span><span class="params">(<span class="meta">@PathVariable</span> String ip)</span></span>&#123;</span><br><span class="line">        DataBlock dataBlock = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            dataBlock = template.binarySearch(ip);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dataBlock;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** 根据输入IP地址，返回解析后的地址</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> ip</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> xyz.wongs.drunkard.base.message.response.ResponseResult</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2020/8/17 18:26</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@RequestLimit(maxCount=3)</span></span><br><span class="line">    <span class="meta">@GetMapping(value = &quot;/region/&#123;ip&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> RegionAddress <span class="title">convert</span><span class="params">(<span class="meta">@PathVariable</span> String ip)</span></span>&#123;</span><br><span class="line">        RegionAddress regionAddress = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            regionAddress = template.getRegionAddress(ip);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> regionAddress;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(value = &quot;/region/ip=&#123;ip&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> RegionAddress <span class="title">caseInsensitive</span><span class="params">(<span class="meta">@PathVariable</span> String ip)</span></span>&#123;</span><br><span class="line">        RegionAddress regionAddress = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            regionAddress = template.getRegionAddress(ip);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> regionAddress;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-1-1-打开浏览器"><a href="#2-1-1-打开浏览器" class="headerlink" title="2.1.1. 打开浏览器"></a>2.1.1. 打开浏览器</h3><p>访问 <code>http://localhost:9090/region/ip=109.27.45.12</code> 这是我之前一个例子，用来解析IP地址，获取地域信息的。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/7232803-bd5cf3ca64aedcfb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="样例响应"></p>
+<h3 id="2-1-2-源码地址，如果觉得对你有帮助，请Star"><a href="#2-1-2-源码地址，如果觉得对你有帮助，请Star" class="headerlink" title="2.1.2. 源码地址，如果觉得对你有帮助，请Star"></a>2.1.2. 源码地址，如果觉得对你有帮助，请Star</h3><p><img src="https://upload-images.jianshu.io/upload_images/7232803-ced737d528b9b500.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="觉得对你有帮助，请Star"></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/rothschil/drunkard/tree/master/akkad-war3/war3-infi">Github源码地址</a></p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/rothschil/drunkard.git">Gitee源码地址</a></p>
+
+</div>
+
+
+    <div class="post-guide">
+        <div class="item left">
+            
+              <a href="/2020/12/17/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/%E6%89%8B%E5%86%99Java%E7%88%AC%E8%99%AB%E8%8E%B7%E5%8F%96%E5%9B%BD%E5%AE%B6%E7%BB%9F%E8%AE%A1%E5%B1%80%E8%A1%8C%E6%94%BF%E5%8C%BA%E5%88%92%E6%95%B0%E6%8D%AE/">
+                  <i class="fa fa-angle-left" aria-hidden="true"></i>
+                  手写Java爬虫获取国家统计局行政区划数据
+              </a>
+            
+        </div>
+        <div class="item right">
+            
+              <a href="/2020/12/15/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/SpringBoot%E7%BB%9F%E4%B8%80%E5%BC%82%E5%B8%B8%E5%92%8CHttp%E5%93%8D%E5%BA%94/">
+                SpringBoot统一异常和Http响应
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+              </a>
+            
+        </div>
+    </div>
+
+
+
+	<div id="vcomments"></div>
+
+
+<script>
+	
+		// 评论
+		new Valine({
+			av: AV,
+			el: '#vcomments',
+			notify: false,
+			verify: false,
+			path: window.location.pathname,
+			appId: '',
+			appKey: '',
+			placeholder: '请输入评论',
+			avatar: 'retro',
+			recordIP: false
+		})
+	
+	
+</script>
+	</div>
+	<div id="footer">
+	<p>
+	©2019-<span id="footerYear"></span> 
+	<a href="/">Rothschil</a> 
+	
+	
+		|
+		<span id="busuanzi_container_site_pv">
+			pv
+			<span id="busuanzi_value_site_pv"></span>
+		</span>
+		|
+		<span id="busuanzi_container_site_uv"> 
+			uv
+			<span id="busuanzi_value_site_uv"></span>
+		</span>
+	
+	<br>
+	Powered by <a href="//hexo.io" target="_blank">Hexo</a>
+	</p>
+</div>
+
+<script type="text/javascript"> 
+	document.getElementById('footerYear').innerHTML = new Date().getFullYear() + '';
+</script>
+	<button id="totop-toggle" class="toggle"><i class="fa fa-angle-double-up" aria-hidden="true"></i></button>
+</body>
+</html>
