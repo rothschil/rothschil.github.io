@@ -836,7 +836,44 @@
 </div>
 
 <div id="article-content">
-	<h1 id="1-概念"><a href="#1-概念" class="headerlink" title="1. 概念"></a>1. 概念</h1><p>队列是在JDK1.5中被引入，它是一种数据结构，遵循原则就是 “FIFO”，即”先进先出”。</p>
+	<!-- TOC -->
+
+<ul>
+<li><a href="#1-%E6%A6%82%E5%BF%B5">1. 概念</a></li>
+<li><a href="#2-%E5%88%86%E7%B1%BB">2. 分类</a><ul>
+<li><a href="#21-%E9%98%9F%E5%88%97%E5%AE%B9%E9%87%8F">2.1. 队列容量</a></li>
+<li><a href="#22-%E9%98%BB%E5%A1%9E">2.2. 阻塞</a></li>
+<li><a href="#23-%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8">2.3. 线程安全</a></li>
+<li><a href="#24-linkedlist">2.4. LinkedList</a><ul>
+<li><a href="#241-%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF">2.4.1. 适用场景</a></li>
+<li><a href="#242-%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0">2.4.2. 构造函数</a></li>
+<li><a href="#243-%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95">2.4.3. 常用方法</a></li>
+<li><a href="#244-%E6%A0%B7%E4%BE%8B">2.4.4. 样例</a></li>
+</ul>
+</li>
+<li><a href="#25-coucurrentlinkedqueue">2.5. CoucurrentLinkedQueue</a></li>
+</ul>
+</li>
+<li><a href="#3-%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97">3. 阻塞队列</a><ul>
+<li><a href="#31-arrayblockingqueue">3.1. ArrayBlockingQueue</a></li>
+<li><a href="#32-linkedblockingqueue">3.2. LinkedBlockingQueue</a></li>
+<li><a href="#33-%E4%BC%98%E5%85%88%E7%BA%A7%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97priorityblockingqueue">3.3. 优先级阻塞队列PriorityBlockingQueue</a></li>
+<li><a href="#34-%E5%BB%B6%E8%BF%9F%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97delayqueue">3.4. 延迟阻塞队列DelayQueue</a></li>
+<li><a href="#35-synchronousqueue">3.5. SynchronousQueue</a></li>
+<li><a href="#36-%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97blockingqueue">3.6. 阻塞队列BlockingQueue</a><ul>
+<li><a href="#361-arrayblockingqueue">3.6.1. ArrayBlockingQueue</a></li>
+<li><a href="#362-linkedblockingqueue">3.6.2. LinkedBlockingQueue</a></li>
+<li><a href="#363-synchronousqueue">3.6.3. SynchronousQueue</a></li>
+<li><a href="#364-%E4%BC%98%E5%85%88%E7%BA%A7%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97priorityblockingqueue">3.6.4. 优先级阻塞队列PriorityBlockingQueue</a></li>
+<li><a href="#365-%E5%BB%B6%E8%BF%9F%E9%98%BB%E5%A1%9E%E9%98%9F%E5%88%97delayqueue">3.6.5. 延迟阻塞队列DelayQueue</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<!-- /TOC -->
+
+<h1 id="1-概念"><a href="#1-概念" class="headerlink" title="1. 概念"></a>1. 概念</h1><p>队列是在JDK1.5中被引入，它是一种数据结构，遵循原则就是 “FIFO”，即”先进先出”。</p>
 <p><code>Queue</code>接口与<code>List</code>同一级别，继承自<code>Collection</code>接口，LinkedList实现了<code>Deque</code>接 口。</p>
 <p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/java/20200805144939.png" alt="类继承图"></p>
 <h1 id="2-分类"><a href="#2-分类" class="headerlink" title="2. 分类"></a>2. 分类</h1><p>队列在实际应用有很多分类，如是否阻塞、是否线程安全、是否有界。这里也仅从这三块来加以区分。</p>
@@ -917,7 +954,10 @@
 <h2 id="2-1-队列容量"><a href="#2-1-队列容量" class="headerlink" title="2.1. 队列容量"></a>2.1. 队列容量</h2><p>从队列的大小以及容量来说，分为 <strong>有界队列</strong>、<strong>无界队列</strong></p>
 <h2 id="2-2-阻塞"><a href="#2-2-阻塞" class="headerlink" title="2.2. 阻塞"></a>2.2. 阻塞</h2><p>从阻塞特征来说，分为 <strong>阻塞队列</strong>、<strong>非阻塞队列</strong></p>
 <h2 id="2-3-线程安全"><a href="#2-3-线程安全" class="headerlink" title="2.3. 线程安全"></a>2.3. 线程安全</h2><p>从线程安全来说，分为 <strong>线程安全</strong>、<strong>非线程安全</strong></p>
-<h2 id="2-4-LinkedList"><a href="#2-4-LinkedList" class="headerlink" title="2.4. LinkedList"></a>2.4. LinkedList</h2><h3 id="2-4-1-常用方法"><a href="#2-4-1-常用方法" class="headerlink" title="2.4.1. 常用方法"></a>2.4.1. 常用方法</h3><table>
+<h2 id="2-4-LinkedList"><a href="#2-4-LinkedList" class="headerlink" title="2.4. LinkedList"></a>2.4. LinkedList</h2><h3 id="2-4-1-适用场景"><a href="#2-4-1-适用场景" class="headerlink" title="2.4.1. 适用场景"></a>2.4.1. 适用场景</h3><p>通常适用与插入元素和删除元素，时间的复杂度O(1)。它性能高效的原理是通过链表实现，插入和删除只需要改变前后两个节点指针指向即可。</p>
+<h3 id="2-4-2-构造函数"><a href="#2-4-2-构造函数" class="headerlink" title="2.4.2. 构造函数"></a>2.4.2. 构造函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;**</span><br><span class="line">    * Constructs an empty list.</span><br><span class="line">    *&#x2F;</span><br><span class="line">public LinkedList() &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;**</span><br><span class="line">    * Constructs a list containing the elements of the specified</span><br><span class="line">    * collection, in the order they are returned by the collection&#39;s</span><br><span class="line">    * iterator.</span><br><span class="line">    *</span><br><span class="line">    * @param  c the collection whose elements are to be placed into this list</span><br><span class="line">    * @throws NullPointerException if the specified collection is null</span><br><span class="line">    *&#x2F;</span><br><span class="line">public LinkedList(Collection&lt;? extends E&gt; c) &#123;</span><br><span class="line">    this();</span><br><span class="line">    addAll(c);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-4-3-常用方法"><a href="#2-4-3-常用方法" class="headerlink" title="2.4.3. 常用方法"></a>2.4.3. 常用方法</h3><table>
 <thead>
 <tr>
 <th>方法名</th>
@@ -953,7 +993,7 @@
 <td align="left">检索但不删除此列表的头（第一个元素）</td>
 </tr>
 </tbody></table>
-<h3 id="2-4-2-样例"><a href="#2-4-2-样例" class="headerlink" title="2.4.2. 样例"></a>2.4.2. 样例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">        Queue&lt;String&gt; queue &#x3D; new LinkedList&lt;String&gt;();</span><br><span class="line">        initQueue(queue);</span><br><span class="line">        for(String q : queue)&#123;</span><br><span class="line">            System.out.print(q+&quot;\t&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.print(&quot;\n&quot;);</span><br><span class="line">        System.out.println(&quot; 队列中头信息element: &quot;+queue.element());</span><br><span class="line">        System.out.println(&quot; 获取信息poll: &quot; + queue.poll());</span><br><span class="line">        System.out.println(&quot; 队列中头信息element: &quot;+queue.element());</span><br><span class="line">        System.out.println(&quot; &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; &quot;);</span><br><span class="line">        System.out.println(&quot; 队列中头信息peek: &quot;+queue.peek());</span><br><span class="line"></span><br><span class="line">        for(String q : queue)&#123;</span><br><span class="line">            System.out.print(q+&quot;\t&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.print(&quot;\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;** 初始化队列中的数据</span><br><span class="line">     * @Description</span><br><span class="line">     * @param queue</span><br><span class="line">     * @return void</span><br><span class="line">     * @throws</span><br><span class="line">     * @date 2020&#x2F;8&#x2F;5 15:12</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public static void initQueue(Queue&lt;String&gt; queue)&#123;</span><br><span class="line">        queue.offer(&quot;Q1&quot;);</span><br><span class="line">        queue.offer(&quot;Q2&quot;);</span><br><span class="line">        queue.offer(&quot;Q3&quot;);</span><br><span class="line">        queue.offer(&quot;Q4&quot;);</span><br><span class="line">        queue.offer(&quot;Q5&quot;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-4-4-样例"><a href="#2-4-4-样例" class="headerlink" title="2.4.4. 样例"></a>2.4.4. 样例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">        Queue&lt;String&gt; queue &#x3D; new LinkedList&lt;String&gt;();</span><br><span class="line">        initQueue(queue);</span><br><span class="line">        for(String q : queue)&#123;</span><br><span class="line">            System.out.print(q+&quot;\t&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.print(&quot;\n&quot;);</span><br><span class="line">        System.out.println(&quot; 队列中头信息element: &quot;+queue.element());</span><br><span class="line">        System.out.println(&quot; 获取信息poll: &quot; + queue.poll());</span><br><span class="line">        System.out.println(&quot; 队列中头信息element: &quot;+queue.element());</span><br><span class="line">        System.out.println(&quot; &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; &quot;);</span><br><span class="line">        System.out.println(&quot; 队列中头信息peek: &quot;+queue.peek());</span><br><span class="line"></span><br><span class="line">        for(String q : queue)&#123;</span><br><span class="line">            System.out.print(q+&quot;\t&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.print(&quot;\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;** 初始化队列中的数据</span><br><span class="line">     * @Description</span><br><span class="line">     * @param queue</span><br><span class="line">     * @return void</span><br><span class="line">     * @throws</span><br><span class="line">     * @date 2020&#x2F;8&#x2F;5 15:12</span><br><span class="line">     *&#x2F;</span><br><span class="line">    public static void initQueue(Queue&lt;String&gt; queue)&#123;</span><br><span class="line">        queue.offer(&quot;Q1&quot;);</span><br><span class="line">        queue.offer(&quot;Q2&quot;);</span><br><span class="line">        queue.offer(&quot;Q3&quot;);</span><br><span class="line">        queue.offer(&quot;Q4&quot;);</span><br><span class="line">        queue.offer(&quot;Q5&quot;);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="2-5-CoucurrentLinkedQueue"><a href="#2-5-CoucurrentLinkedQueue" class="headerlink" title="2.5. CoucurrentLinkedQueue"></a>2.5. CoucurrentLinkedQueue</h2><p>同步队列，无界</p>
 <h1 id="3-阻塞队列"><a href="#3-阻塞队列" class="headerlink" title="3. 阻塞队列"></a>3. 阻塞队列</h1><p>在<code>java.util.concurrent</code> 包中加入 <code>BlockingQueue</code> 接口和五个阻塞队列类。它实质上就是一种带有一点扭曲的 FIFO 数据结构。不是立即从队列中添加或者删除元素，线程执行操作阻塞，直到有空间或者元素可用</p>
