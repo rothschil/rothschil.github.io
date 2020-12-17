@@ -9,14 +9,14 @@
 	
 	<title>
 	
-		浅谈用户画像 | 
+		Mybatis自动刷新XML | 
 	 
 	王老邪
 	</title>
 	
 	<!-- keywords,description -->
 	 
-		<meta name="description" content="大数据，用户画像" />
+		<meta name="description" content="Mybatis自动刷新XML" />
 	
 
 	<!-- favicon -->
@@ -303,7 +303,7 @@
 									</a>
 									
 							<ul>
-								<li class="file">
+								<li class="file active">
 									<a href="/2020/12/17/07%20%E6%A1%86%E6%9E%B6/02%20Mybatis/Mybatis%E8%87%AA%E5%8A%A8%E5%88%B7%E6%96%B0XML/">
 										Mybatis自动刷新XML
 									</a>
@@ -688,7 +688,7 @@
 									</a>
 									
 							<ul>
-								<li class="file active">
+								<li class="file">
 									<a href="/2020/01/15/54%20%E4%BA%A7%E5%93%81%E8%AE%BE%E8%AE%A1/%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/%E6%B5%85%E8%B0%88%E7%94%A8%E6%88%B7%E7%94%BB%E5%83%8F/">
 										浅谈用户画像
 									</a>
@@ -861,19 +861,19 @@
 	<div id="content">
 		<h1 id="article-title">
 
-	浅谈用户画像
+	Mybatis自动刷新XML
 </h1>
 <div class="article-meta">
 	
 	<span>Rothschil</span>
-	<span>2020-01-15 21:00:00</span>
+	<span>2020-12-17 10:07:00</span>
     
 		<div id="article-categories">
             
                 
                     <span>
                         <i class="fa fa-folder" aria-hidden="true"></i>
-                        <a href="/categories/产品设计/">产品设计</a>
+                        <a href="/categories/Mybatis/">Mybatis</a>
 						
                     </span>
                 
@@ -883,90 +883,33 @@
 </div>
 
 <div id="article-content">
-	<p>今早来公司里头，坐下来一看便签，发现手头上事情并不是很多，就泡杯茶去论坛逛逛，发现好些人在讨论<strong>用户画像</strong>，心想这也不是什么新词，干嘛都那么激动，彷佛隔着屏幕我都感到那些人的吐沫星子。心头萌发一个念想，这块我平常虽然间接有接触，而那些知识点都太零散，不够系统性性，很不易全面知识框架的理解和掌握，我何不自己再自我总结下，那今天的博客内容也有着落啦。立刻放下茶杯从网上找些材料先自我巩固下……</p>
-<p>由于本文皆是其他博客论文再结合一些个人理解，综合加工而成，由于这对我来说纯属是好奇之学，有些概念或者逻辑也不是很具有代表性，希望大家发现了可以给我留言，我会予以更正。</p>
-<h1 id="1-基本概念"><a href="#1-基本概念" class="headerlink" title="1. 基本概念"></a>1. 基本概念</h1><p>最初，用户画像是在大数据行业产生的，是为产品的精准营销、精细化营销。既然目的是为了产品运营领域，那么它可以是个人也可以面向企业。而我们这边为大家更好的理解，暂且只说它的自然人属性，即面向个人。</p>
-<p>在这我就给它一个略显狭义的概括：所谓用户画像就是根据用户所拥有的社会属性、职能属性、经济属性、情感属性等各种可供捕捉的行为属性，最终将这些行为属性进行组合、提炼，形成数字化、抽象化的一组标签来帮助我们理解直观了解用户。</p>
-<h1 id="2-用途"><a href="#2-用途" class="headerlink" title="2. 用途"></a>2. 用途</h1><p>在电商、金融、互联网领域，它有着举足轻重的作用，总的来说可以概括为五大块：<strong>用户统计、数据挖掘、精准营销、行业分析</strong>。</p>
+	<p>使用Mybatis过程中，很多时候修改了XML文件需要整个项目重新启动，比较耗时，如果没什么业务数据状态还好，有数据状态可就惨啦，所以XML自动线下更新就很有必要。手写一个简单实现，大家参考下。</p>
+<p>我的实现思路就是利用一个额外线程扫描<code>mybatis</code> XML文件，更新到 <code>Spring</code>中的 上下文<code>ApplicationContext</code>中。</p>
+<p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/java/drunkard/linux/es/20201217100925.png" alt="mybatis"></p>
+<h1 id="1-配置文件"><a href="#1-配置文件" class="headerlink" title="1. 配置文件"></a>1. 配置文件</h1><p>我们定义一套刷新时间和周期频次的配置文件在路径 <code>persistence-mybatis\mybatis-base\src\main\resources\conf\mybatis-refresh.properties</code> 中，里面内容如下：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">enabled</span>=<span class="string">true</span></span><br><span class="line"><span class="attr">delaySeconds</span>=<span class="string">30</span></span><br><span class="line"><span class="attr">sleepSeconds</span>=<span class="string">10</span></span><br><span class="line"><span class="attr">mappingPath</span>=<span class="string">mapper</span></span><br></pre></td></tr></table></figure>
+
 <ul>
-<li><p>用户统计：根据不通用户属性特性统计用户数量、分布，从而分析用户画像的群体分布特征；比如双11活动中，统计哪个区域消费最活跃等；</p>
-</li>
-<li><p>数据挖掘：利用关联计算模型，分析该用户的特征能力，结合智能聚类算法的评估模型，获取针对性的用户画像，再利用推荐和搜索算法，向该用户投放和推荐关联性产品，提升服务精准度；</p>
-</li>
-<li><p>精准营销：在数据深度挖掘过程中，结合历史上该用户特征，分析该产品的潜在用户和用户潜在需求，并针对性该特定群体，利用推送媒介等方式进行营销；</p>
-</li>
-<li><p>行业分析：通过用户画像，可以很直观了解行业动态，为提高企业竞争力提供第一手资料，方便管理层做出决策。</p>
-</li>
+<li>enabled：是否开启自动刷新</li>
+<li>delaySeconds： 间隔时间</li>
+<li>sleepSeconds： 休眠时间</li>
+<li>mappingPath：XML的路径</li>
 </ul>
-<p>题外话，上面说不少优点，结合自身在项目中也发现，好多行业中的项目无非为了用户画像而画像，不说用户画像的在技术实现上的门槛，单看那些输出的所谓用户画像报告，真是眼泪多于汗水。这些项目最终都沦落为“面子工程”，“形式主义”，更是被某些领导用来宣扬其光辉政绩的资本。</p>
-<h1 id="3-如何构建用户画像"><a href="#3-如何构建用户画像" class="headerlink" title="3. 如何构建用户画像"></a>3. 如何构建用户画像</h1><p> 用户画像不是一成不变的，在统计与计算方法上也有差异，更不用说去面对行业不同，应用场景不同。所以要想构建用户画像，自然少不了对行业的调研，对业务领域的分析。</p>
-<h2 id="3-1-构建标签体系"><a href="#3-1-构建标签体系" class="headerlink" title="3.1. 构建标签体系"></a>3.1. 构建标签体系</h2><p>标签是一种用户特征的符号，既是一种内容组织方式，又是一种关联性很强的关键字，能帮助我们快速定位到内容及内容分类，一般情况下，我们标签库的层级为三级，因为这种划分基本覆盖我们所需要的9成业务场景。</p>
-<table>
-<thead>
-<tr>
-<th>一级标签</th>
-<th>二级标签</th>
-<th>三级标签</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>QQ</td>
-<td>等级</td>
-<td>普通</td>
-</tr>
-<tr>
-<td>QQ</td>
-<td>等级</td>
-<td>黄钻</td>
-</tr>
-<tr>
-<td>QQ</td>
-<td>等级</td>
-<td>绿钻</td>
-</tr>
-<tr>
-<td>QQ</td>
-<td>位数</td>
-<td>6</td>
-</tr>
-<tr>
-<td>QQ</td>
-<td>位数</td>
-<td>7</td>
-</tr>
-<tr>
-<td>QQ</td>
-<td>位数</td>
-<td>8</td>
-</tr>
-<tr>
-<td>车</td>
-<td>代步车</td>
-<td>7万以下</td>
-</tr>
-<tr>
-<td>车</td>
-<td>中型车</td>
-<td>15万以上,30万以下</td>
-</tr>
-<tr>
-<td>车</td>
-<td>高档车</td>
-<td>30万以上</td>
-</tr>
-</tbody></table>
-<ul>
-<li><p>标签分类</p>
-</li>
-<li><p>标签级别</p>
-</li>
-<li><p>标签命名</p>
-</li>
-<li><p>标签赋值</p>
-</li>
-<li><p>标签属性</p>
-</li>
+<p>核心类需要实现上下文接口 <code>ApplicationContextAware</code>。</p>
+<h1 id="2-关键步骤"><a href="#2-关键步骤" class="headerlink" title="2. 关键步骤"></a>2. 关键步骤</h1><ul>
+<li>@Override重写<code>setApplicationContext</code> 方法</li>
+<li>用静态语句块，初始化配置文件中的相关参数</li>
+<li>@PostConstruct：在构造函数之后对<code>SqlSessionFactory</code>进行额外配置</li>
+<li>启用线程按照频次间隔重复执行上述操作</li>
 </ul>
+<p>关键性步骤如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1、从上下文容器获取 SqlSessionFactory</span></span><br><span class="line">SqlSessionFactory sessionFactory = applicationContext.getBean(SqlSessionFactory.class);</span><br><span class="line"><span class="comment">// 2、获取Configuration</span></span><br><span class="line">Configuration configuration = sessionFactory.getConfiguration();</span><br><span class="line"><span class="keyword">this</span>.configuration = configuration;</span><br><span class="line"><span class="comment">// 3、扫描Locations</span></span><br><span class="line">mapperLocations = getResource(basePackage,XML_RESOURCE_PATTERN);</span><br><span class="line"><span class="comment">// 4、启动线程执行</span></span><br><span class="line">exeTask();</span><br></pre></td></tr></table></figure>
+
+<p>核心类在<code>akkad-base\persistence-mybatis\mybatis-base\src\main\java\xyz\wongs\drunkard\base\persistence\mybatis\loader\MapperAutoRefresh.java</code> 下，而且行数太长，代码就不贴。</p>
+<p>在多线程处理这块有需要注意有一定的线程使用基础，看官自行学习。</p>
+<h1 id="3-源码地址，如果觉得对你有帮助，请Star"><a href="#3-源码地址，如果觉得对你有帮助，请Star" class="headerlink" title="3. 源码地址，如果觉得对你有帮助，请Star"></a>3. 源码地址，如果觉得对你有帮助，请Star</h1><p><img src="https://abram.oss-cn-shanghai.aliyuncs.com/blog/java/drunkard/20201201165747.png" alt="觉得对你有帮助，请Star"></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/rothschil/drunkard/tree/master/akkad-base/persistence-mybatis">Github源码地址</a></p>
+<p><a target="_blank" rel="noopener" href="https://gitee.com/rothschil/drunkard.git">Gitee源码地址</a></p>
 
 </div>
 
@@ -974,16 +917,11 @@
     <div class="post-guide">
         <div class="item left">
             
-              <a href="/2020/01/20/54%20%E4%BA%A7%E5%93%81%E8%AE%BE%E8%AE%A1/%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90/%E7%BB%9F%E4%B8%80%E5%AE%A1%E8%AE%A1/">
-                  <i class="fa fa-angle-left" aria-hidden="true"></i>
-                  统一审计
-              </a>
-            
         </div>
         <div class="item right">
             
-              <a href="/2020/01/12/08%20%E5%BE%AE%E6%9C%8D%E5%8A%A1/00%20Nacos/SpringCloud%E9%9B%86%E6%88%90Nacos%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0/">
-                SpringCloud集成Nacos实现服务发现
+              <a href="/2020/12/17/07%20%E6%A1%86%E6%9E%B6/03%20Springboot/%E6%89%8B%E5%86%99Java%E7%88%AC%E8%99%AB%E8%8E%B7%E5%8F%96%E5%9B%BD%E5%AE%B6%E7%BB%9F%E8%AE%A1%E5%B1%80%E8%A1%8C%E6%94%BF%E5%8C%BA%E5%88%92%E6%95%B0%E6%8D%AE/">
+                手写Java爬虫获取国家统计局行政区划数据
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
               </a>
             
